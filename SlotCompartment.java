@@ -1,0 +1,84 @@
+import java.util.ArrayList;
+
+public class SlotCompartment {
+    private int maximumInSlotItems;
+    private int minimumIntSlotItems = 10;
+    private int currentInSlotItems = 0;
+    private ArrayList<Item> items;
+
+    // Constructor
+    /** Initializes the slot compartment with a specified item and maximum capacity.
+     *
+     *  @param maxItems The maximum number of items the slot can hold (must be at least 10)
+    */
+    public SlotCompartment(int maxItems) {
+        this.maximumInSlotItems = Math.max(maxItems, minimumIntSlotItems);
+
+        items = new ArrayList<>();
+
+        for(int i = 0; i < items.size(); i++){
+            items.set(i, new Item("", 0.0, 0.0));
+        }
+    }
+
+    // Methods
+    /** Validates if items arraylist is empty, if so returns nothing. Otherwise, dispenses one item
+     */
+    public Item dispense() {
+        if (items.isEmpty()){
+            System.out.println("Out of product.");
+            return null;
+        }
+
+        items.removeFirst();
+
+        this.currentInSlotItems -= 1;
+
+        return items.getFirst();
+    }
+
+    /** Allows the user add stock/inventory of a specific slot
+     *
+     * @param amount integer value to be added to the current item amount
+     */
+    public void addInventory(int amount){
+
+
+        if (this.currentInSlotItems == this.maximumInSlotItems){
+            System.out.println("At maximum capacity");
+            return;
+        }
+
+        if (amount < 0){
+            System.out.println("Invalid number");
+            return;
+        }
+
+        boolean isMoreThanInMaxSlot = this.currentInSlotItems > this.maximumInSlotItems;
+        boolean amountPlusCurrentOverflow = amount + currentInSlotItems > this.maximumInSlotItems;
+
+        if(isMoreThanInMaxSlot || amountPlusCurrentOverflow){
+            System.out.println("At overflowing capacity");
+            return;
+        }
+
+        setCurrentInSlotItems(currentInSlotItems, amount);
+    }
+
+    //Getters, setters
+    public int getCurrentInSlotItems() {
+        return currentInSlotItems;
+    }
+
+    public int getMaximumInSlotItems() {
+        return maximumInSlotItems;
+    }
+
+    public int getMinimumIntSlotItems() {
+        return minimumIntSlotItems;
+    }
+
+    private void setCurrentInSlotItems(int currentInSlotItems, int addedAmount) {
+        this.currentInSlotItems += addedAmount;
+    }
+}

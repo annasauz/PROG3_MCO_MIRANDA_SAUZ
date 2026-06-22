@@ -1,6 +1,4 @@
-package src.main.java.RegularVendingMachine;
-//Represents an item sold in the vending machine.
- 
+
 public class Item {
     private String name;
     private double price;
@@ -51,7 +49,7 @@ public class Item {
     //Displays item information. ** can be improved later on
      
     public void displayItemInfo() {
-        System.out.println("Item: " + name);
+        System.out.println("src.main.Item: " + name);
         System.out.println("Price: ₱" + price);
         System.out.println("Calories: " + calories + " kcal");
     }
