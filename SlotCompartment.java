@@ -7,7 +7,7 @@ public class SlotCompartment {
     private ArrayList<Item> items;
 
     // Constructor
-    /** Initializes the slot compartment with a specified item and maximum capacity.
+    /** Creates a slot for items
      *
      *  @param maxItems The maximum number of items the slot can hold (must be at least 10)
     */
@@ -15,10 +15,6 @@ public class SlotCompartment {
         this.maximumInSlotItems = Math.max(maxItems, minimumIntSlotItems);
 
         items = new ArrayList<>();
-
-        for(int i = 0; i < items.size(); i++){
-            items.set(i, new Item("", 0.0, 0.0));
-        }
     }
 
     // Methods
