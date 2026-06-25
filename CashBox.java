@@ -23,12 +23,12 @@ public class CashBox {
         boolean containsValue = Arrays.stream(denominations).anyMatch(x -> x == denomination);
 
         if (denomination < 0){
-            System.out.println("Invalid denomination - negative value");
+            System.out.println("Invalid denomination");
             return;
         }
 
         if (!containsValue){
-            System.out.println("Invalid denomination - not in the denominations array");
+            System.out.println("Invalid denomination");
             return;
         }
 
@@ -48,7 +48,15 @@ public class CashBox {
         for (int i = 0; i < denominations.length; i++){
             totalAmount += (denominations[i] * denominationsAmount[i]);
         }
-        
+
         return totalAmount;
+    }
+
+    public int[] getDenominations() {
+        return denominations;
+    }
+
+    public int[] getDenominationsAmount() {
+        return denominationsAmount;
     }
 }
