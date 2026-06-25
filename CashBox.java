@@ -1,4 +1,3 @@
-import java.sql.Array;
 import java.util.Arrays;
 
 public class CashBox {
@@ -6,23 +5,41 @@ public class CashBox {
     private int[] denominationsAmount;
 
     // Constructors
+    /**
+     * Initializes a new CashBox with zero amounts for each denomination.
+     */
     public CashBox(){
-         denominationsAmount = new int[denominations.length];
+        denominationsAmount = new int[denominations.length];
     }
 
     // Methods
+    /**
+     * Adds a specified amount of value to the cash box
+     *
+     * @param denomination face value of currency
+     * @param amount amount of denomination passed
+     */
     public void addToCashBox(int denomination, int amount) {
-        boolean containsValue = Arrays.asList(denominations).contains(amount);
+        boolean containsValue = Arrays.stream(denominations).anyMatch(x -> x == denomination);
 
-        if (denomination < 0 || !(containsValue)){
-            System.out.println("Invalid denomination");
+        if (denomination < 0){
+            System.out.println("Invalid denomination - negative value");
+            return;
+        }
+
+        if (!containsValue){
+            System.out.println("Invalid denomination - not in the denominations array");
+            return;
         }
 
         if (containsValue){
-            //TODO add to the denominationAmount array the param amount taken in.
+            for (int i = 0; i < denominations.length; i++){
+                if (denominations[i] == denomination){
+                    denominationsAmount[i] += amount;
+                }
+            }
         }
     }
-
 
     // Getter
     public double getMoneyAmount() {
