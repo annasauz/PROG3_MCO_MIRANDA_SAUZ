@@ -21,45 +21,41 @@ public class SlotCompartment {
     /** Validates if items arraylist is empty, if so returns nothing. Otherwise, dispenses one item
      */
     public Item dispense() {
-        if (items.isEmpty()){
-            System.out.println("Out of product.");
-            return null;
-        }
-
-        items.removeFirst();
-
-        this.currentInSlotItems -= 1;
-
-        return items.getFirst();
+    if (items.isEmpty()) {
+        System.out.println("Out of product.");
+        return null;
     }
+
+    Item dispensedItem = items.remove(0);
+
+    this.currentInSlotItems--;
+
+    return dispensedItem;
+}
 
     /** Allows the user add stock/inventory of a specific slot
      *
      * @param amount integer value to be added to the current item amount
      */
-    public void addInventory(int amount){
+   public void addInventory(Item item, int amount) {
 
-
-        if (this.currentInSlotItems == this.maximumInSlotItems){
-            System.out.println("At maximum capacity");
-            return;
-        }
-
-        if (amount < 0){
-            System.out.println("Invalid number");
-            return;
-        }
-
-        boolean isMoreThanInMaxSlot = this.currentInSlotItems > this.maximumInSlotItems;
-        boolean amountPlusCurrentOverflow = amount + currentInSlotItems > this.maximumInSlotItems;
-
-        if(isMoreThanInMaxSlot || amountPlusCurrentOverflow){
-            System.out.println("At overflowing capacity");
-            return;
-        }
-
-        setCurrentInSlotItems(currentInSlotItems, amount);
+    if (this.currentInSlotItems == this.maximumInSlotItems) {
+        System.out.println("At maximum capacity");
     }
+    else if (amount <= 0) {
+        System.out.println("Invalid number");
+    }
+    else if (amount + this.currentInSlotItems > this.maximumInSlotItems) {
+        System.out.println("At overflowing capacity");
+    }
+    else {
+        for (int i = 0; i < amount; i++) {
+            items.add(item);
+        }
+
+       setCurrentInSlotItems(amount);
+    }
+}
 
     //Getters, setters
     public int getCurrentInSlotItems() {
@@ -74,7 +70,7 @@ public class SlotCompartment {
         return minimumIntSlotItems;
     }
 
-    private void setCurrentInSlotItems(int currentInSlotItems, int addedAmount) {
-        this.currentInSlotItems += addedAmount;
+    private void setCurrentInSlotItems(int addedAmount) {
+    this.currentInSlotItems += addedAmount;
     }
 }
