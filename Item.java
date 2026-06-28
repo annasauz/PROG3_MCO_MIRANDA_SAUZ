@@ -48,8 +48,8 @@ public class Item {
     //Displays item information. ** can be improved later on
      
     public void displayItemInfo() {
-        System.out.println("src.main.Item: " + name);
-        System.out.println("Price: ₱" + price);
-        System.out.println("Calories: " + calories + " kcal");
-    }
+    System.out.println("Item: " + this.name);
+    System.out.println("Price: ₱" + this.price);
+    System.out.println("Calories: " + this.calories + " kcal");
+}
 }
