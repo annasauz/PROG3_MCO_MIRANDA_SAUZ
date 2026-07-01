@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class SlotCompartment {
-    private int maximumInSlotItems;
-    private int minimumIntSlotItems = 10;
+    private final int maximumInSlotItems;
+    private final int minimumInSlotItems = 10;
     private int currentInSlotItems = 0;
     private ArrayList<Item> items;
 
@@ -12,7 +12,7 @@ public class SlotCompartment {
      *  @param maxItems The maximum number of items the slot can hold (must be at least 10)
     */
     public SlotCompartment(int maxItems) {
-        this.maximumInSlotItems = Math.max(maxItems, minimumIntSlotItems);
+        this.maximumInSlotItems = Math.max(maxItems, minimumInSlotItems);
 
         items = new ArrayList<>();
     }
@@ -66,8 +66,8 @@ public class SlotCompartment {
         return maximumInSlotItems;
     }
 
-    public int getMinimumIntSlotItems() {
-        return minimumIntSlotItems;
+    public int getMinimumInSlotItems() {
+        return minimumInSlotItems;
     }
 
     private void setCurrentInSlotItems(int addedAmount) {

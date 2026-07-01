@@ -301,4 +301,8 @@ public class RegularVendingMachine {
             amounts[i] = 0;
         }
     }
+
+    public Item[] getItemTemplates() {
+        return itemTemplates;
+    }
 }
