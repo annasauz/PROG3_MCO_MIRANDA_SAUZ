@@ -35,16 +35,22 @@ public class TextInterface {
 
     }
 
-    public void printMaintenanceFeatures(){
-        clearScreen();
-        System.out.println("1. Set price");
-        System.out.println("2. Set stock");
-        System.out.println("3. Restock change");
-        System.out.println("4. Print transaction & inventory");
-        System.out.println("5. Exit");
-        System.out.print("Maintenance Choice: ");
-    }
+    public void printMaintenanceFeatures() {
 
+    clearScreen();
+
+    System.out.println("Maintenance Features");
+    System.out.println("------------------------------");
+    System.out.println("1. Set Price");
+    System.out.println("2. Restock Item");
+    System.out.println("3. Replenish Change");
+    System.out.println("4. Collect Money");
+    System.out.println("5. Print Transaction Summary");
+    System.out.println("6. Exit");
+
+    System.out.print("Maintenance Choice: ");
+
+}
     /**
      * Displays the main menu of the vending machine application.
      */
@@ -61,20 +67,41 @@ public class TextInterface {
      * Displays the menu of items available in the regular vending machine.
      * @param items
      */
-    public void printRegularVendingMachineMenu(Item[] items) {
-        System.out.println("=========================");
-        System.out.println(" Regular Vending Machine ");
-        System.out.println("=========================");
-        System.out.println("Slot  | Item  | Price  | Calories");
+  public void printRegularVendingMachineMenu(Item[] items, SlotCompartment[] slots) {
 
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                System.out.printf("%-5d | %-15s | ₱%-6.2f | %-9.2f%n",
-                                  i, items[i].getName(), items[i].getPrice(), items[i].getCalories());
-            } else {
-                System.out.printf("%-5d | %-15s | %-6s | %-9s%n",
-                                  i, "Empty", "-", "-");
-            }
+    System.out.println("==============================================================");
+    System.out.println("                REGULAR VENDING MACHINE");
+    System.out.println("==============================================================");
+
+    System.out.printf("%-6s %-15s %-10s %-10s %-8s%n",
+            "Slot", "Item", "Price", "Calories", "Stock");
+
+    System.out.println("--------------------------------------------------------------");
+
+    for (int i = 0; i < items.length; i++) {
+
+        if (items[i] != null) {
+
+            System.out.printf("%-6d %-15s ₱%-9.2f %-10.0f %-8d%n",
+                    i + 1,
+                    items[i].getName(),
+                    items[i].getPrice(),
+                    items[i].getCalories(),
+                    slots[i].getCurrentInSlotItems());
+
+        }
+        else {
+
+            System.out.printf("%-6d %-15s %-10s %-10s %-8d%n",
+                    i + 1,
+                    "Empty",
+                    "-",
+                    "-",
+                    0);
+
         }
     }
+
+    System.out.println("==============================================================");
+}
 }
