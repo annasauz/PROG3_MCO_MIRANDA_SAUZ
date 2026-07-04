@@ -4,142 +4,140 @@ public class RegularVendingMachineController {
     private final TextInterface textInterface;
     private final RegularVendingMachine vendingMachine;
     private final Scanner choice;
-    private boolean isRunning;
+
 
     // Constructor
     public RegularVendingMachineController(TextInterface textInterface, RegularVendingMachine vendingMachine, Scanner scanner) {
         this.textInterface = textInterface;
         this.vendingMachine = vendingMachine;
         this.choice = scanner;
-        this.isRunning = true;
     }
 
 
     // Methods
-    public void testingMenu(){
-        boolean isRunningTest = true;
+public void testingMenu() {
 
-        while (isRunningTest){
-            textInterface.printTestMenu();
-            int choice = this.choice.nextInt();
+    boolean isRunningTest = true;
 
-            switch (choice){
-                case 1:
-                    vendingFeatures();
-                    break;
-                case 2:
-                    maintenanceFeatures();
-                    break;
-                case 3:
-                    isRunningTest = false;
-                    break;
-                default:
-                    System.out.println("Invalid user choice");
-            }
+    while (isRunningTest) {
+
+        textInterface.printTestMenu();
+
+        int choice = getInput(1, 3);
+
+        switch (choice) {
+
+            case 1:
+                vendingFeatures();
+                break;
+
+            case 2:
+                maintenanceFeatures();
+                break;
+
+            case 3:
+                isRunningTest = false;
+                break;
+
+            default:
+                System.out.println("Invalid user choice");
         }
     }
+}
 
-    private void vendingFeatures(){
-        boolean isRunningVending = true;
+    private void vendingFeatures() {
+
+    boolean isRunningVending = true;
+
+    while (isRunningVending) {
+
         textInterface.printVendingFeatures();
-        int choice = this.choice.nextInt();
+        int choice = getInput(1, 5);
 
-        switch (choice){
+        switch (choice) {
+
             case 1:
                 displayItemsHandler();
                 break;
+
             case 2:
                 addMoneyHandler();
                 break;
+
             case 3:
                 purchaseHandler();
                 break;
+
             case 4:
                 vendingMachine.produceChangeWithoutPurchase();
                 break;
+
             case 5:
                 isRunningVending = false;
                 break;
+
             default:
                 System.out.println("Invalid user choice");
         }
-
     }
+}
 
-    private void maintenanceFeatures(){
-        boolean isRunningMaintenance = true;
+    private void maintenanceFeatures() {
+
+    boolean isRunningMaintenance = true;
+
+    while (isRunningMaintenance) {
+
         textInterface.printMaintenanceFeatures();
-        int choice = this.choice.nextInt();
+        int choice = getInput(1, 6);
 
-        switch (choice){
+        switch (choice) {
+
             case 1:
                 maintenancePriceHandler();
                 break;
+
             case 2:
                 maintenanceStockHandler();
                 break;
+
             case 3:
                 maintenanceAddChangeHandler();
                 break;
+
             case 4:
+                vendingMachine.collectMoney();
+                break;
+
+            case 5:
                 vendingMachine.printTransactionSummary();
                 break;
-            case 5:
+
+            case 6:
                 isRunningMaintenance = false;
                 break;
+
             default:
                 System.out.println("Invalid user choice");
         }
     }
+}
 
-    /**
-     * Starts the regular vending machine application, displaying the main menu and handling user input.
-     */
-    public void startRegularVendingMachine() {
-        System.out.println("\n=== Regular Vending Machine Started ===\n");
-        
-        while (isRunning) {
-            textInterface.printMainMenu();
-            System.out.print("Select option: ");
-            int choice = getInput(1,3);
-            mainMenuHandler(choice);
-        }
-
-        choice.close();
-    }
-
-
-    /**
-     * Handles the main menu options based on user input.
-     *
-     * @param choice the user's menu choice
-     */
-    private void mainMenuHandler(int choice){
-        switch (choice){
-            case (1):
-                displayItemsHandler();
-                break;
-            case (2):
-                purchaseHandler();
-                break;
-            case (3):
-                exitHandler();
-                break;
-            default:
-                System.out.println("Invalid choice.");
-        }
-
-    }
 
     /**
      * Displays the items available in the vending machine.
      */
-    private void displayItemsHandler(){
-        System.out.println();
-        textInterface.printRegularVendingMachineMenu(vendingMachine.getItemTemplates());
-        System.out.println();
-    }
+   private void displayItemsHandler() {
 
+    System.out.println();
+
+    textInterface.printRegularVendingMachineMenu(
+            vendingMachine.getItemTemplates(),
+            vendingMachine.getSlots());
+
+    System.out.println();
+
+}
 
     /**
      * Handles the addition of money to the vending machine.
@@ -149,10 +147,10 @@ public class RegularVendingMachineController {
         System.out.println("\n--- Add Money ---");
 
         System.out.print("Enter denomination of money (1,5,10,20,50,100,200,500,1000): ");
-        int denomination = choice.nextInt();
+        int denomination = getMoneyDenomination();
 
         System.out.print("Enter quantity: ");
-        int quantity = choice.nextInt();
+        int quantity = getPositiveInteger();
 
         if (quantity <= 0) {
             System.out.println("Quantity must be positive.");
@@ -197,52 +195,70 @@ public class RegularVendingMachineController {
         int itemStock = this.choice.nextInt();
 
         Item item = new Item(itemName, itemPrice, itemCalories);
-        vendingMachine.restockSlot(choice, item,itemStock);
+        if (itemStock <= 0) {
+        System.out.println("Invalid quantity.");
+        return;
+        }
+
+        vendingMachine.restockSlot(choice, item, itemStock);
         System.out.println("Item stocked.");
     }
 
-    private void maintenancePriceHandler(){
-        System.out.println("Re-price slot 1-8: ");
-        int choice = getInput(1, 8)-1;
-        Item item = vendingMachine.getItemTemplates()[choice];
+private void maintenancePriceHandler() {
 
-        if (item == null){
-            System.out.println("Item does not exist");
-            return;
+    System.out.println("Re-price slot 1-8: ");
+    int choice = getInput(1, 8) - 1;
+
+    Item item = vendingMachine.getItemTemplates()[choice];
+
+    if (item == null) {
+        System.out.println("Item does not exist.");
+    }
+    else {
+
+        boolean validPrice = false;
+        double itemPrice = 0;
+
+        while (!validPrice) {
+
+            System.out.println("Input new price: ");
+
+            if (this.choice.hasNextDouble()) {
+
+                itemPrice = this.choice.nextDouble();
+
+                if (itemPrice >= 0) {
+                    validPrice = true;
+                }
+                else {
+                    System.out.println("Price cannot be negative.");
+                }
+
+            }
+            else {
+                System.out.println("Invalid input. Please enter a numeric price.");
+                this.choice.next();
+            }
         }
 
-        System.out.println("Input new price: ");
-        double itemPrice = this.choice.nextDouble();
-
-        item.setPrice(itemPrice);
-        System.out.println("Price set.");
+        if (item.setPrice(itemPrice)) {
+            System.out.println("Price updated.");
+        }
+        else {
+            System.out.println("Invalid price.");
+        }
     }
+}
 
     private void maintenanceAddChangeHandler(){
         System.out.println("Add change denomination to replenish (1,5,10,20,50,100,200,500,1000): ");
-        int denomination = choice.nextInt();
+        int denomination = getMoneyDenomination();
         System.out.println("Enter quantity:");
-        int quantity = choice.nextInt();
+        int quantity = getPositiveInteger();
         vendingMachine.replenishChangeReserves(denomination,quantity);
     }
 
-    /**
-     * Prints transaction summary and asks user whether or not to return remaining credit.
-     */
 
-    private void exitHandler() {
-        System.out.println("\n--- Transaction Complete ---");
-        vendingMachine.printTransactionSummary();
-
-        System.out.print("Return remaining credit? (y/n): ");
-        String response = choice.next();
-
-        if (response.equalsIgnoreCase("y")) {
-            vendingMachine.produceChangeWithoutPurchase();
-        }
-
-        isRunning = false;
-    }
 
     /**
      * Gets user input and validates it.
@@ -251,17 +267,76 @@ public class RegularVendingMachineController {
      * @param max largest user choice
      * @return the user choice if within range, otherwise returns 0
      */
-    private int getInput(int min, int max){
-        if (max < min){
-            System.out.println("Invalid input call");
+private int getInput(int min, int max) {
+
+    while (true) {
+
+        if (!choice.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a number.");
+            choice.next();
+            continue;
         }
 
-        int choice = this.choice.nextInt();
-        boolean inMinMax = choice >= min && choice <= max;
+        int input = choice.nextInt();
 
-        if (inMinMax){
-            return choice;
+        if (input >= min && input <= max) {
+            return input;
         }
-        return 0;
+
+        System.out.println("Please enter a number between "
+                + min + " and " + max + ".");
+
     }
+}
+
+private int getPositiveInteger() {
+
+    while (true) {
+
+        if (!choice.hasNextInt()) {
+            System.out.println("Invalid input. Enter a whole number.");
+            choice.next();
+            continue;
+        }
+
+        int value = choice.nextInt();
+
+        if (value > 0) {
+            return value;
+        }
+
+        System.out.println("Value must be greater than zero.");
+    }
+}
+
+
+private int getMoneyDenomination() {
+
+    while (true) {
+
+        if (!choice.hasNextInt()) {
+            System.out.println("Invalid input.");
+            choice.next();
+            continue;
+        }
+
+        int denomination = choice.nextInt();
+
+        switch (denomination) {
+            case 1:
+            case 5:
+            case 10:
+            case 20:
+            case 50:
+            case 100:
+            case 200:
+            case 500:
+            case 1000:
+                return denomination;
+        }
+
+        System.out.println("Invalid denomination.");
+    }
+}
+
 }
