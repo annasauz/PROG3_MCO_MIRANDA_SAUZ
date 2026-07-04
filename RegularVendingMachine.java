@@ -11,17 +11,57 @@ public class RegularVendingMachine {
      * Initializes a Regular Vending Machine.
      */
     public RegularVendingMachine() {
-        this.slots = new SlotCompartment[8];
-        this.itemTemplates = new Item[8];
-        this.startingInventory = new int[8];
-        this.totalSold = new int[8];
-        this.internalCashBox = new CashBox();
-        this.transactionCashBox = new CashBox();
+    this.slots = new SlotCompartment[8];
+    this.itemTemplates = new Item[8];
+    this.startingInventory = new int[8];
+    this.totalSold = new int[8];
+    this.internalCashBox = new CashBox();
+    this.transactionCashBox = new CashBox();
 
-        for (int i = 0; i < 8; i++) {
-            this.slots[i] = new SlotCompartment(10); 
-        }
+    // Create the slot compartments
+    for (int i = 0; i < 8; i++) {
+        this.slots[i] = new SlotCompartment(10);
     }
+
+    // Load default products
+    initializeDefaultItems();
+
+    // Load default change
+    initializeCashBox();
+    }
+
+    /**
+ * Loads the vending machine with default items.
+ */
+private void initializeDefaultItems() {
+
+    restockSlot(0, new Item("Coke", 25.00, 140), 10);
+    restockSlot(1, new Item("Sprite", 25.00, 130), 10);
+    restockSlot(2, new Item("Water", 20.00, 0), 10);
+    restockSlot(3, new Item("Piattos", 18.00, 160), 10);
+    restockSlot(4, new Item("Nova", 20.00, 170), 10);
+    restockSlot(5, new Item("SkyFlakes", 15.00, 120), 10);
+    restockSlot(6, new Item("Chocolate", 30.00, 210), 10);
+    restockSlot(7, new Item("Cookies", 22.00, 180), 10);
+
+}
+
+/**
+ * Loads the machine with initial money for producing change.
+ */
+private void initializeCashBox() {
+
+    replenishChangeReserves(1, 20);
+    replenishChangeReserves(5, 20);
+    replenishChangeReserves(10, 20);
+    replenishChangeReserves(20, 20);
+    replenishChangeReserves(50, 10);
+    replenishChangeReserves(100, 10);
+    replenishChangeReserves(200, 5);
+    replenishChangeReserves(500, 2);
+    replenishChangeReserves(1000, 1);
+
+}
 
     // ==========================================
     //       VENDING TRANSACTION FEATURES
@@ -301,7 +341,30 @@ public class RegularVendingMachine {
         }
     }
 
+    /**
+ * Collects all money currently stored inside the machine.
+ */
+public void collectMoney() {
+
+    double collectedAmount = internalCashBox.getMoneyAmount();
+
+    System.out.printf("Collected: ₱%.2f%n", collectedAmount);
+
+    int[] amounts = internalCashBox.getDenominationsAmount();
+
+    for (int i = 0; i < amounts.length; i++) {
+        amounts[i] = 0;
+    }
+
+    System.out.println("Machine cash box has been emptied.");
+
+}
+
     public Item[] getItemTemplates() {
         return itemTemplates;
     }
+
+    public SlotCompartment[] getSlots() {
+    return slots;
+}
 }
