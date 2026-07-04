@@ -198,32 +198,26 @@ public class RegularVendingMachineController {
         int choice = getInput(1,8)-1;
         this.choice.nextLine();
 
-        try {
-            System.out.println("Item name: ");
-            String itemName = this.choice.nextLine();
+        System.out.println("Item name: ");
+        String itemName = this.choice.nextLine();
 
-            System.out.println("Item price: ");
-            double itemPrice = this.choice.nextDouble();
+        System.out.println("Item price: ");
+        double itemPrice = getPositiveDouble();
 
-            System.out.println("Item calories: ");
-            double itemCalories = this.choice.nextDouble();
+        System.out.println("Item calories: ");
+        double itemCalories = getPositiveDouble();
 
-            System.out.println("Item quantity to stock: ");
-            int itemStock = this.choice.nextInt();
+        System.out.println("Item quantity to stock: ");
+        int itemStock = getPositiveInteger();
 
-            if (itemStock <= 0) {
-                System.out.println("Invalid quantity.");
-                return;
-            }
-            Item item = new Item(itemName, itemPrice, itemCalories);
-            vendingMachine.restockSlot(choice, item, itemStock);
-            System.out.println("Item stocked.");
-
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Please enter numeric values for price, calories, and quantity.");
-            this.choice.nextLine();
+        if (itemStock <= 0) {
+            System.out.println("Invalid quantity.");
             return;
         }
+        Item item = new Item(itemName, itemPrice, itemCalories);
+        vendingMachine.restockSlot(choice, item, itemStock);
+        System.out.println("Item stocked.");
+
     }
 
     /**
@@ -235,6 +229,7 @@ public class RegularVendingMachineController {
     int choice = getInput(1, 8) - 1;
 
     Item item = vendingMachine.getItemTemplates()[choice];
+
 
     if (item == null) {
         System.out.println("Item does not exist.");
@@ -339,6 +334,31 @@ public class RegularVendingMachineController {
         System.out.println("Value must be greater than zero.");
     }
 }
+
+    /**
+     * Checks if valid positive double.
+     *
+     * @return checked double
+     */
+    private double getPositiveDouble() {
+
+        while (true) {
+
+            if (!choice.hasNextDouble()) {
+                System.out.println("Invalid input. Enter a whole number/decimal.");
+                choice.next();
+                continue;
+            }
+
+            double value = choice.nextDouble();
+
+            if (value > 0) {
+                return value;
+            }
+
+            System.out.println("Value must be greater than zero.");
+        }
+    }
 
     /**
      * Checks if valid denomination.
