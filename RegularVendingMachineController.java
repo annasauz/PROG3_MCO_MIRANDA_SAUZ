@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class RegularVendingMachineController {
@@ -197,27 +198,32 @@ public class RegularVendingMachineController {
         int choice = getInput(1,8)-1;
         this.choice.nextLine();
 
+        try {
+            System.out.println("Item name: ");
+            String itemName = this.choice.nextLine();
 
-        System.out.println("Item name: ");
-        String itemName = this.choice.nextLine();
+            System.out.println("Item price: ");
+            double itemPrice = this.choice.nextDouble();
 
-        System.out.println("Item price: ");
-        double itemPrice = this.choice.nextDouble();
+            System.out.println("Item calories: ");
+            double itemCalories = this.choice.nextDouble();
 
-        System.out.println("Item calories: ");
-        double itemCalories = this.choice.nextDouble();
+            System.out.println("Item quantity to stock: ");
+            int itemStock = this.choice.nextInt();
 
-        System.out.println("Item quantity to stock: ");
-        int itemStock = this.choice.nextInt();
+            if (itemStock <= 0) {
+                System.out.println("Invalid quantity.");
+                return;
+            }
+            Item item = new Item(itemName, itemPrice, itemCalories);
+            vendingMachine.restockSlot(choice, item, itemStock);
+            System.out.println("Item stocked.");
 
-        if (itemStock <= 0) {
-            System.out.println("Invalid quantity.");
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter numeric values for price, calories, and quantity.");
+            this.choice.nextLine();
             return;
         }
-        Item item = new Item(itemName, itemPrice, itemCalories);
-
-        vendingMachine.restockSlot(choice, item, itemStock);
-        System.out.println("Item stocked.");
     }
 
     /**
@@ -269,6 +275,9 @@ public class RegularVendingMachineController {
     }
 }
 
+    /**
+     * Allows user to replenish change inside the vending machine
+     */
     private void maintenanceAddChangeHandler(){
         System.out.println("Add change denomination to replenish (1,5,10,20,50,100,200,500,1000): ");
         int denomination = getMoneyDenomination();
