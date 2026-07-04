@@ -1,9 +1,15 @@
 public class TextInterface {
+    /**
+     * Clears screen
+     */
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * Displays main menu
+     */
     public void printCreateAndTest(){
         clearScreen();
         System.out.println("Main menu");
@@ -14,6 +20,9 @@ public class TextInterface {
 
     }
 
+    /**
+     * Displays test menu
+     */
     public void printTestMenu(){
         clearScreen();
         System.out.println("Test menu");
@@ -24,6 +33,9 @@ public class TextInterface {
 
     }
 
+    /**
+     * Displays vending features menu
+     */
     public void printVendingFeatures(){
         clearScreen();
         System.out.println("1. Display items");
@@ -31,10 +43,13 @@ public class TextInterface {
         System.out.println("3. Purchase item");
         System.out.println("4. Return change w/o purchase");
         System.out.println("5. Exit");
-        System.out.print("Vending Choice:");
+        System.out.print("Vending Choice: ");
 
     }
 
+    /**
+     * Displays maintenance features menu
+     */
     public void printMaintenanceFeatures() {
 
     clearScreen();

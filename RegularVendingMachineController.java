@@ -5,17 +5,25 @@ public class RegularVendingMachineController {
     private final RegularVendingMachine vendingMachine;
     private final Scanner choice;
 
-
     // Constructor
+    /**
+     * Creates a controller for a vending mahine
+     *
+     * @param textInterface shared instance of TextInterface
+     * @param vendingMachine instance of RegularVendingMachine
+     * @param scanner shared scanner
+     */
     public RegularVendingMachineController(TextInterface textInterface, RegularVendingMachine vendingMachine, Scanner scanner) {
         this.textInterface = textInterface;
         this.vendingMachine = vendingMachine;
         this.choice = scanner;
     }
 
-
     // Methods
-public void testingMenu() {
+    /**
+     * Prints test menu (vending and maintenance tests)
+     */
+    public void testingMenu() {
 
     boolean isRunningTest = true;
 
@@ -45,6 +53,9 @@ public void testingMenu() {
     }
 }
 
+    /**
+     * Prints and allows users to choose regular vending machine features
+     */
     private void vendingFeatures() {
 
     boolean isRunningVending = true;
@@ -82,6 +93,9 @@ public void testingMenu() {
     }
 }
 
+    /**
+     * Prints and allows users to maintain the vending machine
+     */
     private void maintenanceFeatures() {
 
     boolean isRunningMaintenance = true;
@@ -164,7 +178,6 @@ public void testingMenu() {
     /**
      * Handles the purchase of an item from the vending machine.
      */
-
     private void purchaseHandler() {
         System.out.println("\n--- Purchase Item ---");
         displayItemsHandler();
@@ -176,6 +189,9 @@ public void testingMenu() {
         System.out.println();
     }
 
+    /**
+     * Handles maintenance of stock of an item.
+     */
     private void maintenanceStockHandler(){
         System.out.println("Re-stock slot 1-8:");
         int choice = getInput(1,8)-1;
@@ -194,17 +210,20 @@ public void testingMenu() {
         System.out.println("Item quantity to stock: ");
         int itemStock = this.choice.nextInt();
 
-        Item item = new Item(itemName, itemPrice, itemCalories);
         if (itemStock <= 0) {
-        System.out.println("Invalid quantity.");
-        return;
+            System.out.println("Invalid quantity.");
+            return;
         }
+        Item item = new Item(itemName, itemPrice, itemCalories);
 
         vendingMachine.restockSlot(choice, item, itemStock);
         System.out.println("Item stocked.");
     }
 
-private void maintenancePriceHandler() {
+    /**
+     * Allows user to update price/s of items
+     */
+    private void maintenancePriceHandler() {
 
     System.out.println("Re-price slot 1-8: ");
     int choice = getInput(1, 8) - 1;
@@ -258,8 +277,6 @@ private void maintenancePriceHandler() {
         vendingMachine.replenishChangeReserves(denomination,quantity);
     }
 
-
-
     /**
      * Gets user input and validates it.
      *
@@ -267,7 +284,7 @@ private void maintenancePriceHandler() {
      * @param max largest user choice
      * @return the user choice if within range, otherwise returns 0
      */
-private int getInput(int min, int max) {
+    private int getInput(int min, int max) {
 
     while (true) {
 
@@ -283,13 +300,18 @@ private int getInput(int min, int max) {
             return input;
         }
 
-        System.out.println("Please enter a number between "
-                + min + " and " + max + ".");
+        System.out.print("Please enter a number between "
+                + min + " and " + max + ": ");
 
     }
 }
 
-private int getPositiveInteger() {
+    /**
+     * Checks if valid positive integer.
+     *
+     * @return checked integer
+     */
+    private int getPositiveInteger() {
 
     while (true) {
 
@@ -309,8 +331,12 @@ private int getPositiveInteger() {
     }
 }
 
-
-private int getMoneyDenomination() {
+    /**
+     * Checks if valid denomination.
+     *
+     * @return checked denomination
+     */
+    private int getMoneyDenomination() {
 
     while (true) {
 
