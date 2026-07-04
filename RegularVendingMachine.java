@@ -10,7 +10,6 @@ public class RegularVendingMachine {
     /**
      * Initializes a Regular Vending Machine.
      */
-
     public RegularVendingMachine() {
         this.slots = new SlotCompartment[8];
         this.itemTemplates = new Item[8];
