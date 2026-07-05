@@ -52,10 +52,19 @@ public class SlotCompartment {
         for (int i = 0; i < amount; i++) {
             items.add(item);
         }
-
-       setCurrentInSlotItems(amount);
+        this.currentInSlotItems += amount;
+        System.out.println("Stock added successfully.");
+       //setCurrentInSlotItems(amount);
     }
 }
+
+
+
+/** Clears all items currently in the slot */
+    public void clearItems() {
+        this.items.clear();
+        this.currentInSlotItems = 0;
+    }
 
     //Getters, setters
     public int getCurrentInSlotItems() {
