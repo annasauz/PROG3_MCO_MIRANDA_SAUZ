@@ -38,11 +38,11 @@ public class TextInterface {
      */
     public void printVendingFeatures(){
         clearScreen();
+        System.out.println("Vending Features");
+        System.out.println("------------------------------");
         System.out.println("1. Display items");
-        System.out.println("2. Add money");
-        System.out.println("3. Purchase item");
-        System.out.println("4. Return change w/o purchase");
-        System.out.println("5. Exit");
+        System.out.println("2. Purchase Item / Insert Money");
+        System.out.println("3. Exit");
         System.out.print("Vending Choice: ");
 
     }
@@ -97,7 +97,7 @@ public class TextInterface {
 
         if (items[i] != null) {
 
-            System.out.printf("%-6d %-15s ₱%-9.2f %-10.0f %-8d%n",
+            System.out.printf("%-6d %-15s PHP%-9.2f %-10.0f %-8d%n",
                     i + 1,
                     items[i].getName(),
                     items[i].getPrice(),

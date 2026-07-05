@@ -26,7 +26,7 @@ public class VendingMachineSoftwareLoop {
                     break;
                 case 2:
                     if (this.vendingMachine == null){
-                        System.out.println("Vending machine does not exist; create on.");
+                        System.out.println("Vending machine does not exist; create one.");
                         break;
                     }
                     RegularVendingMachineController testRegular = new RegularVendingMachineController(textInterface, vendingMachine, scanner);
