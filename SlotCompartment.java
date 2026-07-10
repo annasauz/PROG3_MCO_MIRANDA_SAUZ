@@ -28,7 +28,7 @@ public class SlotCompartment {
 
     Item dispensedItem = items.remove(0);
 
-    this.currentInSlotItems--;
+    adjustCurrentInSlotItems(-1);
 
     return dispensedItem;
 }
@@ -52,10 +52,18 @@ public class SlotCompartment {
         for (int i = 0; i < amount; i++) {
             items.add(item);
         }
-
-       setCurrentInSlotItems(amount);
+        adjustCurrentInSlotItems(amount);
+        System.out.println("Stock added successfully.");
     }
 }
+
+
+
+/** Clears all items currently in the slot */
+    public void clearItems() {
+        this.items.clear();
+        this.currentInSlotItems = 0;
+    }
 
     //Getters, setters
     public int getCurrentInSlotItems() {
@@ -70,7 +78,7 @@ public class SlotCompartment {
         return minimumInSlotItems;
     }
 
-    private void setCurrentInSlotItems(int addedAmount) {
+    public void adjustCurrentInSlotItems(int addedAmount) {
     this.currentInSlotItems += addedAmount;
     }
 }

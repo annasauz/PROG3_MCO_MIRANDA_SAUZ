@@ -7,13 +7,21 @@ public class VendingMachineSoftwareLoop {
     private Scanner scanner = new Scanner(System.in);
 
     // Constructor
-    VendingMachineSoftwareLoop(TextInterface textInterface) {
+    /**
+     * Creates a software loop for the program
+     *
+     * @param textInterface shared instance of TextInterface
+     */
+    public VendingMachineSoftwareLoop(TextInterface textInterface) {
         this.textInterface = textInterface;
         this.vendingMachine = null;
         this.isRunning = true;
     }
 
     // Methods
+    /**
+     * Runs the software loop
+     */
     public void run() {
         while (isRunning) {
             textInterface.printCreateAndTest();
@@ -26,7 +34,7 @@ public class VendingMachineSoftwareLoop {
                     break;
                 case 2:
                     if (this.vendingMachine == null){
-                        System.out.println("Vending machine does not exist; create on.");
+                        System.out.println("Vending machine does not exist; create one.");
                         break;
                     }
                     RegularVendingMachineController testRegular = new RegularVendingMachineController(textInterface, vendingMachine, scanner);
@@ -41,6 +49,4 @@ public class VendingMachineSoftwareLoop {
         }
         scanner.close();
     }
-
-    // Getters, setters
 }

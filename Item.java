@@ -49,7 +49,8 @@ public class Item {
      
     public void displayItemInfo() {
     System.out.println("Item: " + this.name);
-    System.out.println("Price: ₱" + this.price);
+    System.out.println("Price: PHP" + this.price);
     System.out.println("Calories: " + this.calories + " kcal");
 }
 }
+

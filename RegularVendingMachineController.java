@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class RegularVendingMachineController {
@@ -58,91 +57,73 @@ public class RegularVendingMachineController {
      * Prints and allows users to choose regular vending machine features
      */
     private void vendingFeatures() {
+        boolean isRunningVending = true;
+        while (isRunningVending) {
+            textInterface.printVendingFeatures();
+            int option = getInput(1, 3); // Reduced to 3 options due to consolidation
 
-    boolean isRunningVending = true;
-
-    while (isRunningVending) {
-
-        textInterface.printVendingFeatures();
-        int choice = getInput(1, 5);
-
-        switch (choice) {
-
-            case 1:
-                displayItemsHandler();
-                break;
-
-            case 2:
-                addMoneyHandler();
-                break;
-
-            case 3:
-                purchaseHandler();
-                break;
-
-            case 4:
-                vendingMachine.produceChangeWithoutPurchase();
-                break;
-
-            case 5:
-                isRunningVending = false;
-                break;
-
-            default:
-                System.out.println("Invalid user choice");
+            switch (option) {
+                case 1:
+                    displayItemsHandler();
+                    pauseScreen();
+                    break;
+                case 2:
+                    purchaseHandler(); // Add money & Return Change are now in here
+                    pauseScreen();
+                    break;
+                case 3:
+                    isRunningVending = false;
+                    break;
+                default:
+                    System.out.println("Invalid user choice");
+            }
         }
     }
-}
 
     /**
      * Prints and allows users to maintain the vending machine
      */
     private void maintenanceFeatures() {
+        boolean isRunningMaintenance = true;
+        while (isRunningMaintenance) {
+            textInterface.printMaintenanceFeatures();
+            int option = getInput(1, 6);
 
-    boolean isRunningMaintenance = true;
-
-    while (isRunningMaintenance) {
-
-        textInterface.printMaintenanceFeatures();
-        int choice = getInput(1, 6);
-
-        switch (choice) {
-
-            case 1:
-                maintenancePriceHandler();
-                break;
-
-            case 2:
-                maintenanceStockHandler();
-                break;
-
-            case 3:
-                maintenanceAddChangeHandler();
-                break;
-
-            case 4:
-                vendingMachine.collectMoney();
-                break;
-
-            case 5:
-                vendingMachine.printTransactionSummary();
-                break;
-
-            case 6:
-                isRunningMaintenance = false;
-                break;
-
-            default:
-                System.out.println("Invalid user choice");
+            switch (option) {
+                case 1:
+                    maintenancePriceHandler();
+                    pauseScreen();
+                    break;
+                case 2:
+                    maintenanceStockHandler();
+                    pauseScreen();
+                    break;
+                case 3:
+                    maintenanceAddChangeHandler();
+                    pauseScreen();
+                    break;
+                case 4:
+                    vendingMachine.collectMoney();
+                    pauseScreen();
+                    break;
+                case 5:
+                    vendingMachine.printTransactionSummary();
+                    pauseScreen();
+                    break;
+                case 6:
+                    isRunningMaintenance = false;
+                    break;
+                default:
+                    System.out.println("Invalid user choice");
+            }
         }
     }
-}
 
 
     /**
      * Displays the items available in the vending machine.
      */
-   private void displayItemsHandler() {
+    private void displayItemsHandler() {
 
     System.out.println();
 
@@ -160,17 +141,11 @@ public class RegularVendingMachineController {
 
     private void addMoneyHandler() {
         System.out.println("\n--- Add Money ---");
-
         System.out.print("Enter denomination of money (1,5,10,20,50,100,200,500,1000): ");
         int denomination = getMoneyDenomination();
 
         System.out.print("Enter quantity: ");
         int quantity = getPositiveInteger();
-
-        if (quantity <= 0) {
-            System.out.println("Quantity must be positive.");
-            return;
-        }
 
         vendingMachine.receivePayment(denomination, quantity);
         System.out.println();
@@ -180,95 +155,122 @@ public class RegularVendingMachineController {
      * Handles the purchase of an item from the vending machine.
      */
     private void purchaseHandler() {
-        System.out.println("\n--- Purchase Item ---");
-        displayItemsHandler();
+        boolean isPurchasing = true;
+        while (isPurchasing) {
+            System.out.println("\n--- Purchase Menu ---");
+            System.out.println("1. Insert Money");
+            System.out.println("2. Select Item to Buy");
+            System.out.println("3. Cancel and Return Change");
+            System.out.print("Choice: ");
+            int choice = getInput(1, 3);
 
-        System.out.print("Select slot (1-8): ");
-        int slotIndex = getInput(1, 8)-1;
+            switch (choice) {
+                case 1:
+                    addMoneyHandler();
+                    break;
+                case 2:
+                   displayItemsHandler();
+                    System.out.print("Select slot (1-8): ");
+                    int slotIndex = getInput(1, 8) - 1;
+                    boolean success = vendingMachine.purchaseItem(slotIndex);
+                    if (success) {
+                        isPurchasing = false; // Exit purchase loop after successful buy
+                    }
+                    break;
+                case 3:
+                    vendingMachine.produceChangeWithoutPurchase();
+                    isPurchasing = false;
+                    break;
+                                }
+                            }        
+                                }
 
-        boolean success = vendingMachine.purchaseItem(slotIndex);
-        System.out.println();
-    }
+       
 
     /**
-     * Handles maintenance of stock of an item.
+     * Handles maintenance of stock of an item. Can also replace an item
      */
-    private void maintenanceStockHandler(){
-        System.out.println("Re-stock slot 1-8:");
-        int choice = getInput(1,8)-1;
-        this.choice.nextLine();
+    private void maintenanceStockHandler() {
+        System.out.println("\n--- Restock Items ---");
+        displayItemsHandler(); // shows user slots
+    
+        System.out.print("Select slot to restock (1-8): ");
+        int slotChoice = getInput(1, 8) - 1;
+    
+        // Grab item template
+        Item existingItem = vendingMachine.getItemTemplates()[slotChoice];
+    
 
-        System.out.println("Item name: ");
+        boolean createNewItem = true;
+    
+        // if item exists
+        if (existingItem != null) {
+            System.out.println("\nCurrent item in this slot: " + existingItem.getName());
+            System.out.println("1. Add stock to this existing item");
+            System.out.println("2. Replace with a completely new item");
+            System.out.print("Choice: ");
+            int action = getInput(1, 2);
+        
+            if (action == 1) {
+                System.out.print("Enter quantity to add: ");
+                int quantity = getPositiveInteger();
+            
+                // Restock
+                vendingMachine.restockSlot(slotChoice, existingItem, quantity);
+                //System.out.println("Stock added successfully.");
+            
+                
+                createNewItem = false; 
+        }
+    }
+    
+    // If the slot is empty or replace item
+    if (createNewItem) {
+        System.out.println("\n--- Setting New Item ---");
+        this.choice.nextLine(); // clear buffer
+        
+        System.out.print("Enter NEW Item name: ");
         String itemName = this.choice.nextLine();
 
-        System.out.println("Item price: ");
+        System.out.print("Enter Item price: ");
         double itemPrice = getPositiveDouble();
 
-        System.out.println("Item calories: ");
+        System.out.print("Enter Item calories: ");
         double itemCalories = getPositiveDouble();
 
-        System.out.println("Item quantity to stock: ");
+        System.out.print("Enter Item quantity to stock: ");
         int itemStock = getPositiveInteger();
 
-        if (itemStock <= 0) {
-            System.out.println("Invalid quantity.");
-            return;
-        }
-        Item item = new Item(itemName, itemPrice, itemCalories);
-        vendingMachine.restockSlot(choice, item, itemStock);
-        System.out.println("Item stocked.");
-
+        Item newItem = new Item(itemName, itemPrice, itemCalories);
+        vendingMachine.clearSlot(slotChoice);
+        vendingMachine.restockSlot(slotChoice, newItem, itemStock);
+        System.out.println("New item set and stocked successfully.");
     }
+}
 
     /**
      * Allows user to update price/s of items
      */
     private void maintenancePriceHandler() {
+        displayItemsHandler();
+        System.out.println("Re-price slot 1-8: ");
+        int slotChoice = getInput(1, 8) - 1;
 
-    System.out.println("Re-price slot 1-8: ");
-    int choice = getInput(1, 8) - 1;
+        Item item = vendingMachine.getItemTemplates()[slotChoice];
 
-    Item item = vendingMachine.getItemTemplates()[choice];
-
-
-    if (item == null) {
-        System.out.println("Item does not exist.");
-    }
-    else {
-
-        boolean validPrice = false;
-        double itemPrice = 0;
-
-        while (!validPrice) {
-
-            System.out.println("Input new price: ");
-
-            if (this.choice.hasNextDouble()) {
-
-                itemPrice = this.choice.nextDouble();
-
-                if (itemPrice >= 0) {
-                    validPrice = true;
-                }
-                else {
-                    System.out.println("Price cannot be negative.");
-                }
-
-            }
-            else {
-                System.out.println("Invalid input. Please enter a numeric price.");
-                this.choice.next();
+        if (item == null) {
+            System.out.println("Item does not exist in this slot.");
+        } else {
+            System.out.print("Input new price: ");
+            double itemPrice = getPositiveDouble();
+            
+            if (item.setPrice(itemPrice)) {
+                System.out.println("Price updated successfully.");
+            } else {
+                System.out.println("Invalid price.");
             }
         }
-
-        if (item.setPrice(itemPrice)) {
-            System.out.println("Price updated.");
-        }
-        else {
-            System.out.println("Invalid price.");
-        }
     }
-}
 
     /**
      * Allows user to replenish change inside the vending machine
@@ -281,6 +283,28 @@ public class RegularVendingMachineController {
         vendingMachine.replenishChangeReserves(denomination,quantity);
     }
 
+
+    /**
+     * Pauses the program's execution to allow the user to read the console output.
+     * to prevent the main menu loop from instantly clearing the screen 
+     * before user has time to view their transaction or the item list.
+     */
+    private void pauseScreen() {
+        System.out.println("\nType '0' and press Enter to return to menu...");
+        boolean paused = true;
+        while (paused) {
+            String input = this.choice.nextLine().trim();
+           if (!input.isEmpty()) { // not empty line
+                if (input.equals("0")) {
+                    paused = false; 
+                } else {
+                    System.out.println("Invalid input. Please type '0' and press Enter to return...");
+                }
+        }
+    }                           }
+
+
+
     /**
      * Gets user input and validates it.
      *
@@ -289,26 +313,23 @@ public class RegularVendingMachineController {
      * @return the user choice if within range, otherwise returns 0
      */
     private int getInput(int min, int max) {
-
-    while (true) {
-
-        if (!choice.hasNextInt()) {
-            System.out.println("Invalid input. Please enter a number.");
-            choice.next();
-            continue;
+        boolean valid = false;
+        int input = 0;
+        while (!valid) {
+            if (!choice.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a number.");
+                choice.next(); // consume bad input
+            } else {
+                input = choice.nextInt();
+                if (input >= min && input <= max) {
+                    valid = true;
+                } else {
+                    System.out.print("Please enter a number between " + min + " and " + max + ": ");
+                }
+            }
         }
-
-        int input = choice.nextInt();
-
-        if (input >= min && input <= max) {
-            return input;
-        }
-
-        System.out.print("Please enter a number between "
-                + min + " and " + max + ": ");
-
+        return input;
     }
-}
 
     /**
      * Checks if valid positive integer.
@@ -316,24 +337,23 @@ public class RegularVendingMachineController {
      * @return checked integer
      */
     private int getPositiveInteger() {
-
-    while (true) {
-
-        if (!choice.hasNextInt()) {
-            System.out.println("Invalid input. Enter a whole number.");
-            choice.next();
-            continue;
+        boolean valid = false;
+        int value = 0;
+        while (!valid) {
+            if (!choice.hasNextInt()) {
+                System.out.println("Invalid input. Enter a whole number.");
+                choice.next();
+            } else {
+                value = choice.nextInt();
+                if (value > 0) {
+                    valid = true;
+                } else {
+                    System.out.println("Value must be greater than zero. Try again:");
+                }
+            }
         }
-
-        int value = choice.nextInt();
-
-        if (value > 0) {
-            return value;
-        }
-
-        System.out.println("Value must be greater than zero.");
+        return value;
     }
-}
 
     /**
      * Checks if valid positive double.
@@ -341,23 +361,24 @@ public class RegularVendingMachineController {
      * @return checked double
      */
     private double getPositiveDouble() {
-
-        while (true) {
-
+        boolean valid = false;
+        double value = 0;
+        while (!valid) {
             if (!choice.hasNextDouble()) {
-                System.out.println("Invalid input. Enter a whole number/decimal.");
+                System.out.println("Invalid input. Enter a valid number/decimal.");
                 choice.next();
-                continue;
-            }
-
-            double value = choice.nextDouble();
-
-            if (value > 0) {
-                return value;
-            }
-
-            System.out.println("Value must be greater than zero.");
-        }
+                                         } 
+            else {
+                value = choice.nextDouble();
+                if (value > 0)  {
+                    valid = true;
+                                } 
+                else {
+                    System.out.println("Value must be greater than zero. Try again:");
+                     }
+                }
+                      }
+        return value;
     }
 
     /**
@@ -366,32 +387,33 @@ public class RegularVendingMachineController {
      * @return checked denomination
      */
     private int getMoneyDenomination() {
-
-    while (true) {
-
-        if (!choice.hasNextInt()) {
-            System.out.println("Invalid input.");
-            choice.next();
-            continue;
+        boolean valid = false;
+        int denomination = 0;
+        while (!valid) {
+            if (!choice.hasNextInt()) {
+                System.out.println("Invalid input. Please try again.");
+                choice.next();
+            } else {
+                denomination = choice.nextInt();
+                switch (denomination) {
+                    case 1:
+                    case 5: 
+                    case 10: 
+                    case 20: 
+                    case 50: 
+                    case 100: 
+                    case 200: 
+                    case 500: 
+                    case 1000:
+                        valid = true;
+                        break;
+                    default:
+                        System.out.println("Invalid denomination. Please try again: ");
+                        break;
+                }
+            }
         }
-
-        int denomination = choice.nextInt();
-
-        switch (denomination) {
-            case 1:
-            case 5:
-            case 10:
-            case 20:
-            case 50:
-            case 100:
-            case 200:
-            case 500:
-            case 1000:
-                return denomination;
-        }
-
-        System.out.println("Invalid denomination.");
+        return denomination;
     }
-}
 
 }
