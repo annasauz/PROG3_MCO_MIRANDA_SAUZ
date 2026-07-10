@@ -40,14 +40,14 @@ public class RegularVendingMachine {
      * Postcondition: Each slot is populated with a default item and a stock of 10.
      */
     private void initializeDefaultItems() {
-        restockSlot(0, new Item("Coke", 25.00, 140), 10);
-        restockSlot(1, new Item("Sprite", 25.00, 130), 10);
-        restockSlot(2, new Item("Water", 20.00, 0), 10);
-        restockSlot(3, new Item("Piattos", 18.00, 160), 10);
-        restockSlot(4, new Item("Nova", 20.00, 170), 10);
-        restockSlot(5, new Item("SkyFlakes", 15.00, 120), 10);
-        restockSlot(6, new Item("Chocolate", 30.00, 210), 10);
-        restockSlot(7, new Item("Cookies", 22.00, 180), 10);
+        restockSlot(0, new Item("Green Tea", 30.00, 2), 10);
+        restockSlot(1, new Item("Black Tea", 38.00, 2), 10);
+        restockSlot(2, new Item("Oatmilk", 50.00, 120), 10);
+        restockSlot(3, new Item("Whole Milk", 50.00, 150), 10);
+        restockSlot(4, new Item("Honey", 20.00, 65), 10);
+        restockSlot(5, new Item("Matcha Powder", 30.00, 5), 10);
+        restockSlot(6, new Item("Oreo", 20.00, 160), 10);
+        restockSlot(7, new Item("Pudding", 25.00, 115), 10);
     }
 
     /**
