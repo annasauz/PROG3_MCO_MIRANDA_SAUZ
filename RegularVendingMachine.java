@@ -179,6 +179,14 @@ public class RegularVendingMachine {
     //            MAINTENANCE FEATURES
     // ==========================================
 
+/**
+ * Restocks a slot with an item and captures the baseline starting capacity.
+ */
+public void restockSlot(int slotIndex, Item item, int amount) {
+    if (slotIndex >= 0 && slotIndex < this.slots.length) {
+
+        // Assign the item only the first time the slot is stocked.
+        if (this.itemTemplates[slotIndex] == null) {
     /**
      * Restocks a slot with an item and captures the baseline starting capacity.
      * Precondition: The slotIndex must be within bounds, and amount should be greater than zero.
@@ -190,13 +198,20 @@ public class RegularVendingMachine {
     public void restockSlot(int slotIndex, Item item, int amount) {
         if (slotIndex >= 0 && slotIndex < this.slots.length) {
             this.itemTemplates[slotIndex] = item;
-            this.slots[slotIndex].addInventory(item, amount);
-            
-            this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
-            this.totalSold[slotIndex] = 0; 
         }
-    }
 
+        // Prevent changing the item assigned to the slot.
+        if (this.itemTemplates[slotIndex].getName().equals(item.getName())) {
+
+            this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
+
+            this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
+            this.totalSold[slotIndex] = 0;
+
+        } else {
+            System.out.println("This slot is permanently assigned to "
+                    + this.itemTemplates[slotIndex].getName()
+                    + ". Only this item may be restocked.");
     /**
      * Clears all items from a specific slot. 
      * Precondition: The slotIndex must be within bounds.
@@ -208,6 +223,7 @@ public class RegularVendingMachine {
             this.slots[slotIndex].clearItems();
         }
     }
+}
 
     /**
      * Replenishes physical coin/bill counts for change reserves.
