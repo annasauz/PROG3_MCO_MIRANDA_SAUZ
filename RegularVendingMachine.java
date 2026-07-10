@@ -322,7 +322,8 @@ public class RegularVendingMachine {
         }
 
         // If remaining change is exactly 0, it means it can be correctly broken down
-        if (remainingChange == 0) {
+        //math abs and less than 0.01 was used to account for floating point error and turning negative to positive change
+        if (Math.abs(remainingChange) < 0.01) {
             return true;
         } else {
             return false;
