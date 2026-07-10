@@ -186,65 +186,30 @@ public class RegularVendingMachineController {
     }
 
     /**
-     * Handles maintenance of stock of an item. Can also replace an item
+     * Handles maintenance of stock of an item.
      */
     private void maintenanceStockHandler() {
         System.out.println("\n--- Restock Items ---");
-        displayItemsHandler(); // shows user slots
-    
+        displayItemsHandler();
+
         System.out.print("Select slot to restock (1-8): ");
         int slotChoice = getInput(1, 8) - 1;
-    
-        // Grab item template
+
         Item existingItem = vendingMachine.getItemTemplates()[slotChoice];
-    
 
-        boolean createNewItem = true;
-    
-        // if item exists
         if (existingItem != null) {
-            System.out.println("\nCurrent item in this slot: " + existingItem.getName());
-            System.out.println("1. Add stock to this existing item");
-            System.out.println("2. Replace with a completely new item");
-            System.out.print("Choice: ");
-            int action = getInput(1, 2);
-        
-            if (action == 1) {
-                System.out.print("Enter quantity to add: ");
-                int quantity = getPositiveInteger();
-            
-                // Restock
-                vendingMachine.restockSlot(slotChoice, existingItem, quantity);
-                //System.out.println("Stock added successfully.");
-            
-                
-                createNewItem = false; 
-                }
-            }
-    
-    // If the slot is empty or replace item
-    if (createNewItem) {
-        System.out.println("\n--- Setting New Item ---");
-        this.choice.nextLine(); // clear buffer
-        
-        System.out.print("Enter NEW Item name: ");
-        String itemName = this.choice.nextLine();
 
-        System.out.print("Enter Item price: ");
-        double itemPrice = getPositiveDouble();
+            System.out.println("\nCurrent item: " + existingItem.getName());
 
-        System.out.print("Enter Item calories: ");
-        double itemCalories = getPositiveDouble();
+            System.out.print("Enter quantity to add: ");
+            int quantity = getPositiveInteger();
 
-        System.out.print("Enter Item quantity to stock: ");
-        int itemStock = getPositiveInteger();
+            vendingMachine.restockSlot(slotChoice, existingItem, quantity);
 
-        Item newItem = new Item(itemName, itemPrice, itemCalories);
-        vendingMachine.clearSlot(slotChoice);
-        vendingMachine.restockSlot(slotChoice, newItem, itemStock);
-        System.out.println("New item set and stocked successfully.");
+        } else {
+            System.out.println("Unable to restock. The selected slot has not been initialized.");
         }
-    }
+    }    
 
     /**
      * Allows user to update price/s of items
