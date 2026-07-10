@@ -141,6 +141,7 @@ public class RegularVendingMachineController {
 
     private void addMoneyHandler() {
         System.out.println("\n--- Add Money ---");
+        displayItemsHandler();
         System.out.print("Enter denomination of money (1,5,10,20,50,100,200,500,1000): ");
         int denomination = getMoneyDenomination();
 
