@@ -17,14 +17,29 @@ public class Item {
     }
 
     // Getters
+    /**
+     * Returns the name of the item.
+     *
+     * @return The name of the item
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the price of the item.
+     *
+     * @return The price of the item
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * Returns the calories of the item.
+     *
+     * @return The calories of the item
+     */
     public double getCalories() {
         return calories;
     }
@@ -43,10 +58,10 @@ public class Item {
         }
         return false;
     }
-
     
-    //Displays item information. ** can be improved later on
-     
+    /**
+     * Displays the item information.
+     */
     public void displayItemInfo() {
     System.out.println("Item: " + this.name);
     System.out.println("Price: PHP" + this.price);

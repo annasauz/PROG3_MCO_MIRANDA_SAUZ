@@ -133,7 +133,7 @@ public class RegularVendingMachineController {
 
     System.out.println();
 
-}
+    }
 
     /**
      * Handles the addition of money to the vending machine.
@@ -181,11 +181,9 @@ public class RegularVendingMachineController {
                     vendingMachine.produceChangeWithoutPurchase();
                     isPurchasing = false;
                     break;
-                                }
-                            }        
-                                }
-
-       
+            }
+        }
+    }
 
     /**
      * Handles maintenance of stock of an item. Can also replace an item
@@ -221,8 +219,8 @@ public class RegularVendingMachineController {
             
                 
                 createNewItem = false; 
-        }
-    }
+                }
+            }
     
     // If the slot is empty or replace item
     if (createNewItem) {
@@ -245,8 +243,8 @@ public class RegularVendingMachineController {
         vendingMachine.clearSlot(slotChoice);
         vendingMachine.restockSlot(slotChoice, newItem, itemStock);
         System.out.println("New item set and stocked successfully.");
+        }
     }
-}
 
     /**
      * Allows user to update price/s of items
@@ -300,8 +298,9 @@ public class RegularVendingMachineController {
                 } else {
                     System.out.println("Invalid input. Please type '0' and press Enter to return...");
                 }
+            }
         }
-    }                           }
+    }
 
 
 

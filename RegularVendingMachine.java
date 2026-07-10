@@ -350,10 +350,16 @@ public class RegularVendingMachine {
         }
     }
 
+    /**
+     * Returns the item templates for external inspection.
+     */
     public Item[] getItemTemplates() {
         return itemTemplates;
     }
 
+    /**
+     * Returns the slot compartments for external inspection.
+     */
     public SlotCompartment[] getSlots() {
         return slots;
     }

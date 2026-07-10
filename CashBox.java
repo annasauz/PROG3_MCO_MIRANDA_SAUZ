@@ -13,6 +13,7 @@ public class CashBox {
 
     /**
      * Constructor for the CashBox.
+     *
      * Initializes the amounts array to properly match the size of the available denominations.
      */
     public CashBox() {
@@ -21,7 +22,8 @@ public class CashBox {
 
     /**
      * Adds a specific quantity of a certain denomination to the cash box reserves.
-     * * @param denomination The face value of the bill or coin (e.g., 50, 100, 500)
+     *
+     * @param denomination The face value of the bill or coin (e.g., 50, 100, 500)
      * @param quantity The number of bills or coins to add
      */
     public void addToCashBox(int denomination, int quantity) {
@@ -45,7 +47,8 @@ public class CashBox {
 
     /**
      * Calculates the total monetary value currently stored inside the cash box.
-     * * @return The total amount of money
+     *
+     * @return The total amount of money
      */
     public double getMoneyAmount() {
         double totalAmount = 0.0;
@@ -60,7 +63,8 @@ public class CashBox {
 
     /**
      * Retrieves the array containing the valid monetary denominations.
-     * * @return Array of valid denominations
+     *
+     * @return Array of valid denominations
      */
     public int[] getDenominations() {
         return this.denominations;
@@ -68,7 +72,8 @@ public class CashBox {
 
     /**
      * Retrieves the array containing the quantity of each denomination currently in the machine.
-     * * @return Array of denomination quantities
+     *
+     * @return Array of denomination quantities
      */
     public int[] getDenominationsAmount() {
         return this.denominationsAmount;
