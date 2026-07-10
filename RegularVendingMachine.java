@@ -104,7 +104,7 @@ public class RegularVendingMachine {
 
     /**
      * Handles the purchase of an item from a selected slot. 
-     * *TRY INPUTTING CHARACTERS AND CHECK FOR ERROR/MAKE SURE TO ENFORCE THE CODE FOR THAT LATER (as invalid selection)
+    
      */
     public boolean purchaseItem(int slotIndex) {
         // Enforce boundary checks
