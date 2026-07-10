@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class TextInterface {
     /**
      * Clears screen
@@ -16,7 +18,6 @@ public class TextInterface {
         System.out.println("1. Create vending machine");
         System.out.println("2. Test vending machine");
         System.out.println("3. Exit");
-        System.out.print("Menu Choice: ");
 
     }
 
@@ -119,4 +120,15 @@ public class TextInterface {
 
     System.out.println("==============================================================");
 }
+
+    /**
+    * Pauses the program until the user presses Enter.
+    *
+    * @param scanner shared Scanner object
+    */
+    public void pressEnterToContinue(Scanner scanner) {
+        System.out.print("\nPress Enter to continue...");
+        scanner.nextLine();
+        scanner.nextLine();
+    }
 }
