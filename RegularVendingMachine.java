@@ -1,3 +1,6 @@
+/**
+ * Represents a Regular Vending Machine that handles items, inventory, transactions, and change dispensing.
+ */
 public class RegularVendingMachine {
     private SlotCompartment[] slots;
     private Item[] itemTemplates; 
@@ -8,6 +11,8 @@ public class RegularVendingMachine {
 
     /**
      * Initializes a Regular Vending Machine.
+     * Precondition: None.
+     * Postcondition: Slots, inventory arrays, and cash boxes are instantiated and populated with default data.
      */
     public RegularVendingMachine() {
         this.slots = new SlotCompartment[8];
@@ -31,6 +36,8 @@ public class RegularVendingMachine {
 
     /**
      * Loads the vending machine with default items.
+     * Precondition: Slot arrays must be initialized.
+     * Postcondition: Each slot is populated with a default item and a stock of 10.
      */
     private void initializeDefaultItems() {
         restockSlot(0, new Item("Coke", 25.00, 140), 10);
@@ -45,6 +52,8 @@ public class RegularVendingMachine {
 
     /**
      * Loads the machine with initial money for producing change.
+     * Precondition: Internal cash box must be initialized.
+     * Postcondition: The machine has a starting reserve of various Philippine Peso denominations.
      */
     private void initializeCashBox() {
         replenishChangeReserves(1, 20);
@@ -63,8 +72,11 @@ public class RegularVendingMachine {
     // ==========================================
 
     /**
-     * Receives payment from the user in different denoms.
-     * This directly updates the temporary transaction pool.
+     * Receives payment from the user in different denominations and updates the temporary transaction pool.
+     * Precondition: Denomination should be valid and count should be positive.
+     * Postcondition: The transactionCashBox's money amount increases by the inserted denomination * count.
+     * * @param denomination The face value of the inserted bill/coin.
+     * @param count The quantity of the inserted bill/coin.
      */
     public void receivePayment(int denomination, int count) {
         this.transactionCashBox.addToCashBox(denomination, count);
@@ -74,8 +86,9 @@ public class RegularVendingMachine {
 
     /**
      * User proceeds directly to producing change, skipping item selection.
-     * Dispenses the exact physical denoms that the user fed into the machine.
-     * 
+     * Dispenses the exact physical denominations that the user fed into the machine.
+     * Precondition: None.
+     * Postcondition: The transactionCashBox is completely emptied and credits return to zero.
      */
     public void produceChangeWithoutPurchase() {
         double amountToReturn = this.transactionCashBox.getMoneyAmount();
@@ -104,7 +117,10 @@ public class RegularVendingMachine {
 
     /**
      * Handles the purchase of an item from a selected slot. 
-    
+     * Precondition: The slotIndex must be within bounds, the item must be in stock, and the user must have inserted sufficient funds.
+     * Postcondition: If successful, an item is dispensed, change is calculated/returned, transaction money is merged to internal reserves, and inventory/sales are updated.
+     * * @param slotIndex The index of the slot the user wishes to purchase from.
+     * @return true if the purchase and dispensing were successful, false otherwise.
      */
     public boolean purchaseItem(int slotIndex) {
         // Enforce boundary checks
@@ -132,7 +148,7 @@ public class RegularVendingMachine {
         }
 
         double changeDue = userInserted - itemPrice;
-      
+        
         if (changeDue > 0) {
             boolean changeAvailable = this.canMakeChange(changeDue);
             if (!changeAvailable) {
@@ -160,7 +176,7 @@ public class RegularVendingMachine {
     }
 
     // ==========================================
-    //           MAINTENANCE FEATURES
+    //            MAINTENANCE FEATURES
     // ==========================================
 
 /**
@@ -171,6 +187,16 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
         // Assign the item only the first time the slot is stocked.
         if (this.itemTemplates[slotIndex] == null) {
+    /**
+     * Restocks a slot with an item and captures the baseline starting capacity.
+     * Precondition: The slotIndex must be within bounds, and amount should be greater than zero.
+     * Postcondition: The targeted slot contains the new stock, starting inventory is recorded, and total sold resets to 0.
+     * * @param slotIndex The index of the slot to restock.
+     * @param item The Item object to be placed inside the slot.
+     * @param amount The quantity of items to add.
+     */
+    public void restockSlot(int slotIndex, Item item, int amount) {
+        if (slotIndex >= 0 && slotIndex < this.slots.length) {
             this.itemTemplates[slotIndex] = item;
         }
 
@@ -186,12 +212,25 @@ public void restockSlot(int slotIndex, Item item, int amount) {
             System.out.println("This slot is permanently assigned to "
                     + this.itemTemplates[slotIndex].getName()
                     + ". Only this item may be restocked.");
+    /**
+     * Clears all items from a specific slot. 
+     * Precondition: The slotIndex must be within bounds.
+     * Postcondition: The targeted slot becomes completely empty (0 items).
+     * * @param slotIndex The index of the slot to clear.
+     */
+    public void clearSlot(int slotIndex) {
+        if (slotIndex >= 0 && slotIndex < this.slots.length) {
+            this.slots[slotIndex].clearItems();
         }
     }
 }
 
     /**
-     * Replenishes physical coin/bill counts for change.
+     * Replenishes physical coin/bill counts for change reserves.
+     * Precondition: Denomination must be a valid face value and amount must be positive.
+     * Postcondition: The internalCashBox increments its stock of the specified denomination.
+     * * @param denomination The face value of the bill/coin.
+     * @param amount The quantity to add to the reserves.
      */
     public void replenishChangeReserves(int denomination, int amount) {
         this.internalCashBox.addToCashBox(denomination, amount);
@@ -200,6 +239,8 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
     /**
      * Formats and displays starting/ending inventory counts along with revenue values.
+     * Precondition: None.
+     * Postcondition: A full formatted transaction summary is printed to the console.
      */
     public void printTransactionSummary() {
         System.out.println("\n=============================================");
@@ -241,7 +282,8 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
     /**
      * Collects all money currently stored inside the machine and resets sales trackers.
-     * inventory reset included
+     * Precondition: None.
+     * Postcondition: Internal cash box amounts become 0, sales trackers are reset to 0, and starting inventory updates to the current amount.
      */
     public void collectMoney() {
         double collectedAmount = internalCashBox.getMoneyAmount();
@@ -267,7 +309,11 @@ public void restockSlot(int slotIndex, Item item, int amount) {
     // ==========================================
 
     /**
-     * Verifies if change calculation can be fully satisfied by walking down denoms counts.
+     * Verifies if change calculation can be fully satisfied by walking down denomination counts.
+     * Precondition: changeDue must be a positive number.
+     * Postcondition: Returns a boolean indicating if the machine has exact physical denominations to make up the changeDue.
+     * * @param changeDue The amount of change required to be returned to the user.
+     * @return true if the machine has sufficient exact change, false otherwise.
      */
     private boolean canMakeChange(double changeDue) {
         int[] denoms = this.internalCashBox.getDenominations();
@@ -292,7 +338,8 @@ public void restockSlot(int slotIndex, Item item, int amount) {
         }
 
         // If remaining change is exactly 0, it means it can be correctly broken down
-        if (remainingChange == 0) {
+        //math abs and less than 0.01 was used to account for floating point error and turning negative to positive change
+        if (Math.abs(remainingChange) < 0.01) {
             return true;
         } else {
             return false;
@@ -300,7 +347,10 @@ public void restockSlot(int slotIndex, Item item, int amount) {
     }
 
     /**
-     * Dispenses change value
+     * Dispenses change value by physically reducing the internal cash reserves.
+     * Precondition: canMakeChange(changeDue) must evaluate to true prior to calling this method.
+     * Postcondition: Internal reserves are decremented by the exact denominations used to make change.
+     * * @param changeDue The amount of change required to be returned to the user.
      */
     private void dispenseChange(double changeDue) {
         int[] denoms = this.internalCashBox.getDenominations();
@@ -334,6 +384,8 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
     /**
      * Merges current transaction balances directly into the internal change box.
+     * Precondition: A successful purchase must have just occurred.
+     * Postcondition: Temporary transaction funds are absorbed into the internalCashBox and the transactionCashBox is cleared.
      */
     private void mergeTransactionToInternal() {
         int[] userDenoms = this.transactionCashBox.getDenominations();
@@ -347,6 +399,8 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
     /**
      * Clears user transaction credit arrays.
+     * Precondition: None.
+     * Postcondition: All denomination quantities inside the transactionCashBox are set to 0.
      */
     private void clearTransactionCashBox() {
         int[] amounts = this.transactionCashBox.getDenominationsAmount();
@@ -357,6 +411,9 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
     /**
      * Returns the item templates for external inspection.
+     * Precondition: None.
+     * Postcondition: Returns the array of item templates currently tracked by the machine.
+     * * @return Array of Item objects representing the templates.
      */
     public Item[] getItemTemplates() {
         return itemTemplates;
@@ -364,6 +421,9 @@ public void restockSlot(int slotIndex, Item item, int amount) {
 
     /**
      * Returns the slot compartments for external inspection.
+     * Precondition: None.
+     * Postcondition: Returns the array of slot compartments currently inside the machine.
+     * * @return Array of SlotCompartment objects.
      */
     public SlotCompartment[] getSlots() {
         return slots;
