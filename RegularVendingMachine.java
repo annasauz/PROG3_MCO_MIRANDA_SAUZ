@@ -163,27 +163,32 @@ public class RegularVendingMachine {
     //           MAINTENANCE FEATURES
     // ==========================================
 
-    /**
-     * Restocks a slot with an item and captures the baseline starting capacity.
-     */
-    public void restockSlot(int slotIndex, Item item, int amount) {
-        if (slotIndex >= 0 && slotIndex < this.slots.length) {
-            this.itemTemplates[slotIndex] = item;
-            this.slots[slotIndex].addInventory(item, amount);
-            
-            this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
-            this.totalSold[slotIndex] = 0; 
-        }
-    }
+/**
+ * Restocks a slot with an item and captures the baseline starting capacity.
+ */
+public void restockSlot(int slotIndex, Item item, int amount) {
+    if (slotIndex >= 0 && slotIndex < this.slots.length) {
 
-    /**
-     * Clears all items from a specific slot. 
-     */
-    public void clearSlot(int slotIndex) {
-        if (slotIndex >= 0 && slotIndex < this.slots.length) {
-            this.slots[slotIndex].clearItems();
+        // Assign the item only the first time the slot is stocked.
+        if (this.itemTemplates[slotIndex] == null) {
+            this.itemTemplates[slotIndex] = item;
+        }
+
+        // Prevent changing the item assigned to the slot.
+        if (this.itemTemplates[slotIndex].getName().equals(item.getName())) {
+
+            this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
+
+            this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
+            this.totalSold[slotIndex] = 0;
+
+        } else {
+            System.out.println("This slot is permanently assigned to "
+                    + this.itemTemplates[slotIndex].getName()
+                    + ". Only this item may be restocked.");
         }
     }
+}
 
     /**
      * Replenishes physical coin/bill counts for change.
