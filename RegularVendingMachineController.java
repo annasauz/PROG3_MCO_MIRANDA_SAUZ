@@ -29,9 +29,8 @@ public class RegularVendingMachineController {
 
     while (isRunningTest) {
 
-        textInterface.printTestMenu();
 
-        int choice = getInput(1, 3);
+        int choice = getInput("Menu Choice: ", 1, 3);
 
         switch (choice) {
 
@@ -59,8 +58,8 @@ public class RegularVendingMachineController {
     private void vendingFeatures() {
         boolean isRunningVending = true;
         while (isRunningVending) {
-            textInterface.printVendingFeatures();
-            int option = getInput(1, 3); // Reduced to 3 options due to consolidation
+           
+            int option = getInput("Menu Choice: ", 1, 3);
 
             switch (option) {
                 case 1:
@@ -86,8 +85,8 @@ public class RegularVendingMachineController {
     private void maintenanceFeatures() {
         boolean isRunningMaintenance = true;
         while (isRunningMaintenance) {
-            textInterface.printMaintenanceFeatures();
-            int option = getInput(1, 6);
+           
+            int option = getInput("Maintenance Choice: ", 1, 6);
 
             switch (option) {
                 case 1:
@@ -162,21 +161,22 @@ public class RegularVendingMachineController {
             System.out.println("1. Insert Money");
             System.out.println("2. Select Item to Buy");
             System.out.println("3. Cancel and Return Change");
-            System.out.print("Choice: ");
-            int choice = getInput(1, 3);
+        
+            int choice = getInput("Choice: ", 1, 3);
 
             switch (choice) {
                 case 1:
                     addMoneyHandler();
                     break;
                 case 2:
-                   displayItemsHandler();
-                    System.out.print("Select slot (1-8): ");
-                    int slotIndex = getInput(1, 8) - 1;
-                    boolean success = vendingMachine.purchaseItem(slotIndex);
+                    displayItemsHandler();
+
+                    int slotChoice = getInput("Select item (1-8): ", 1, 8) - 1;
+                    boolean success = vendingMachine.purchaseItem(slotChoice);
+
                     if (success) {
-                        isPurchasing = false; // Exit purchase loop after successful buy
-                    }
+                        isPurchasing = false; // Exit purchase loop after successful purchase
+                        }
                     break;
                 case 3:
                     vendingMachine.produceChangeWithoutPurchase();
@@ -193,8 +193,7 @@ public class RegularVendingMachineController {
         System.out.println("\n--- Restock Items ---");
         displayItemsHandler();
 
-        System.out.print("Select slot to restock (1-8): ");
-        int slotChoice = getInput(1, 8) - 1;
+        int slotChoice = getInput("Select slot to restock (1-8): ", 1, 8) - 1;
 
         Item existingItem = vendingMachine.getItemTemplates()[slotChoice];
 
@@ -217,8 +216,8 @@ public class RegularVendingMachineController {
      */
     private void maintenancePriceHandler() {
         displayItemsHandler();
-        System.out.println("Re-price slot 1-8: ");
-        int slotChoice = getInput(1, 8) - 1;
+
+        int slotChoice = getInput("Re-price slot (1-8): ", 1, 8) - 1;
 
         Item item = vendingMachine.getItemTemplates()[slotChoice];
 
@@ -277,25 +276,28 @@ public class RegularVendingMachineController {
      * @param max largest user choice
      * @return the user choice if within range, otherwise returns 0
      */
-    private int getInput(int min, int max) {
-        boolean valid = false;
-        int input = 0;
-        while (!valid) {
-            if (!choice.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a number.");
-                choice.next(); // consume bad input
+private int getInput(String prompt, int min, int max) {
+    boolean valid = false;
+    int input = 0;
+
+    while (!valid) {
+        if (!choice.hasNextInt()) {
+            System.out.print("Invalid input. Please enter a whole number");
+            choice.next();
+        } else {
+            input = choice.nextInt();
+
+            if (input >= min && input <= max) {
+                valid = true;
             } else {
-                input = choice.nextInt();
-                if (input >= min && input <= max) {
-                    valid = true;
-                } else {
-                    System.out.print("Please enter a number between " + min + " and " + max + ": ");
-                }
+                System.out.print("Input out of range. Please enter a number between "
+                        + min + " and " + max + ".\n" + prompt);
             }
         }
-        return input;
     }
 
+    return input;
+}
     /**
      * Checks if valid positive integer.
      *
