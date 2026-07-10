@@ -179,14 +179,6 @@ public class RegularVendingMachine {
     //            MAINTENANCE FEATURES
     // ==========================================
 
-/**
- * Restocks a slot with an item and captures the baseline starting capacity.
- */
-public void restockSlot(int slotIndex, Item item, int amount) {
-    if (slotIndex >= 0 && slotIndex < this.slots.length) {
-
-        // Assign the item only the first time the slot is stocked.
-        if (this.itemTemplates[slotIndex] == null) {
     /**
      * Restocks a slot with an item and captures the baseline starting capacity.
      * Precondition: The slotIndex must be within bounds, and amount should be greater than zero.
@@ -212,18 +204,9 @@ public void restockSlot(int slotIndex, Item item, int amount) {
             System.out.println("This slot is permanently assigned to "
                     + this.itemTemplates[slotIndex].getName()
                     + ". Only this item may be restocked.");
-    /**
-     * Clears all items from a specific slot. 
-     * Precondition: The slotIndex must be within bounds.
-     * Postcondition: The targeted slot becomes completely empty (0 items).
-     * * @param slotIndex The index of the slot to clear.
-     */
-    public void clearSlot(int slotIndex) {
-        if (slotIndex >= 0 && slotIndex < this.slots.length) {
-            this.slots[slotIndex].clearItems();
         }
-    }
-}
+    }    
+
 
     /**
      * Replenishes physical coin/bill counts for change reserves.
