@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Represents a compartment in a vending machine that holds a specific type of item.
+ */
 public class SlotCompartment {
     private final int maximumInSlotItems;
     private final int minimumInSlotItems = 10;
