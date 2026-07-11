@@ -1,8 +1,5 @@
 import java.util.Scanner;
 
-/**
- * Provides methods to display various menus and prompts to the user.
- */
 public class TextInterface {
     /**
      * Clears screen

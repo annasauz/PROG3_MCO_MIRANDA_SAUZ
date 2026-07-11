@@ -1,5 +1,5 @@
 /**
- * Represents a Regular Vending Machine that handles items, inventory, transactions, and change dispensing
+ * Represents a Regular Vending Machine that handles items, inventory, transactions, and change dispensing.
  */
 public class RegularVendingMachine {
     private SlotCompartment[] slots;

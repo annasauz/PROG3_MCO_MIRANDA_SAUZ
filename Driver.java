@@ -1,7 +1,3 @@
-/**
- * Entry point / main class
- */
-
 public class Driver {
     public static void main(String[] args) {
         TextInterface textInterface = new TextInterface();
