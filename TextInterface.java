@@ -48,6 +48,14 @@ public class TextInterface {
 
     }
 
+    public void purchaseMenu() {
+        System.out.println("\n--- Purchase Menu ---");
+        System.out.println("1. Insert Money");
+        System.out.println("2. Select Item to Buy");
+        System.out.println("3. Cancel and Return Change");
+        System.out.print("Purchase Choice: ");
+    }
+
     /**
      * Displays maintenance features menu
      */

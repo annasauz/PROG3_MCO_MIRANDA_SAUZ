@@ -5,11 +5,9 @@ import java.util.Arrays;
  * Manages the valid money denominations and tracks the quantity of each currently in the machine.
  */
 public class CashBox {
-    // valid Philippine Peso denominations
     private final int[] denominations = new int[]{1, 5, 10, 20, 50, 100, 200, 500, 1000};
     
-    // tracks the physical quantity/count of each denomination in the machine
-    private final int[] denominationsAmount;
+    private int[] denominationsAmount;
 
     /**
      * Constructor for the CashBox.

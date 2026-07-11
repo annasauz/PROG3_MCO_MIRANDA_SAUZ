@@ -41,6 +41,7 @@ public class VendingMachineSoftwareLoop {
                     }
                     RegularVendingMachineController testRegular = new RegularVendingMachineController(textInterface, vendingMachine, scanner);
                     testRegular.testingMenu();
+                    textInterface.pressEnterToContinue(scanner);
                     break;
                 case 3:
                     this.isRunning = false;
