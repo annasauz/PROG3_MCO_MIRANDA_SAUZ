@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/**
+ * Controller class for the RegularVendingMachine.
+ */
 public class RegularVendingMachineController {
     private final TextInterface textInterface;
     private final RegularVendingMachine vendingMachine;
