@@ -226,22 +226,24 @@ public class RegularVendingMachineController {
      */
     private void maintenancePriceHandler() {
         displayItemsHandler();
-
         System.out.print("Select an item to update (1-8): ");
-        int slotChoice = getInput(1, 8) - 1;
+        int userInput = getInput(1, 8); 
+        if (userInput <= 0) {
+            System.out.println("Invalid slot choice. Returning to menu.");
+        } else {           
+            int slotChoice = userInput - 1; 
+            Item item = vendingMachine.getItemTemplates()[slotChoice];
 
-        Item item = vendingMachine.getItemTemplates()[slotChoice];
-
-        if (item == null) {
-            System.out.println("Item does not exist in this slot.");
-        } else {
-            System.out.print("Input new price: ");
-            double itemPrice = getPositiveDouble();
-            
-            if (item.setPrice(itemPrice)) {
-                System.out.println("Price updated successfully.");
+            if (item == null) {
+                System.out.println("Item does not exist in this slot.");
             } else {
-                System.out.println("Invalid price.");
+                System.out.print("Input new price: ");
+                double itemPrice = getPositiveDouble();                
+                if (item.setPrice(itemPrice)) {
+                    System.out.println("Price updated successfully.");
+                } else {
+                    System.out.println("Invalid price.");
+                }
             }
         }
     }
