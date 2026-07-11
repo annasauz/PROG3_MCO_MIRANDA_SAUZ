@@ -95,7 +95,7 @@ public class RegularVendingMachine {
         boolean hasCredit = amountToReturn > 0.0;
         
         if (!hasCredit) {
-            System.out.println("No credit found. Insert money first.");
+            System.out.println("No credit found.");
         } else {
             System.out.println("\n--- Producing Change (No Purchase Made) ---");
             System.out.println("Returning your inserted denoms totaling: PHP " + amountToReturn);
@@ -109,7 +109,6 @@ public class RegularVendingMachine {
                 }
             }
 
-            // Flush the temporary transaction vault manually using a clear loop
             this.clearTransactionCashBox();
             System.out.println("Transaction canceled successfully.");
         }
@@ -163,8 +162,14 @@ public class RegularVendingMachine {
         }
         
         Item dispensedItem = selectedSlot.dispense();
-        this.totalSold[slotIndex] = this.totalSold[slotIndex] + 1; 
-        
+
+        this.totalSold[slotIndex] = this.totalSold[slotIndex] + 1;
+
+        if (dispensedItem == null) {
+            System.out.println("Error: Item could not be dispensed.");
+            return false;
+        }
+
         this.mergeTransactionToInternal();
         
         System.out.println("\n--- VENDING SUCCESS ---");
@@ -183,16 +188,34 @@ public class RegularVendingMachine {
      * Restocks a slot with an item and captures the baseline starting capacity.
      * Precondition: The slotIndex must be within bounds, and amount should be greater than zero.
      * Postcondition: The targeted slot contains the new stock, starting inventory is recorded, and total sold resets to 0.
-     * * @param slotIndex The index of the slot to restock.
+     * @param slotIndex The index of the slot to restock.
      * @param item The Item object to be placed inside the slot.
      * @param amount The quantity of items to add.
      */
     public void restockSlot(int slotIndex, Item item, int amount) {
-        if (slotIndex >= 0 && slotIndex < this.slots.length) {
+        boolean isValidSlot = slotIndex >= 0 && slotIndex < this.slots.length;
+        boolean isValidAmount = amount > 0;
+        boolean isItemNotNull = item != null;
+
+        if (!isItemNotNull) {
+            System.out.println("Invalid item. Please provide a valid item to restock.");
+            return;
+        }
+
+        if (!isValidSlot) {
+            System.out.println("Invalid slot index. Must be between 0 and " + (this.slots.length - 1));
+            return;
+        }
+
+        if (!isValidAmount) {
+            System.out.println("Invalid restock amount. Must be a positive integer.");
+            return;
+        }
+
+        if (isValidSlot) {
             this.itemTemplates[slotIndex] = item;
         }
 
-        // Prevent changing the item assigned to the slot.
         if (this.itemTemplates[slotIndex].getName().equals(item.getName())) {
 
             this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
@@ -212,7 +235,7 @@ public class RegularVendingMachine {
      * Replenishes physical coin/bill counts for change reserves.
      * Precondition: Denomination must be a valid face value and amount must be positive.
      * Postcondition: The internalCashBox increments its stock of the specified denomination.
-     * * @param denomination The face value of the bill/coin.
+     * @param denomination The face value of the bill/coin.
      * @param amount The quantity to add to the reserves.
      */
     public void replenishChangeReserves(int denomination, int amount) {
