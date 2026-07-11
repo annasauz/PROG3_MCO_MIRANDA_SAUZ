@@ -58,13 +58,6 @@ public class SlotCompartment {
 }
 
 
-
-/** Clears all items currently in the slot */
-    public void clearItems() {
-        this.items.clear();
-        this.currentInSlotItems = 0;
-    }
-
     //Getters, setters
     public int getCurrentInSlotItems() {
         return currentInSlotItems;
