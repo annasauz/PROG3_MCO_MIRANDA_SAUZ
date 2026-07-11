@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
 public class RegularVendingMachineController {
-    private final TextInterface textInterface;
-    private final RegularVendingMachine vendingMachine;
+    private TextInterface textInterface;
+    private RegularVendingMachine vendingMachine;
     private Scanner scanner;
 
     // Constructor
