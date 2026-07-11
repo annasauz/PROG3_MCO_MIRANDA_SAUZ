@@ -163,13 +163,8 @@ public class RegularVendingMachine {
         }
         
         Item dispensedItem = selectedSlot.dispense();
-        this.totalSold[slotIndex] = this.totalSold[slotIndex] + 1;
-
-        if (dispensedItem == null) {
-            System.out.println("Error: Item could not be dispensed.");
-            return false;
-        }
-
+        this.totalSold[slotIndex] = this.totalSold[slotIndex] + 1; 
+        
         this.mergeTransactionToInternal();
         
         System.out.println("\n--- VENDING SUCCESS ---");
@@ -188,31 +183,12 @@ public class RegularVendingMachine {
      * Restocks a slot with an item and captures the baseline starting capacity.
      * Precondition: The slotIndex must be within bounds, and amount should be greater than zero.
      * Postcondition: The targeted slot contains the new stock, starting inventory is recorded, and total sold resets to 0.
-     * @param slotIndex The index of the slot to restock.
+     * * @param slotIndex The index of the slot to restock.
      * @param item The Item object to be placed inside the slot.
      * @param amount The quantity of items to add.
      */
     public void restockSlot(int slotIndex, Item item, int amount) {
-        boolean isValidSlot = slotIndex >= 0 && slotIndex < this.slots.length;
-        boolean isValidAmount = amount > 0;
-        boolean isItemNotNull = item != null;
-
-        if (!isItemNotNull) {
-            System.out.println("Invalid item. Please provide a valid item to restock.");
-            return;
-        }
-
-        if (!isValidSlot) {
-            System.out.println("Invalid slot index. Must be between 0 and " + (this.slots.length - 1));
-            return;
-        }
-
-        if (!isValidAmount) {
-            System.out.println("Invalid restock amount.");
-            return;
-        }
-
-        if (isValidSlot) {
+        if (slotIndex >= 0 && slotIndex < this.slots.length) {
             this.itemTemplates[slotIndex] = item;
         }
 
