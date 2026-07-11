@@ -280,10 +280,10 @@ public class RegularVendingMachine {
             totalRevenue = totalRevenue + itemRevenue;
 
             System.out.println("Slot [" + i + "] " + itemName + ":");
-            System.out.println("   • Starting Inventory: " + starting);
-            System.out.println("   • Ending Inventory:   " + current);
-            System.out.println("   • Total Units Sold:   " + sold);
-            System.out.printf("   • Total Revenue:       PHP %.2f\n\n", itemRevenue);
+            System.out.println(" - Starting Inventory: " + starting);
+            System.out.println(" - Ending Inventory:   " + current);
+            System.out.println(" - Total Units Sold:   " + sold);
+            System.out.printf(" - Total Revenue:       PHP %.2f\n\n", itemRevenue);
         }
         System.out.println("---------------------------------------------");
         System.out.printf("TOTAL ENGINE REVENUE RECOVERED: PHP %.2f\n", totalRevenue);
