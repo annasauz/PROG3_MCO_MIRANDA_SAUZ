@@ -7,12 +7,7 @@ public class RegularVendingMachineController {
 
     // Constructor
     /**
-     * Creates a controller for a vending machine
-     * Precondition: textInterface is a valid instance of TextInterface,
-     *               vendingMachine is a valid instance of RegularVendingMachine,
-     *               and scanner is a valid instance of Scanner.
-     * Postcondition: A new instance of RegularVendingMachineController is created with
-     *                the provided TextInterface, RegularVendingMachine, and Scanner.
+     * Creates a controller for a vending mahine
      *
      * @param textInterface shared instance of TextInterface
      * @param vendingMachine instance of RegularVendingMachine
@@ -27,8 +22,6 @@ public class RegularVendingMachineController {
     // Methods
     /**
      * Prints test menu (vending and maintenance tests)
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The test menu is displayed and the user can choose to test vending features
      */
     public void testingMenu() {
 
@@ -61,8 +54,6 @@ public class RegularVendingMachineController {
 
     /**
      * Prints and allows users to choose regular vending machine features
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The user can choose to test vending features.
      */
     private void vendingFeatures() {
         boolean isRunningVending = true;
@@ -93,8 +84,6 @@ public class RegularVendingMachineController {
 
     /**
      * Prints and allows users to maintain the vending machine
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The user can choose to test maintenance features.
      */
     private void maintenanceFeatures() {
 
@@ -139,8 +128,6 @@ public class RegularVendingMachineController {
 
     /**
      * Displays the items available in the vending machine.
-     * Precondition: The vending machine is initialized and has items to display.
-     * Postcondition: The items available in the vending machine are displayed to the user.
      */
     private void displayItemsHandler() {
 
@@ -155,8 +142,6 @@ public class RegularVendingMachineController {
 
     /**
      * Handles the addition of money to the vending machine.
-     * Precondition: The vending machine is initialized and ready to receive payment.
-     * Postcondition: The user can add money to the vending machine by specifying the denomination and
      */
     private void addMoneyHandler() {
         System.out.println("\n--- Add Money ---");
@@ -173,8 +158,6 @@ public class RegularVendingMachineController {
 
     /**
      * Handles the purchase of an item from the vending machine.
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The user can choose to purchase an item from the vending machine.
      */
     private void purchaseHandler() {
         boolean isPurchasing = true;
@@ -209,8 +192,6 @@ public class RegularVendingMachineController {
 
     /**
      * Handles maintenance of stock of an item.
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The user can choose to restock an item in the vending machine.
      */
     private void maintenanceStockHandler() {
         System.out.println("\n--- Restock Items ---");
@@ -236,8 +217,6 @@ public class RegularVendingMachineController {
 
     /**
      * Allows user to update price/s of items
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The user can choose to update the price of an item in the vending machine.
      */
     private void maintenancePriceHandler() {
         displayItemsHandler();
@@ -263,8 +242,6 @@ public class RegularVendingMachineController {
 
     /**
      * Allows user to replenish change inside the vending machine
-     * Precondition: The controller is initialized and ready to run.
-     * Postcondition: The user can choose to add change to the vending machine.
      */
     private void maintenanceAddChangeHandler(){
         System.out.print("Add change denomination to replenish (1,5,10,20,50,100,200,500,1000): ");
@@ -276,8 +253,6 @@ public class RegularVendingMachineController {
 
     /**
      * Gets user input and validates it.
-     * Precondition: The scanner is initialized and ready to read user input.
-     * Postcondition: The user input is validated and returned if within the specified range.
      *
      * @param min smallest user choice
      * @param max largest user choice
@@ -287,7 +262,10 @@ public class RegularVendingMachineController {
         if (max < min){
             System.out.println("Invalid input call");
         }
-
+        if (!scanner.hasNextInt()) {
+        scanner.next(); 
+        return 0;       
+                                    }
         int choice = scanner.nextInt();
         boolean inMinMax = choice >= min && choice <= max;
 
@@ -298,8 +276,6 @@ public class RegularVendingMachineController {
     }
     /**
      * Checks if valid positive integer.
-     * Precondition: The scanner is initialized and ready to read user input.
-     * Postcondition: The user input is validated and returned if it is a positive integer.
      *
      * @return checked integer
      */
@@ -324,8 +300,6 @@ public class RegularVendingMachineController {
 
     /**
      * Checks if valid positive double.
-     * Precondition: The scanner is initialized and ready to read user input.
-     * Postcondition: The user input is validated and returned if it is a positive double.
      *
      * @return checked double
      */
@@ -352,8 +326,6 @@ public class RegularVendingMachineController {
 
     /**
      * Checks if valid denomination.
-     * Precondition: The scanner is initialized and ready to read user input.
-     * Postcondition: The user input is validated and returned if it is a valid denomination.
      *
      * @return checked denomination
      */
