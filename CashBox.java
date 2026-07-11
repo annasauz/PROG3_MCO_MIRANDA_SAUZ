@@ -9,23 +9,26 @@ public class CashBox {
     
     private int[] denominationsAmount;
 
+    // Constructor
     /**
-     * Constructor for the CashBox.
-     *
      * Initializes the amounts array to properly match the size of the available denominations.
+     * Precondition: The denominations array is properly initialized.
+     * Postcondition: The denominationsAmount array is initialized with zeros.
      */
     public CashBox() {
         this.denominationsAmount = new int[this.denominations.length];
     }
 
+    // Methods
     /**
      * Adds a specific quantity of a certain denomination to the cash box reserves.
+     * Precondition: The denomination must be a valid face value (1, 5, 10, 20, 50, 100, 200, 500, 1000) and the quantity must be non-negative.
+     * Postcondition: The specified quantity of the given denomination is added to the cash box,
      *
      * @param denomination The face value of the bill or coin (e.g., 50, 100, 500)
      * @param quantity The number of bills or coins to add
      */
     public void addToCashBox(int denomination, int quantity) {
-        // Checks if the provided denomination exists in our valid list using a Stream
         boolean isValidDenomination = Arrays.stream(this.denominations).anyMatch(d -> d == denomination);
 
         if (denomination < 0) {
@@ -33,10 +36,8 @@ public class CashBox {
         } else if (!isValidDenomination) {
             System.out.println("Invalid denomination");
         } else {
-            // Loop through the denominations array to find the matching index
             for (int i = 0; i < this.denominations.length; i++) {
                 if (this.denominations[i] == denomination) {
-                    // Add the quantity to the corresponding slot in the amounts array
                     this.denominationsAmount[i] += quantity;
                 }
             }
@@ -51,7 +52,6 @@ public class CashBox {
     public double getMoneyAmount() {
         double totalAmount = 0.0;
 
-        // Multiply each denomination by its current quantity and add it to the total
         for (int i = 0; i < this.denominations.length; i++) {
             totalAmount += (double) (this.denominations[i] * this.denominationsAmount[i]);
         }
@@ -59,6 +59,7 @@ public class CashBox {
         return totalAmount;
     }
 
+    // Getters, setters
     /**
      * Retrieves the array containing the valid monetary denominations.
      *

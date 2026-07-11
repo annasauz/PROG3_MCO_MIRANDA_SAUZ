@@ -75,7 +75,8 @@ public class RegularVendingMachine {
      * Receives payment from the user in different denominations and updates the temporary transaction pool.
      * Precondition: Denomination should be valid and count should be positive.
      * Postcondition: The transactionCashBox's money amount increases by the inserted denomination * count.
-     * * @param denomination The face value of the inserted bill/coin.
+     *
+     * @param denomination The face value of the inserted bill/coin.
      * @param count The quantity of the inserted bill/coin.
      */
     public void receivePayment(int denomination, int count) {
@@ -118,7 +119,8 @@ public class RegularVendingMachine {
      * Handles the purchase of an item from a selected slot. 
      * Precondition: The slotIndex must be within bounds, the item must be in stock, and the user must have inserted sufficient funds.
      * Postcondition: If successful, an item is dispensed, change is calculated/returned, transaction money is merged to internal reserves, and inventory/sales are updated.
-     * * @param slotIndex The index of the slot the user wishes to purchase from.
+     *
+     * @param slotIndex The index of the slot the user wishes to purchase from.
      * @return true if the purchase and dispensing were successful, false otherwise.
      */
     public boolean purchaseItem(int slotIndex) {
@@ -188,6 +190,7 @@ public class RegularVendingMachine {
      * Restocks a slot with an item and captures the baseline starting capacity.
      * Precondition: The slotIndex must be within bounds, and amount should be greater than zero.
      * Postcondition: The targeted slot contains the new stock, starting inventory is recorded, and total sold resets to 0.
+     *
      * @param slotIndex The index of the slot to restock.
      * @param item The Item object to be placed inside the slot.
      * @param amount The quantity of items to add.
@@ -235,6 +238,7 @@ public class RegularVendingMachine {
      * Replenishes physical coin/bill counts for change reserves.
      * Precondition: Denomination must be a valid face value and amount must be positive.
      * Postcondition: The internalCashBox increments its stock of the specified denomination.
+     *
      * @param denomination The face value of the bill/coin.
      * @param amount The quantity to add to the reserves.
      */
@@ -318,7 +322,8 @@ public class RegularVendingMachine {
      * Verifies if change calculation can be fully satisfied by walking down denomination counts.
      * Precondition: changeDue must be a positive number.
      * Postcondition: Returns a boolean indicating if the machine has exact physical denominations to make up the changeDue.
-     * * @param changeDue The amount of change required to be returned to the user.
+     *
+     * @param changeDue The amount of change required to be returned to the user.
      * @return true if the machine has sufficient exact change, false otherwise.
      */
     private boolean canMakeChange(double changeDue) {
@@ -356,7 +361,8 @@ public class RegularVendingMachine {
      * Dispenses change value by physically reducing the internal cash reserves.
      * Precondition: canMakeChange(changeDue) must evaluate to true prior to calling this method.
      * Postcondition: Internal reserves are decremented by the exact denominations used to make change.
-     * * @param changeDue The amount of change required to be returned to the user.
+     *
+     * @param changeDue The amount of change required to be returned to the user.
      */
     private void dispenseChange(double changeDue) {
         int[] denoms = this.internalCashBox.getDenominations();
@@ -419,7 +425,8 @@ public class RegularVendingMachine {
      * Returns the item templates for external inspection.
      * Precondition: None.
      * Postcondition: Returns the array of item templates currently tracked by the machine.
-     * * @return Array of Item objects representing the templates.
+     *
+     * @return Array of Item objects representing the templates.
      */
     public Item[] getItemTemplates() {
         return itemTemplates;
@@ -429,7 +436,8 @@ public class RegularVendingMachine {
      * Returns the slot compartments for external inspection.
      * Precondition: None.
      * Postcondition: Returns the array of slot compartments currently inside the machine.
-     * * @return Array of SlotCompartment objects.
+     *
+     * @return Array of SlotCompartment objects.
      */
     public SlotCompartment[] getSlots() {
         return slots;

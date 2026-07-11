@@ -48,6 +48,9 @@ public class TextInterface {
 
     }
 
+    /**
+     * Displays purchase menu
+     */
     public void purchaseMenu() {
         System.out.println("\n--- Purchase Menu ---");
         System.out.println("1. Insert Money");
@@ -89,7 +92,9 @@ public class TextInterface {
 
     /**
      * Displays the menu of items available in the regular vending machine.
-     * @param items
+     *
+     * @param items Array of Item objects representing the items in the vending machine
+     * @param slots Array of SlotCompartment objects representing the slots in the vending machine
      */
   public void printRegularVendingMachineMenu(Item[] items, SlotCompartment[] slots) {
 
