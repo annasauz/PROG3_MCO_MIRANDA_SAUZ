@@ -9,6 +9,8 @@ public class VendingMachineSoftwareLoop {
     // Constructor
     /**
      * Creates a software loop for the program
+     * Precondition: textInterface is a valid instance of TextInterface
+     * Postcondition: A new instance of VendingMachineSoftwareLoop is created with the provided TextInterface and no vending machine initialized.
      *
      * @param textInterface shared instance of TextInterface
      */
@@ -21,6 +23,8 @@ public class VendingMachineSoftwareLoop {
     // Methods
     /**
      * Runs the software loop
+     * Precondition: The software loop is initialized and ready to run.
+     * Postcondition: The software loop is executed until the user chooses to exit.
      */
     public void run() {
         while (isRunning) {
@@ -56,6 +60,8 @@ public class VendingMachineSoftwareLoop {
 
     /**
     * Gets user input and validates it.
+    * Precondition: The user is prompted to enter a choice within the specified range.
+    * Postcondition: The method returns a valid integer input from the user within the specified range.
     *
     * @param min minimum valid choice
     * @param max maximum valid choice
@@ -70,7 +76,7 @@ public class VendingMachineSoftwareLoop {
 
             if (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a whole number.");
-                scanner.next(); // Consume invalid input
+                scanner.next();
             } else {
                 input = scanner.nextInt();
 
