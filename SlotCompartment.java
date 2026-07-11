@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class SlotCompartment {
-    private final int maximumInSlotItems;
-    private final int minimumInSlotItems = 10;
+    private final int MAXIMUM_IN_SLOT_ITEMS;
+    private final int MINIMUMIN_SLOT_ITEMS = 10;
     private int currentInSlotItems = 0;
     private ArrayList<Item> items;
 
@@ -12,7 +12,7 @@ public class SlotCompartment {
      *  @param maxItems The maximum number of items the slot can hold (must be at least 10)
     */
     public SlotCompartment(int maxItems) {
-        this.maximumInSlotItems = Math.max(maxItems, minimumInSlotItems);
+        this.MAXIMUM_IN_SLOT_ITEMS = Math.max(maxItems, MINIMUMIN_SLOT_ITEMS);
 
         items = new ArrayList<>();
     }
@@ -39,13 +39,13 @@ public class SlotCompartment {
      */
    public void addInventory(Item item, int amount) {
 
-    if (this.currentInSlotItems == this.maximumInSlotItems) {
+    if (this.currentInSlotItems == this.MAXIMUM_IN_SLOT_ITEMS) {
         System.out.println("At maximum capacity");
     }
     else if (amount <= 0) {
         System.out.println("Invalid number");
     }
-    else if (amount + this.currentInSlotItems > this.maximumInSlotItems) {
+    else if (amount + this.currentInSlotItems > this.MAXIMUM_IN_SLOT_ITEMS) {
         System.out.println("At overflowing capacity");
     }
     else {
@@ -64,11 +64,11 @@ public class SlotCompartment {
     }
 
     public int getMaximumInSlotItems() {
-        return maximumInSlotItems;
+        return MAXIMUM_IN_SLOT_ITEMS;
     }
 
     public int getMinimumInSlotItems() {
-        return minimumInSlotItems;
+        return MINIMUMIN_SLOT_ITEMS;
     }
 
     public void adjustCurrentInSlotItems(int addedAmount) {
