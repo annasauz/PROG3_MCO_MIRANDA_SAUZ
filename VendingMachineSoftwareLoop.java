@@ -1,8 +1,5 @@
 import java.util.Scanner;
 
-/**
- * Manages the main menu and user interactions for creating and testing a vending machine.
- */
 public class VendingMachineSoftwareLoop {
     private TextInterface textInterface;
     private RegularVendingMachine vendingMachine;

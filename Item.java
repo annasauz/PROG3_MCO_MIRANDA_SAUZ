@@ -1,6 +1,3 @@
-/**
- * Represents an item with a name, price, and calories.
- */
 public class Item {
     private String name;
     private double price;
