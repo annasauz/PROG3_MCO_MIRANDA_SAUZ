@@ -208,7 +208,7 @@ public class RegularVendingMachine {
         }
 
         if (!isValidAmount) {
-            System.out.println("Invalid restock amount. Must be a positive integer.");
+            System.out.println("Invalid restock amount.");
             return;
         }
 
