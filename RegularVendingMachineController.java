@@ -77,7 +77,7 @@ public class RegularVendingMachineController {
                     isRunningVending = false;
                     break;
                 default:
-                    System.out.println("Invalid user choice\n");
+                    System.out.println("Invalid user choice");
             }
         }
     }
