@@ -48,6 +48,7 @@ public class RegularVendingMachineController {
 
             default:
                 System.out.println("Invalid user choice");
+                textInterface.pressEnterToContinue(scanner);
         }
     }
 }
@@ -78,6 +79,7 @@ public class RegularVendingMachineController {
                     break;
                 default:
                     System.out.println("Invalid user choice");
+                    textInterface.pressEnterToContinue(scanner);
             }
         }
     }
@@ -121,6 +123,7 @@ public class RegularVendingMachineController {
                     break;
                 default:
                     System.out.println("Invalid user choice");
+                    textInterface.pressEnterToContinue(scanner);
             }
         }
     }
@@ -186,6 +189,10 @@ public class RegularVendingMachineController {
                     vendingMachine.produceChangeWithoutPurchase();
                     isPurchasing = false;
                     break;
+                default:
+                    System.out.println("Invalid user choice");
+                    textInterface.pressEnterToContinue(scanner);
+                    break;    
             }
         }
     }
@@ -292,7 +299,7 @@ public class RegularVendingMachineController {
         int value = 0;
         while (!valid) {
             if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Enter a whole number.");
+                System.out.println("Invalid input. Enter a whole number.\n");
                 scanner.next();
             } else {
                 value = scanner.nextInt();
@@ -368,4 +375,6 @@ public class RegularVendingMachineController {
     }
 
 }
+
+
 
