@@ -196,22 +196,28 @@ public class RegularVendingMachineController {
     private void maintenanceStockHandler() {
         System.out.println("\n--- Restock Items ---");
         displayItemsHandler();
-        System.out.print("Select slot to restock (1-8): ");
-        int slotChoice = getInput(1, 8) - 1;
 
-        Item existingItem = vendingMachine.getItemTemplates()[slotChoice];
-
-        if (existingItem != null) {
-
-            System.out.println("\nCurrent item: " + existingItem.getName());
-
-            System.out.print("Enter quantity to add: ");
-            int quantity = getPositiveInteger();
-
-            vendingMachine.restockSlot(slotChoice, existingItem, quantity);
-
+        System.out.print("Select a slot to restock (1-8): ");
+        int userInput = getInput(1, 8);
+       if (userInput <= 0) {
+            System.out.println("Invalid slot choice. Returning to menu.");
         } else {
-            System.out.println("Unable to restock. The selected slot has not been initialized.");
+            int slotChoice = userInput - 1; 
+
+            Item existingItem = vendingMachine.getItemTemplates()[slotChoice];
+
+            if (existingItem != null) {
+
+                System.out.println("\nCurrent item: " + existingItem.getName());
+
+                System.out.print("Enter quantity to add: ");
+                int quantity = getPositiveInteger();
+
+                vendingMachine.restockSlot(slotChoice, existingItem, quantity);
+
+            } else {
+                System.out.println("Unable to restock. The selected slot has not been initialized.");
+            }
         }
     }
 
@@ -360,3 +366,4 @@ public class RegularVendingMachineController {
     }
 
 }
+
