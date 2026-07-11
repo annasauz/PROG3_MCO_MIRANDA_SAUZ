@@ -47,7 +47,7 @@ public class RegularVendingMachine {
         restockSlot(4, new Item("Honey", 20.00, 65), 10);
         restockSlot(5, new Item("Matcha Powder", 30.00, 5), 10);
         restockSlot(6, new Item("Oreo", 20.00, 160), 10);
-        restockSlot(7, new Item("Pudding", 25.00, 115), 10);
+        restockSlot(7, new Item("Egg Pudding", 25.00, 115), 10);
     }
 
     /**
