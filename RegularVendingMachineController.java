@@ -196,7 +196,7 @@ public class RegularVendingMachineController {
     private void maintenanceStockHandler() {
         System.out.println("\n--- Restock Items ---");
         displayItemsHandler();
-
+        System.out.print("Select slot to restock (1-8): ");
         int slotChoice = getInput(1, 8) - 1;
 
         Item existingItem = vendingMachine.getItemTemplates()[slotChoice];
