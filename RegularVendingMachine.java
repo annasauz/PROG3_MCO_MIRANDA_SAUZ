@@ -326,7 +326,7 @@ public class RegularVendingMachine {
      * @param changeDue The amount of change required to be returned to the user.
      * @return true if the machine has sufficient exact change, false otherwise.
      */
-    private boolean canMakeChange(double changeDue) {
+    protected boolean canMakeChange(double changeDue) {
         int[] denoms = this.internalCashBox.getDenominations();
         int[] amounts = this.internalCashBox.getDenominationsAmount();
         double remainingChange = changeDue;
@@ -364,7 +364,7 @@ public class RegularVendingMachine {
      *
      * @param changeDue The amount of change required to be returned to the user.
      */
-    private void dispenseChange(double changeDue) {
+    protected void dispenseChange(double changeDue) {
         int[] denoms = this.internalCashBox.getDenominations();
         int[] amounts = this.internalCashBox.getDenominationsAmount();
         double remainingChange = changeDue;
@@ -399,7 +399,7 @@ public class RegularVendingMachine {
      * Precondition: A successful purchase must have just occurred.
      * Postcondition: Temporary transaction funds are absorbed into the internalCashBox and the transactionCashBox is cleared.
      */
-    private void mergeTransactionToInternal() {
+    protected void mergeTransactionToInternal() {
         int[] userDenoms = this.transactionCashBox.getDenominations();
         int[] userAmounts = this.transactionCashBox.getDenominationsAmount();
         
