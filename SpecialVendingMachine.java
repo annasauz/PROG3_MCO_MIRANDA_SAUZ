@@ -11,9 +11,23 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      * Inherited from RegularVendingMachine.
      */
     public SpecialVendingMachine() {
-        super();
+        super(12);
+
+        // Initializes extra custom toppings
+        initializeSpecialItems();
     }
 
+
+    /**
+     * Loads custom milk tea toppings into slots 9 through 12.
+     */
+    private void initializeSpecialItems() {
+        // For empty slots 8-11
+        restockSlot(8, new SpecialItem("Brown Sugar Syrup", 15.00, 80, false), 10);
+        restockSlot(9, new SpecialItem("Cream Cheese", 35.00, 100, false), 10);
+        restockSlot(10, new SpecialItem("Tapioca Pearls", 20.00, 140, false), 10);
+        restockSlot(11, new SpecialItem("Glass Jelly", 20.00, 40, false), 10);
+    }
     /**
      * Overrides the regular purchase method to prevent the user from buying 
      * restricted ingredients (like toppings or syrups) individually.
