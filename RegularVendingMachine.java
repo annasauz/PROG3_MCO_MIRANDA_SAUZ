@@ -9,30 +9,46 @@ public class RegularVendingMachine {
     private int[] startingInventory;
     protected int[] totalSold;
 
+    
+    // Constructors
     /**
-     * Initializes a Regular Vending Machine.
+     * Initializes a Regular Vending Machine with a default capacity of 8 slots.
      * Precondition: None.
-     * Postcondition: Slots, inventory arrays, and cash boxes are instantiated and populated with default data.
+     * Postcondition: All 8 slots are instantiated, fully stocked with the 8 default items, 
+     *                and the cash boxes are initialized with starting change.
      */
     public RegularVendingMachine() {
-        this.slots = new SlotCompartment[8];
-        this.itemTemplates = new Item[8];
-        this.startingInventory = new int[8];
-        this.totalSold = new int[8];
+        this(8); // passes 8 to consructor below
+    }
+    /**
+     * Initializes a Regular Vending Machine with a custom number of slots.
+     * Precondition: numSlots must be a positive integer greater than zero.
+     * Postcondition: Arrays are dynamically allocated to numSlots size. Base 
+     *                default items stocked first 8 slots, any extra slots are left empty, 
+     *                and the cash boxes are initialized with starting change.
+     * 
+     * @param numSlots Slot compartment total number to allocate for the machine.
+     */ 
+    protected RegularVendingMachine(int numSlots) {
+        this.slots = new SlotCompartment[numSlots];
+        this.itemTemplates = new Item[numSlots];
+        this.startingInventory = new int[numSlots]; 
+        this.totalSold = new int[numSlots];
         this.internalCashBox = new CashBox();
         this.transactionCashBox = new CashBox();
 
         // Create the slot compartments
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < numSlots; i++) {
             this.slots[i] = new SlotCompartment(10);
         }
 
         // Load default products
         initializeDefaultItems();
-
         // Load default change
         initializeCashBox();
     }
+    
+    
 
     /**
      * Loads the vending machine with default items.
