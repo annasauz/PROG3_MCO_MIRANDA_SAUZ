@@ -159,6 +159,7 @@ public class RegularVendingMachineController {
         System.out.println();
     }
 
+
     /**
      * Handles the purchase of an item from the vending machine.
      */
@@ -168,7 +169,8 @@ public class RegularVendingMachineController {
 
             textInterface.purchaseMenu();
 
-            int choice = getInput(1, 3);
+            
+            int choice = getInput(1, 4);
 
             switch (choice) {
                 case 1:
@@ -183,9 +185,53 @@ public class RegularVendingMachineController {
 
                     if (success) {
                         isPurchasing = false;
-                        }
+                    }
                     break;
                 case 3:
+                    System.out.println("\n--- Build Custom Milk Tea ---");
+                    
+                    //  verification
+                    if (vendingMachine instanceof SpecialVendingMachine) {
+                        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+                        
+                        
+                        System.out.print("Select Tea Base slot (1-8): ");
+                        int teaSlot = getInput(1, 8) - 1;
+                        
+                        
+                        System.out.print("Select Milk Base slot (1-8): ");
+                        int milkSlot = getInput(1, 8) - 1;
+                        
+                        // select add-ons
+                        java.util.ArrayList<Integer> addonSlots = new java.util.ArrayList<>();
+                        boolean addingAddons = true;
+                        
+                        while (addingAddons) {
+                            System.out.print("Would you like to add an add-on/topping? (1 = Yes, 2 = No): ");
+                            int addChoice = getInput(1, 2);
+                            
+                            if (addChoice == 1) {
+                                System.out.print("Select Add-on slot (1-8): ");
+                                int addonSlot = getInput(1, 8) - 1;
+                                addonSlots.add(addonSlot);
+                            } else {
+                                addingAddons = false;
+                            }
+                        }
+                        
+                        // custom purchase
+                        boolean customSuccess = specialMachine.purchaseCustomMilkTea(teaSlot, milkSlot, addonSlots);
+                        
+                        if (customSuccess) {
+                            isPurchasing = false; // exit loop
+                        }
+                        
+                    } else {
+                        // fallback and error handling
+                        System.out.println("Error: Custom Milk Tea is only available in a Special Vending Machine.");
+                    }
+                    break;
+                case 4:
                     vendingMachine.produceChangeWithoutPurchase();
                     isPurchasing = false;
                     break;
@@ -196,6 +242,8 @@ public class RegularVendingMachineController {
             }
         }
     }
+
+
 
     /**
      * Handles maintenance of stock of an item.
@@ -375,6 +423,7 @@ public class RegularVendingMachineController {
     }
 
 }
+
 
 
 
