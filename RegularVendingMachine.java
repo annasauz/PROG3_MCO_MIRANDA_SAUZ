@@ -2,12 +2,12 @@
  * Represents a Regular Vending Machine that handles items, inventory, transactions, and change dispensing.
  */
 public class RegularVendingMachine {
-    private SlotCompartment[] slots;
-    private Item[] itemTemplates; 
+    protected SlotCompartment[] slots;
+    protected Item[] itemTemplates; 
     private CashBox internalCashBox;   
-    private CashBox transactionCashBox;   
+    protected CashBox transactionCashBox;   
     private int[] startingInventory;
-    private int[] totalSold;
+    protected int[] totalSold;
 
     /**
      * Initializes a Regular Vending Machine.
