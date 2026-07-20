@@ -16,6 +16,18 @@ public class Item {
         this.calories = calories;
     }
 
+    /**
+     * Method overloading
+     * Creates item based on an existing Item.
+     * 
+     * @param sourceItem The original Item blueprint to copy.
+     */
+    public Item(Item sourceItem) {
+        this.name = sourceItem.getName();
+        this.price = sourceItem.getPrice();
+        this.calories = sourceItem.getCalories();
+    }
+
     // Getters
     /**
      * Returns the name of the item.
