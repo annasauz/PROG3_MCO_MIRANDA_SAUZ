@@ -33,29 +33,56 @@ public class SlotCompartment {
     return dispensedItem;
 }
 
-    /** Allows the user add stock/inventory of a specific slot
+
+    /** 
+     * Allows the user to add stock/inventory of a specific slot 
+     * by creating distinct physical copies of the given item.
      *
+     * @param item   The template item to be copied
      * @param amount integer value to be added to the current item amount
      */
-   public void addInventory(Item item, int amount) {
+    public void addInventory(Item item, int amount) {
 
-    if (this.currentInSlotItems == this.MAXIMUM_IN_SLOT_ITEMS) {
-        System.out.println("At maximum capacity");
-    }
-    else if (amount <= 0) {
-        System.out.println("Invalid number");
-    }
-    else if (amount + this.currentInSlotItems > this.MAXIMUM_IN_SLOT_ITEMS) {
-        System.out.println("At overflowing capacity");
-    }
-    else {
-        for (int i = 0; i < amount; i++) {
-            items.add(item);
+        if (this.currentInSlotItems == this.MAXIMUM_IN_SLOT_ITEMS) {
+            System.out.println("At maximum capacity");
         }
-        adjustCurrentInSlotItems(amount);
-        System.out.println("Stock added successfully.");
+        else if (amount <= 0) {
+            System.out.println("Invalid number");
+        }
+        else if (amount + this.currentInSlotItems > this.MAXIMUM_IN_SLOT_ITEMS) {
+            System.out.println("At overflowing capacity");
+        }
+        else {
+            
+            for (int i = 0; i < amount; i++) {
+                
+                if (item instanceof SpecialItem) {
+                    // specialItem clone
+                    SpecialItem specialTemplate = (SpecialItem) item;
+                    items.add(new SpecialItem(specialTemplate));
+                } else {
+                    // regular item clone
+                    items.add(new Item(item));
+                }
+                
+            }
+            adjustCurrentInSlotItems(amount);
+            System.out.println("Stock added successfully.");
+        }
     }
-}
+
+    /**
+     * Updates the price of each physical item in the slot.
+     * 
+     * @param newPrice The new price to set
+     */
+    public void updatePricesInSlot(double newPrice) {        
+        for (int i = 0; i < this.items.size(); i++) {
+            // update price
+            this.items.get(i).setPrice(newPrice);
+        }
+        System.out.println("All existing items in the slot updated to PHP " + newPrice);
+    }
 
 
     //Getters, setters
