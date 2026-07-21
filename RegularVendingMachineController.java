@@ -165,6 +165,7 @@ public class RegularVendingMachineController {
      */
     private void purchaseHandler() {
         boolean isPurchasing = true;
+        int maxSlots = vendingMachine.getSlots().length;
         while (isPurchasing) {
 
             textInterface.purchaseMenu();
@@ -195,12 +196,12 @@ public class RegularVendingMachineController {
                         SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
                         
                         
-                        System.out.print("Select Tea Base slot (1-8): ");
-                        int teaSlot = getInput(1, 8) - 1;
+                        System.out.print("Select Tea Base slot (1-" + maxSlots + "): ");
+                        int teaSlot = getInput(1, maxSlots) - 1;
                         
                         
-                        System.out.print("Select Milk Base slot (1-8): ");
-                        int milkSlot = getInput(1, 8) - 1;
+                        System.out.print("Select Milk Base slot (1-" + maxSlots + "): ");
+                        int milkSlot = getInput(1, maxSlots) - 1;
                         
                         // select add-ons
                         java.util.ArrayList<Integer> addonSlots = new java.util.ArrayList<>();
@@ -211,8 +212,8 @@ public class RegularVendingMachineController {
                             int addChoice = getInput(1, 2);
                             
                             if (addChoice == 1) {
-                                System.out.print("Select Add-on slot (1-8): ");
-                                int addonSlot = getInput(1, 8) - 1;
+                                System.out.print("Select Add-on slot (1-" + maxSlots + "): ");
+                                int addonSlot = getInput(1, maxSlots) - 1;
                                 addonSlots.add(addonSlot);
                             } else {
                                 addingAddons = false;
@@ -251,9 +252,9 @@ public class RegularVendingMachineController {
     private void maintenanceStockHandler() {
         System.out.println("\n--- Restock Items ---");
         displayItemsHandler();
-
-        System.out.print("Select a slot to restock (1-8): ");
-        int userInput = getInput(1, 8);
+        int maxSlots = vendingMachine.getSlots().length;
+        System.out.print("Select a slot to restock (1-" + maxSlots + "): ");
+        int userInput = getInput(1, maxSlots);
        if (userInput <= 0) {
             System.out.println("Invalid slot choice. Returning to menu.");
         } else {
@@ -281,8 +282,9 @@ public class RegularVendingMachineController {
      */
     private void maintenancePriceHandler() {
         displayItemsHandler();
-        System.out.print("Select an item to update (1-8): ");
-        int userInput = getInput(1, 8); 
+        int maxSlots = vendingMachine.getSlots().length;
+        System.out.print("Select an item to update (1-" + maxSlots + "): ");
+        int userInput = getInput(1, maxSlots);
         if (userInput <= 0) {
             System.out.println("Invalid slot choice. Returning to menu.");
         } else {           
@@ -423,6 +425,11 @@ public class RegularVendingMachineController {
     }
 
 }
+
+
+
+
+
 
 
 
