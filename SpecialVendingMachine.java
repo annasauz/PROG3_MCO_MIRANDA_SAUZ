@@ -74,7 +74,6 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     }
 
 
-
     /**
      * Creates and dispenses a custom milk tea based on the user's selected ingredients.
      * 
@@ -159,19 +158,23 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         
         Item teaInstance = this.slots[teaSlot].dispense();
         this.totalSold[teaSlot]++;
-        System.out.println("Brewing " + teaInstance.getName() + "...");
+        System.out.println("Brewing " + teaInstance.getName());
+        flushLoad();
         
         Item milkInstance = this.slots[milkSlot].dispense();
         this.totalSold[milkSlot]++;
-        System.out.println("Pouring " + milkInstance.getName() + "...");
-        
+        System.out.println("Pouring " + milkInstance.getName());
+        flushLoad();
+
         for (int addonSlot : addonSlots) {
             Item addonInstance = this.slots[addonSlot].dispense();
             this.totalSold[addonSlot]++;
-            System.out.println("Adding " + addonInstance.getName() + "...");
+            System.out.println("Adding " + addonInstance.getName());
+            flushLoad();
         }
 
-        System.out.println("Shaking and sealing cup...");
+        System.out.println("Shaking and sealing cup");
+        flushLoad();
         System.out.println("Milk Tea Done!");
         
         // save money to bank to finalize it
@@ -189,5 +192,13 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      */
     private boolean isValidSlot(int slotIndex) {
         return slotIndex >= 0 && slotIndex < this.slots.length;
+    }
+
+    /**
+     * Flushes the output stream to ensure that all buffered output is written.
+     */
+    private void flushLoad() {
+        System.out.print("...");
+        System.out.flush();
     }
 }

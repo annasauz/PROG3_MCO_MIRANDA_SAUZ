@@ -33,7 +33,6 @@ public class SlotCompartment {
     return dispensedItem;
 }
 
-
     /** 
      * Allows the user to add stock/inventory of a specific slot 
      * by creating distinct physical copies of the given item.
@@ -83,7 +82,6 @@ public class SlotCompartment {
         }
         System.out.println("All existing items in the slot updated to PHP " + newPrice);
     }
-
 
     //Getters, setters
     public int getCurrentInSlotItems() {

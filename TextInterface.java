@@ -47,7 +47,20 @@ public class TextInterface {
         System.out.print("Vending Choice: ");
 
     }
+    /**
+     * Displays the type of vending machine to be created.
+     */
+    public void printVendingMachineType(){
+        System.out.println("Select Vending Machine Type:");
+        System.out.println("1. Regular Vending Machine");
+        System.out.println("2. Special Vending Machine");
+    }
 
+    public void printTypeOfVendingMachineToTest() {
+        System.out.println("Select Vending Machine Type to Test:");
+        System.out.println("1. Regular Vending Machine");
+        System.out.println("2. Special Vending Machine");
+    }
  
     /**
      * Displays purchase menu
@@ -146,4 +159,5 @@ public class TextInterface {
         scanner.nextLine();
         scanner.nextLine();
     }
+
 }
