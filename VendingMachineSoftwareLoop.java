@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class VendingMachineSoftwareLoop {
     private TextInterface textInterface;
     private RegularVendingMachine vendingMachine;
+    private SpecialVendingMachine specialVendingMachine;
     private boolean isRunning;
     private Scanner scanner = new Scanner(System.in);
 
@@ -33,19 +34,42 @@ public class VendingMachineSoftwareLoop {
 
             switch (choice){
                 case 1:
-                    this.vendingMachine = new RegularVendingMachine();
-                    System.out.println("Vending machine Created.");
-                    textInterface.pressEnterToContinue(scanner);
+                    textInterface.printVendingMachineType();
+                    switch (getInput(1, 2)) {
+                        case 1:
+                            this.vendingMachine = new RegularVendingMachine();
+                            System.out.println("Regular vending machine created.");
+                            break;
+                        case 2:
+                            this.specialVendingMachine = new SpecialVendingMachine();
+                            System.out.println("Special vending machine created.");
+                            break;
+                    }
                     break;
                 case 2:
-                    if (this.vendingMachine == null){
-                        System.out.println("Vending machine does not exist; create one.");
-                        textInterface.pressEnterToContinue(scanner);
-                        break;
+                    textInterface.printTypeOfVendingMachineToTest();
+                    switch(getInput(1, 2)) {
+                        case 1:
+                            if (this.vendingMachine == null){
+                                System.out.println("Vending machine does not exist; create one.");
+                                textInterface.pressEnterToContinue(scanner);
+                                break;
+                            }
+                            RegularVendingMachineController regularController = new RegularVendingMachineController(textInterface, vendingMachine, scanner);
+                            regularController.testingMenu();
+                            textInterface.pressEnterToContinue(scanner);
+                            break;
+                        case 2:
+                            if (this.specialVendingMachine == null){
+                                System.out.println("Special vending machine does not exist; create one.");
+                                textInterface.pressEnterToContinue(scanner);
+                                break;
+                            }
+                            SpecialVendingMachineController specialController = new SpecialVendingMachineController(textInterface, specialVendingMachine, scanner);
+                            specialController.testingMenu();
+                            textInterface.pressEnterToContinue(scanner);
+                            break;
                     }
-                    RegularVendingMachineController testRegular = new RegularVendingMachineController(textInterface, vendingMachine, scanner);
-                    testRegular.testingMenu();
-                    textInterface.pressEnterToContinue(scanner);
                     break;
                 case 3:
                     this.isRunning = false;
