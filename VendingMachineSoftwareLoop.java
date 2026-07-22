@@ -59,18 +59,17 @@ public class VendingMachineSoftwareLoop {
                             regularController.testingMenu();
                             textInterface.pressEnterToContinue(scanner);
                             break;
-                        case 2:
-                            if (this.specialVendingMachine == null){
+                       case 2:
+                            if (this.specialVendingMachine == null) {
                                 System.out.println("Special vending machine does not exist; create one.");
                                 textInterface.pressEnterToContinue(scanner);
                                 break;
                             }
-                            SpecialVendingMachineController specialController = new SpecialVendingMachineController(textInterface, specialVendingMachine, scanner);
-                            specialController.testingMenu();
+                            RegularVendingMachineController controller = new RegularVendingMachineController(textInterface, specialVendingMachine, scanner);
+                            controller.testingMenu();
                             textInterface.pressEnterToContinue(scanner);
                             break;
-                    }
-                    break;
+                        }
                 case 3:
                     this.isRunning = false;
                     break;
