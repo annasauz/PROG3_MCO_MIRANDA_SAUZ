@@ -64,7 +64,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             "Tapioca Pearls", 
             "Glass Jelly"
         };
-        
+
         for (String restricted : restrictedItems) {
             if (restricted.equalsIgnoreCase(itemName)) {
                 return false;
@@ -83,13 +83,42 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      * @return true if the transaction and preparation were successful, false otherwise.
      */
     public boolean purchaseCustomMilkTea(int teaSlot, int milkSlot, ArrayList<Integer> addonSlots) {
-        
+
+        if (addonSlots.isEmpty() || addonSlots == null) {
+            System.out.println("No add-ons selected. Please select at least one add-on.");
+            return false;
+        }
+
+
         // simple check
         if (!isValidSlot(teaSlot) || !isValidSlot(milkSlot)) {
             System.out.println("Invalid tea or milk slot selected.");
             return false;
         }
-        
+
+        // Ensure templates exist for tea and milk
+        Item teaTemplate = this.itemTemplates[teaSlot];
+        Item milkTemplate = this.itemTemplates[milkSlot];
+        if (teaTemplate == null) {
+            System.out.println("Selected tea slot [" + teaSlot + "] is empty.");
+            return false;
+        }
+        if (milkTemplate == null) {
+            System.out.println("Selected milk slot [" + milkSlot + "] is empty.");
+            return false;
+        }
+
+        // Prevent using restricted add-ons as the main tea/milk base
+        if (teaTemplate instanceof SpecialItem && !((SpecialItem) teaTemplate).isSellableIndividually()) {
+            System.out.println("Selected tea base [" + teaTemplate.getName() + "] cannot be sold as a standalone base.");
+            return false;
+        }
+        if (milkTemplate instanceof SpecialItem && !((SpecialItem) milkTemplate).isSellableIndividually()) {
+            System.out.println("Selected milk base [" + milkTemplate.getName() + "] cannot be sold as a standalone base.");
+            return false;
+        }
+
+        // Validate addon slots and ensure templates exist
         for (int addonSlot : addonSlots) {
             if (!isValidSlot(addonSlot)) {
                 System.out.println("Invalid add-on slot selected.");
