@@ -14,4 +14,18 @@ public class SpecialVendingMachineController extends RegularVendingMachineContro
         super(textInterface, specialVendingMachine, scanner);
     }
 
+    /**
+     * Displays the items in the special vending machine.
+     */
+    @Override
+    protected void displayItemsHandler() {
+
+        System.out.println();
+
+        textInterface.printSpecialVendingMachineMenu(
+                specialVendingMachine.getItemTemplates(),
+                specialVendingMachine.getSlots());
+
+        System.out.println();
+    }
 }

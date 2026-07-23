@@ -330,7 +330,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             this.dispenseChange(changeDue);
         }
 
-        // TODO:
+        // TODO
         // Preparation animation currently prints incorrect ingredient names.
         // Transaction logic, pricing, stock deduction, and change dispensing work correctly.
         // Investigate SlotCompartment inventory/template synchronization later.
@@ -344,10 +344,11 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             Item teaInstance = this.slots[teaSlot].dispense();
             this.totalSold[teaSlot]++;
 
+            String teaName = teaTemplate.getName();
             if (i == 0) {
-                System.out.println("Brewing " + teaInstance.getName());
+                System.out.println("Brewing " + teaName);
             } else {
-                System.out.println("Adding extra serving of " + teaInstance.getName());
+                System.out.println("Adding extra serving of " + teaName);
             }
 
             flushLoad();
@@ -358,10 +359,11 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             Item milkInstance = this.slots[milkSlot].dispense();
             this.totalSold[milkSlot]++;
 
+            String milkName = milkTemplate.getName();
             if (i == 0) {
-                System.out.println("Pouring " + milkInstance.getName());
+                System.out.println("Pouring " + milkName);
             } else {
-                System.out.println("Adding extra serving of " + milkInstance.getName());
+                System.out.println("Adding extra serving of " + milkName);
             }
 
             flushLoad();
@@ -394,7 +396,8 @@ public class SpecialVendingMachine extends RegularVendingMachine {
                 break;
         }
 
-        System.out.println("Adding " + sweetener.getName() + " (" + sugarText + ")");
+        String sweetenerName = this.itemTemplates[sweetenerSlot].getName();
+        System.out.println("Adding " + sweetenerName + " (" + sugarText + ")");
         flushLoad();
     }
 
@@ -402,7 +405,8 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         for (int addonSlot : addonSlots) {
             Item addonInstance = this.slots[addonSlot].dispense();
             this.totalSold[addonSlot]++;
-            System.out.println("Adding " + addonInstance.getName());
+            String addonName = this.itemTemplates[addonSlot].getName();
+            System.out.println("Adding " + addonName);
             flushLoad();
         }
 
@@ -472,6 +476,8 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      */
     private void flushLoad() {
         System.out.print("...");
+
+
         System.out.flush();
     }
 }
