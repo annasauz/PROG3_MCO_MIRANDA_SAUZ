@@ -6,6 +6,9 @@ import java.util.ArrayList;
  */
 public class SpecialVendingMachine extends RegularVendingMachine {
 
+    private int customMilkTeaSold;
+    private double customMilkTeaRevenue;
+
     /* ===========================
             SLOT CONSTANTS
     =========================== */
@@ -48,21 +51,9 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     public static final int MEDIUM = 2;
     public static final int LARGE = 3;
 
-    /**
-     * Initializes a Special Vending Machine.
-     * Inherited from RegularVendingMachine.
-     */
-    public SpecialVendingMachine() {
-        super(20);
-
-        // Initializes extra custom toppings
-        initializeSpecialItems();
-
-    }
-
-       /* ===========================
-                SUGAR CONSTANTS
-        =========================== */
+    /* ===========================
+            SUGAR CONSTANTS
+    =========================== */
 
     public static final int NO_SUGAR = 0;
     public static final int HALF_SUGAR = 1;
@@ -76,6 +67,22 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     public static final int LESS_ICE = 1;
     public static final int REGULAR_ICE = 2;
     public static final int EXTRA_ICE = 3;
+
+    /**
+     * Initializes a Special Vending Machine.
+     * Inherited from RegularVendingMachine.
+     */
+    public SpecialVendingMachine() {
+        super(20);
+
+        // Initializes extra custom toppings
+        initializeSpecialItems();
+
+        customMilkTeaSold = 0;
+        customMilkTeaRevenue = 0;
+
+    }
+
 
     /**
      * Loads custom milk tea toppings into slots 9 through 12.
@@ -212,6 +219,24 @@ public class SpecialVendingMachine extends RegularVendingMachine {
                 multiplier = 1;
         }
 
+        int sweetenerServings;
+
+        switch (sugarLevel) {
+
+            case NO_SUGAR:
+            sweetenerServings = 0;
+            break;
+
+            case HALF_SUGAR:
+            sweetenerServings = (multiplier + 1) / 2;
+            break;
+
+            case FULL_SUGAR:
+            default:
+            sweetenerServings = multiplier;
+            break;
+        }
+
         // Determine ice servings
         int iceServings;
 
@@ -279,19 +304,31 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         requiredStock[teaSlot] += multiplier;
         requiredStock[milkSlot] += multiplier;
         requiredStock[ICE] += iceServings;
+        if (sweetenerSlot != -1) {
+            requiredStock[sweetenerSlot] += sweetenerServings;
+        }
 
         // Add-ons remain one serving each
         for (int addonSlot : addonSlots) {
-            requiredStock[addonSlot]++;
+            requiredStock[addonSlot] += multiplier;
         }
 
         // Verify stock
         for (int i = 0; i < requiredStock.length; i++) {
+
             int needed = requiredStock[i];
 
             if (needed > 0) {
+
                 if (this.slots[i].getCurrentInSlotItems() < needed) {
-                    System.out.println("Insufficient stock for ingredient in slot [" + (i + 1) + "].");
+
+                    String ingredientName = this.itemTemplates[i].getName();
+
+                    System.out.println("\nTransaction Failed.");
+                    System.out.println("Not enough stock for: " + ingredientName);
+                    System.out.println("Needed: " + needed);
+                    System.out.println("Available: " + this.slots[i].getCurrentInSlotItems());
+
                     return false;
                 }
             }
@@ -330,12 +367,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             this.dispenseChange(changeDue);
         }
 
-        // TODO
-        // Preparation animation currently prints incorrect ingredient names.
-        // Transaction logic, pricing, stock deduction, and change dispensing work correctly.
-        // Investigate SlotCompartment inventory/template synchronization later.
-
-
+    
         // Prepare drink
         System.out.println("\n--- PREPARING CUSTOM MILK TEA ---");
 
@@ -369,46 +401,59 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             flushLoad();
         }
 
-    // Sweetener
+        // Sweetener
         if (sweetenerSlot != -1) {
 
-        Item sweetener = this.slots[sweetenerSlot].dispense();
-        this.totalSold[sweetenerSlot]++;
+            String sugarText;
 
-        String sugarText;
+            switch (sugarLevel) {
 
-        switch (sugarLevel) {
+                case NO_SUGAR:
+                    sugarText = "0%";
+                    break;
 
-            case NO_SUGAR:
-                sugarText = "0%";
-                break;
+                case HALF_SUGAR:
+                    sugarText = "50%";
+                    break;
 
-            case HALF_SUGAR:
-                sugarText = "50%";
-                break;
+                case FULL_SUGAR:
+                    default:
+                    sugarText = "100%";
+                    break;
+            }
 
-            case FULL_SUGAR:
-                sugarText = "100%";
-                break;
+        for (int i = 0; i < sweetenerServings; i++) {
 
-            default:
-                sugarText = "Unknown";
-                break;
+            Item sweetener = this.slots[sweetenerSlot].dispense();
+            this.totalSold[sweetenerSlot]++;
+
+            if (i == 0) {
+                System.out.println("Adding " + sweetener.getName() + " (" + sugarText + ")");
+            } else {
+                System.out.println("Adding extra serving of " + sweetener.getName());
+            }
+
+            flushLoad();
         }
-
-        String sweetenerName = this.itemTemplates[sweetenerSlot].getName();
-        System.out.println("Adding " + sweetenerName + " (" + sugarText + ")");
-        flushLoad();
     }
 
         // Add-ons
         for (int addonSlot : addonSlots) {
-            Item addonInstance = this.slots[addonSlot].dispense();
-            this.totalSold[addonSlot]++;
-            String addonName = this.itemTemplates[addonSlot].getName();
-            System.out.println("Adding " + addonName);
+
+            for (int i = 0; i < multiplier; i++) {
+
+                Item addonInstance = this.slots[addonSlot].dispense();
+                this.totalSold[addonSlot]++;
+
+                if (i == 0) {
+                    System.out.println("Adding " + addonInstance.getName());
+                } else {
+                System.out.println("Adding extra serving of " + addonInstance.getName());
+                }
+
             flushLoad();
         }
+    }
 
         // Ice
         for (int i = 0; i < iceServings; i++) {
@@ -461,6 +506,9 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.println("Total Calories: " + totalCalories + " kcal");
         System.out.println("Total Change Dispensed: PHP " + changeDue);
 
+        customMilkTeaSold++;
+        customMilkTeaRevenue += totalPrice;
+
         return true;
     }
 
@@ -480,4 +528,17 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
         System.out.flush();
     }
+
+    // Getters
+
+    public int getCustomMilkTeaSold() {
+        return customMilkTeaSold;
+    }
+
+    public double getCustomMilkTeaRevenue() {
+        return customMilkTeaRevenue;
+    }
+
+
+
 }
