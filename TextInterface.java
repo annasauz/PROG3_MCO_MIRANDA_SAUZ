@@ -12,13 +12,17 @@ public class TextInterface {
     /**
      * Displays main menu
      */
-    public void printCreateAndTest(){
+    public void printCreateAndTest() {
         clearScreen();
-        System.out.println("Main menu");
-        System.out.println("1. Create vending machine");
-        System.out.println("2. Test vending machine");
-        System.out.println("3. Exit");
 
+        System.out.println("==================================");
+        System.out.println("      VENDING MACHINE FACTORY");
+        System.out.println("==================================");
+        System.out.println("1. Create Vending Machine");
+        System.out.println("2. Test Vending Machine");
+        System.out.println("3. Exit");
+        System.out.println("==================================");
+        System.out.print("Choice: ");
     }
 
     /**
@@ -170,25 +174,30 @@ public class TextInterface {
 
             if (items[i] != null) {
 
-                System.out.printf("%-6d %-15s PHP%-9.2f %-10.0f %-8d%n",
-                        i + 1,
-                        items[i].getName(),
-                        items[i].getPrice(),
-                        items[i].getCalories(),
-                        slots[i].getCurrentInSlotItems());
+            String itemName = items[i].getName();
 
+            // Label restricted ingredients
+            if (items[i] instanceof SpecialItem) {
+
+                SpecialItem specialItem = (SpecialItem) items[i];
+
+                if (!specialItem.isSellableIndividually()) {
+                    itemName += " (Restricted)";
+                }
             }
-            else {
 
-                System.out.printf("%-6d %-15s %-10s %-10s %-8d%n",
-                        i + 1,
-                        "Empty",
-                        "-",
-                        "-",
-                        0);
+            System.out.printf("%-6d %-28s PHP%-9.2f %-10.0f %-8d%n",
+                i + 1,
+                itemName,
+                items[i].getPrice(),
+                items[i].getCalories(),
+                slots[i].getCurrentInSlotItems());
 
+            } else {
+
+                System.out.printf("%-6d %-28s %-10s %-10s %-8d%n", i + 1, "Empty", "-", "-", 0);
+                }
             }
-        }
         printDivider();
     }
 
@@ -209,21 +218,28 @@ public class TextInterface {
         }
 
         // Sugar Level
-        System.out.print("Sugar    : ");
+        System.out.print("Sugar Level: ");
 
-        switch (sugarLevel) {
+        if (sweetener == -1) {
 
-            case SpecialVendingMachine.NO_SUGAR:
+            System.out.println("N/A");
+
+        } else {
+
+            switch (sugarLevel) {
+
+                case SpecialVendingMachine.NO_SUGAR:
                 System.out.println("0%");
                 break;
 
-            case SpecialVendingMachine.HALF_SUGAR:
+                case SpecialVendingMachine.HALF_SUGAR:
                 System.out.println("50%");
                 break;
-
-            case SpecialVendingMachine.FULL_SUGAR:
+                
+                case SpecialVendingMachine.FULL_SUGAR:
                 System.out.println("100%");
                 break;
+            }
         }
 
         System.out.print("Ice Level: ");
