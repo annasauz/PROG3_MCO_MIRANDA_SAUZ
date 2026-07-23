@@ -133,11 +133,11 @@ public class RegularVendingMachineController {
     /**
      * Displays the items available in the vending machine.
      */
-    private void displayItemsHandler() {
+    protected void displayItemsHandler() {
 
     System.out.println();
 
-    textInterface.printRegularVendingMachineMenu(
+    textInterface.printSpecialVendingMachineMenu(
             vendingMachine.getItemTemplates(),
             vendingMachine.getSlots());
 
@@ -292,19 +292,28 @@ public class RegularVendingMachineController {
     private int getInput(int min, int max){
         if (max < min){
             System.out.println("Invalid input call");
+            return 0;
         }
-        if (!scanner.hasNextInt()) {
-        scanner.next(); 
-        return 0;       
-                                    }
-        int choice = scanner.nextInt();
-        boolean inMinMax = choice >= min && choice <= max;
 
-        if (inMinMax){
-            return choice;
+        while (true) {
+            // Wait for an integer token
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Enter a whole number between " + min + " and " + max + ".");
+                scanner.next(); // consume invalid token
+                System.out.print("Choice: ");
+                continue;
+            }
+
+            int choice = scanner.nextInt();
+            if (choice >= min && choice <= max) {
+                return choice;
+            }
+
+            System.out.println("Choice must be between " + min + " and " + max + ". Try again.");
+            System.out.print("Choice: ");
         }
-        return 0;
     }
+
     /**
      * Checks if valid positive integer.
      *
@@ -551,93 +560,17 @@ private ArrayList<Integer> chooseAddOns() {
 
         int size = chooseSize();
 
-        System.out.println("\n========== ORDER SUMMARY ==========");
+        textInterface.printCustomMilkTeaSummary(
+            specialMachine,
+            tea,
+            milk,
+            sweetener,
+            sugarLevel,
+            iceLevel,
+            size,
+            addons
+        );
 
-        System.out.println("Tea Base : " + specialMachine.getItemTemplates()[tea].getName());
-        System.out.println("Milk Base: " + specialMachine.getItemTemplates()[milk].getName());
-
-        // Sweetener
-        System.out.print("Sweetener: ");
-
-        if (sweetener == -1) {
-            System.out.println("None");
-        }
-        else {
-            System.out.println(specialMachine.getItemTemplates()[sweetener].getName());
-        }
-
-        // Sugar Level
-        System.out.print("Sugar    : ");
-
-        switch (sugarLevel) {
-
-            case SpecialVendingMachine.NO_SUGAR:
-            System.out.println("0%");
-            break;
-
-            case SpecialVendingMachine.HALF_SUGAR:
-            System.out.println("50%");
-            break;
-
-            case SpecialVendingMachine.FULL_SUGAR:
-            System.out.println("100%");
-            break;
-        }
-        
-        System.out.print("Ice Level: ");
-
-        switch (iceLevel) {
-
-            case SpecialVendingMachine.NO_ICE:
-                System.out.println("No Ice");
-                break;
-
-        case SpecialVendingMachine.LESS_ICE:
-            System.out.println("Less Ice");
-            break;
-
-        case SpecialVendingMachine.REGULAR_ICE:
-            System.out.println("Regular Ice");
-            break;
-
-        case SpecialVendingMachine.EXTRA_ICE:
-            System.out.println("Extra Ice");
-            break;
-        }
-        System.out.print("Size     : ");
-
-        switch (size) {
-
-            case SpecialVendingMachine.SMALL:
-                System.out.println("Small");
-                break;
-
-            case SpecialVendingMachine.MEDIUM:
-                System.out.println("Medium");
-                break;
-
-            case SpecialVendingMachine.LARGE:
-                System.out.println("Large");
-                break;
-        }
-
-    System.out.println("Add-ons:");
-
-    if (addons.isEmpty()) {
-
-        System.out.println("None");
-
-    } else {
-
-        for (Integer slot : addons) {
-
-            System.out.println("- "
-                    + specialMachine.getItemTemplates()[slot].getName());
-
-        }
-    }
-
-    System.out.println();
 
     return specialMachine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);   
 
