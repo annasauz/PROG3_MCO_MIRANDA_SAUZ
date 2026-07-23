@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RegularVendingMachineController {
@@ -189,47 +190,12 @@ public class RegularVendingMachineController {
                     }
                     break;
                 case 3:
-                    System.out.println("\n--- Build Custom Milk Tea ---");
-                    
-                    //  verification
                     if (vendingMachine instanceof SpecialVendingMachine) {
-                        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
-                        
-                        
-                        System.out.print("Select Tea Base slot (1-" + maxSlots + "): ");
-                        int teaSlot = getInput(1, maxSlots) - 1;
-                        
-                        
-                        System.out.print("Select Milk Base slot (1-" + maxSlots + "): ");
-                        int milkSlot = getInput(1, maxSlots) - 1;
-                        
-                        // select add-ons
-                        java.util.ArrayList<Integer> addonSlots = new java.util.ArrayList<>();
-                        boolean addingAddons = true;
-                        
-                        while (addingAddons) {
-                            System.out.print("Would you like to add an add-on/topping? (1 = Yes, 2 = No): ");
-                            int addChoice = getInput(1, 2);
-                            
-                            if (addChoice == 1) {
-                                System.out.print("Select Add-on slot (1-" + maxSlots + "): ");
-                                int addonSlot = getInput(1, maxSlots) - 1;
-                                addonSlots.add(addonSlot);
-                            } else {
-                                addingAddons = false;
-                            }
+                        if (customMilkTeaHandler()) {
+                            isPurchasing = false;
                         }
-                        
-                        // custom purchase
-                        boolean customSuccess = specialMachine.purchaseCustomMilkTea(teaSlot, milkSlot, addonSlots);
-                        
-                        if (customSuccess) {
-                            isPurchasing = false; // exit loop
-                        }
-                        
                     } else {
-                        // fallback and error handling
-                        System.out.println("Error: Custom Milk Tea is only available in a Special Vending Machine.");
+                        System.out.println("Custom Milk Tea is only available in the Special Vending Machine.");
                     }
                     break;
                 case 4:
@@ -422,6 +388,333 @@ public class RegularVendingMachineController {
             }
         }
         return denomination;
+    }
+
+
+    /* =============================================
+            SPECIAL VENDING MACHINE METHODS
+   =============================================== */
+
+private int chooseTea() {
+
+        System.out.println("\n===== CHOOSE TEA BASE =====");
+        System.out.println("1. Black Tea");
+        System.out.println("2. Green Tea");
+        System.out.println("3. Earl Grey Tea");
+        System.out.println("4. Oolong Tea");
+
+        System.out.print("Choice: ");
+        int choice = getInput(1, 4);
+
+        switch (choice) {
+            case 1:
+                return SpecialVendingMachine.BLACK_TEA;
+
+            case 2:
+                return SpecialVendingMachine.GREEN_TEA;
+
+            case 3:
+                return SpecialVendingMachine.EARL_GREY_TEA;
+
+            default:
+                return SpecialVendingMachine.OOLONG_TEA;
+        }
+    }
+
+    private int chooseMilk() {
+
+        System.out.println("\n===== CHOOSE MILK =====");
+        System.out.println("1. Whole Milk");
+        System.out.println("2. Oat Milk");
+        System.out.println("3. Almond Milk");
+        System.out.println("4. Skim Milk");
+
+        System.out.print("Choice: ");
+        int choice = getInput(1, 4);
+
+        switch (choice) {
+            case 1:
+                return SpecialVendingMachine.WHOLE_MILK;
+
+            case 2:
+                return SpecialVendingMachine.OAT_MILK;
+
+            case 3:
+                return SpecialVendingMachine.ALMOND_MILK;
+
+            default:
+                return SpecialVendingMachine.SKIM_MILK;
+        }
+    }
+
+private ArrayList<Integer> chooseAddOns() {
+
+    SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+
+    ArrayList<Integer> addons = new ArrayList<>();
+
+    while (true) {
+
+        System.out.println("\n========== ADD-ONS ==========");
+
+        System.out.println("Current Selection:");
+
+        if (addons.isEmpty()) {
+            System.out.println("None");
+        } else {
+
+            for (Integer slot : addons) {
+                System.out.println("- " +
+                    specialMachine.getItemTemplates()[slot].getName());
+            }
+        }
+
+        System.out.println();
+
+        System.out.println("1. Matcha Powder");
+        System.out.println("2. Taro Powder");
+        System.out.println("3. Oreo");
+        System.out.println("4. Cream Cheese");
+        System.out.println("5. Tapioca Pearls");
+        System.out.println("6. Glass Jelly");
+        System.out.println("7. Egg Pudding");
+        System.out.println("0. Finish");
+
+        System.out.print("Choice: ");
+        int choice = getInput(0, 7);
+
+    
+
+        int slot = -1;
+
+        switch(choice){
+
+            case 0: return addons;
+            case 1: slot = SpecialVendingMachine.MATCHA_POWDER; break;
+            case 2: slot = SpecialVendingMachine.TARO_POWDER; break;
+            case 3: slot = SpecialVendingMachine.OREO; break;
+            case 4: slot = SpecialVendingMachine.CREAM_CHEESE; break;
+            case 5: slot = SpecialVendingMachine.TAPIOCA_PEARLS; break;
+            case 6: slot = SpecialVendingMachine.GLASS_JELLY; break;
+            case 7: slot = SpecialVendingMachine.EGG_PUDDING; break;
+        }
+
+        if(addons.contains(slot)){
+            System.out.println("That add-on has already been selected.");
+        }
+        else{
+            addons.add(slot);
+            System.out.println("Added " + specialMachine.getItemTemplates()[slot].getName());
+            }
+        }   
+        
+    }
+
+    private int chooseSize() {
+
+        System.out.println("\n===== CHOOSE SIZE =====");
+        System.out.println("1. Small");
+        System.out.println("2. Medium");
+        System.out.println("3. Large");
+
+        System.out.print("Choice: ");
+        int choice = getInput(1, 3);
+
+        switch (choice) {
+            case 1:
+                return SpecialVendingMachine.SMALL;
+
+            case 2:
+                return SpecialVendingMachine.MEDIUM;
+
+            default:
+                return SpecialVendingMachine.LARGE;
+        }
+    }
+    private boolean customMilkTeaHandler() {
+
+        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+        int tea = chooseTea();
+        int milk = chooseMilk();
+
+        int sweetener = chooseSweetener();
+
+        int sugarLevel = SpecialVendingMachine.FULL_SUGAR;
+
+        if (sweetener != -1) {
+            sugarLevel = chooseSugarLevel();
+            }
+
+        ArrayList<Integer> addons = chooseAddOns();
+
+        int iceLevel = chooseIceLevel();
+
+        int size = chooseSize();
+
+        System.out.println("\n========== ORDER SUMMARY ==========");
+
+        System.out.println("Tea Base : " + specialMachine.getItemTemplates()[tea].getName());
+        System.out.println("Milk Base: " + specialMachine.getItemTemplates()[milk].getName());
+
+        // Sweetener
+        System.out.print("Sweetener: ");
+
+        if (sweetener == -1) {
+            System.out.println("None");
+        }
+        else {
+            System.out.println(specialMachine.getItemTemplates()[sweetener].getName());
+        }
+
+        // Sugar Level
+        System.out.print("Sugar    : ");
+
+        switch (sugarLevel) {
+
+            case SpecialVendingMachine.NO_SUGAR:
+            System.out.println("0%");
+            break;
+
+            case SpecialVendingMachine.HALF_SUGAR:
+            System.out.println("50%");
+            break;
+
+            case SpecialVendingMachine.FULL_SUGAR:
+            System.out.println("100%");
+            break;
+        }
+        
+        System.out.print("Ice Level: ");
+
+        switch (iceLevel) {
+
+            case SpecialVendingMachine.NO_ICE:
+                System.out.println("No Ice");
+                break;
+
+        case SpecialVendingMachine.LESS_ICE:
+            System.out.println("Less Ice");
+            break;
+
+        case SpecialVendingMachine.REGULAR_ICE:
+            System.out.println("Regular Ice");
+            break;
+
+        case SpecialVendingMachine.EXTRA_ICE:
+            System.out.println("Extra Ice");
+            break;
+        }
+        System.out.print("Size     : ");
+
+        switch (size) {
+
+            case SpecialVendingMachine.SMALL:
+                System.out.println("Small");
+                break;
+
+            case SpecialVendingMachine.MEDIUM:
+                System.out.println("Medium");
+                break;
+
+            case SpecialVendingMachine.LARGE:
+                System.out.println("Large");
+                break;
+        }
+
+    System.out.println("Add-ons:");
+
+    if (addons.isEmpty()) {
+
+        System.out.println("None");
+
+    } else {
+
+        for (Integer slot : addons) {
+
+            System.out.println("- "
+                    + specialMachine.getItemTemplates()[slot].getName());
+
+        }
+    }
+
+    System.out.println();
+
+    return specialMachine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);   
+
+}
+
+private int chooseSugarLevel() {
+
+    System.out.println("\n===== CHOOSE SUGAR LEVEL =====");
+    System.out.println("1. 0%");
+    System.out.println("2. 50%");
+    System.out.println("3. 100%");
+
+    System.out.print("Choice: ");
+
+    int choice = getInput(1, 3);
+
+    switch (choice) {
+
+        case 1:
+            return SpecialVendingMachine.NO_SUGAR;
+
+        case 2:
+            return SpecialVendingMachine.HALF_SUGAR;
+
+        default:
+            return SpecialVendingMachine.FULL_SUGAR;
+    }
+}
+
+    private int chooseSweetener() {
+
+        System.out.println("\n===== CHOOSE SWEETENER =====");
+        System.out.println("1. None");
+        System.out.println("2. Honey");
+        System.out.println("3. Brown Sugar Syrup");
+
+        System.out.print("Choice: ");
+
+        int choice = getInput(1, 3);
+
+        switch (choice) {
+
+            case 1:
+                return -1;
+            case 2:
+                return SpecialVendingMachine.HONEY;
+
+            default:
+                return SpecialVendingMachine.BROWN_SUGAR_SYRUP;
+        }
+    }
+
+    private int chooseIceLevel() {
+
+        System.out.println("\n===== CHOOSE ICE LEVEL =====");
+        System.out.println("1. No Ice");
+        System.out.println("2. Less Ice");
+        System.out.println("3. Regular Ice");
+        System.out.println("4. Extra Ice");
+
+        System.out.print("Choice: ");
+        int choice = getInput(1, 4);
+
+        switch (choice) {
+
+            case 1:
+                return SpecialVendingMachine.NO_ICE;
+
+            case 2:
+                return SpecialVendingMachine.LESS_ICE;
+
+            case 3:
+                return SpecialVendingMachine.REGULAR_ICE;
+
+            default:
+                return SpecialVendingMachine.EXTRA_ICE;
+        }
     }
 
 }
