@@ -38,11 +38,15 @@ public class VendingMachineSoftwareLoop {
                     switch (getInput(1, 2)) {
                         case 1:
                             this.vendingMachine = new RegularVendingMachine();
-                            System.out.println("Regular vending machine created.");
+                            System.out.println("\nRegular Vending Machine successfully created.");
                             break;
                         case 2:
+                            System.out.println("\n==================================");
+                            System.out.println("      TEST VENDING MACHINE");
+                            System.out.println("==================================");
+                            textInterface.printTypeOfVendingMachineToTest();
                             this.specialVendingMachine = new SpecialVendingMachine();
-                            System.out.println("Special vending machine created.");
+                            System.out.println("\nSpecial Vending Machine successfully created.");
                             break;
                     }
                     break;
@@ -51,7 +55,8 @@ public class VendingMachineSoftwareLoop {
                     switch(getInput(1, 2)) {
                         case 1:
                             if (this.vendingMachine == null){
-                                System.out.println("Vending machine does not exist; create one.");
+                                System.out.println("\nNo Regular Vending Machine has been created yet.");
+                                System.out.println("Please create one first.");
                                 textInterface.pressEnterToContinue(scanner);
                                 break;
                             }
@@ -61,7 +66,8 @@ public class VendingMachineSoftwareLoop {
                             break;
                        case 2:
                             if (this.specialVendingMachine == null) {
-                                System.out.println("Special vending machine does not exist; create one.");
+                                System.out.println("\nNo Special Vending Machine has been created yet.");
+                                System.out.println("Please create one first.");
                                 textInterface.pressEnterToContinue(scanner);
                                 break;
                             }
