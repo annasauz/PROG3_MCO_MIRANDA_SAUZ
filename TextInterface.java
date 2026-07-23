@@ -113,14 +113,14 @@ public class TextInterface {
      */
   public void printRegularVendingMachineMenu(Item[] items, SlotCompartment[] slots) {
 
-    System.out.println("==============================================================");
+    printDivider();
     System.out.println("                REGULAR VENDING MACHINE");
-    System.out.println("==============================================================");
+    printDivider();
 
     System.out.printf("%-6s %-15s %-10s %-10s %-8s%n",
             "Slot", "Item", "Price", "Calories", "Stock");
 
-    System.out.println("--------------------------------------------------------------");
+    printDivider();
 
     for (int i = 0; i < items.length; i++) {
 
@@ -146,8 +146,149 @@ public class TextInterface {
         }
     }
 
-    System.out.println("==============================================================");
+    printDivider();
 }
+
+    /**
+     * Displays the menu of items available in the special vending machine.
+     *
+     * @param items Array of Item objects representing the items in the vending machine
+     * @param slots Array of SlotCompartment objects representing the slots in the vending machine
+     */
+    public void printSpecialVendingMachineMenu(Item[] items, SlotCompartment[] slots) {
+
+        printDivider();
+        System.out.println("                SPECIAL VENDING MACHINE");
+        printDivider();
+
+        System.out.printf("%-6s %-15s %-10s %-10s %-8s%n",
+                "Slot", "Item", "Price", "Calories", "Stock");
+
+        printDivider();
+
+        for (int i = 0; i < items.length; i++) {
+
+            if (items[i] != null) {
+
+                System.out.printf("%-6d %-15s PHP%-9.2f %-10.0f %-8d%n",
+                        i + 1,
+                        items[i].getName(),
+                        items[i].getPrice(),
+                        items[i].getCalories(),
+                        slots[i].getCurrentInSlotItems());
+
+            }
+            else {
+
+                System.out.printf("%-6d %-15s %-10s %-10s %-8d%n",
+                        i + 1,
+                        "Empty",
+                        "-",
+                        "-",
+                        0);
+
+            }
+        }
+        printDivider();
+    }
+
+    public void printCustomMilkTeaSummary(SpecialVendingMachine specialMachine, int tea, int milk, int sweetener, int sugarLevel, int iceLevel, int size, java.util.List<Integer> addons) {
+        System.out.println("\n========== ORDER SUMMARY ==========");
+
+        System.out.println("Tea Base : " + specialMachine.getItemTemplates()[tea].getName());
+        System.out.println("Milk Base: " + specialMachine.getItemTemplates()[milk].getName());
+
+        // Sweetener
+        System.out.print("Sweetener: ");
+
+        if (sweetener == -1) {
+            System.out.println("None");
+        }
+        else {
+            System.out.println(specialMachine.getItemTemplates()[sweetener].getName());
+        }
+
+        // Sugar Level
+        System.out.print("Sugar    : ");
+
+        switch (sugarLevel) {
+
+            case SpecialVendingMachine.NO_SUGAR:
+                System.out.println("0%");
+                break;
+
+            case SpecialVendingMachine.HALF_SUGAR:
+                System.out.println("50%");
+                break;
+
+            case SpecialVendingMachine.FULL_SUGAR:
+                System.out.println("100%");
+                break;
+        }
+
+        System.out.print("Ice Level: ");
+
+        switch (iceLevel) {
+
+            case SpecialVendingMachine.NO_ICE:
+                System.out.println("No Ice");
+                break;
+
+            case SpecialVendingMachine.LESS_ICE:
+                System.out.println("Less Ice");
+                break;
+
+            case SpecialVendingMachine.REGULAR_ICE:
+                System.out.println("Regular Ice");
+                break;
+
+            case SpecialVendingMachine.EXTRA_ICE:
+                System.out.println("Extra Ice");
+                break;
+        }
+        System.out.print("Size     : ");
+
+        switch (size) {
+
+            case SpecialVendingMachine.SMALL:
+                System.out.println("Small");
+                break;
+
+            case SpecialVendingMachine.MEDIUM:
+                System.out.println("Medium");
+                break;
+
+            case SpecialVendingMachine.LARGE:
+                System.out.println("Large");
+                break;
+        }
+
+        System.out.println("Add-ons  :");
+
+        if (addons.isEmpty()) {
+
+            System.out.println("None");
+
+        } else {
+
+            for (Integer slot : addons) {
+
+                System.out.println("- "
+                        + specialMachine.getItemTemplates()[slot].getName());
+
+            }
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * Prints a horizontal bar to the console for visual separation.
+     */
+    private void printDivider(){
+        System.out.println("=".repeat(62));
+
+    }
 
     /**
     * Pauses the program until the user presses Enter.
