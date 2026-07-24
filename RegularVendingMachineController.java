@@ -218,7 +218,7 @@ public class RegularVendingMachineController {
      */
     private void maintenanceStockHandler() {
         System.out.println("\n--- Restock Items ---");
-        displayItemsHandler();
+        textInterface.printMaintenanceStockDisplay(vendingMachine.getItemTemplates(), vendingMachine.getSlots());
         int maxSlots = vendingMachine.getSlots().length;
         System.out.print("Select a slot to restock (1-" + maxSlots + "): ");
         int userInput = getInput(1, maxSlots);
@@ -721,7 +721,6 @@ private int chooseSugarLevel() {
     }
 
 }
-
 
 
 
