@@ -154,6 +154,23 @@ public class RegularVendingMachine {
             return false;
         }
 
+        // Prevent Custom-Only ingredients from being purchased individually
+        if (itemTemplate instanceof SpecialItem) {
+
+            SpecialItem specialItem = (SpecialItem) itemTemplate;
+
+            if (!specialItem.isSellableIndividually()) {
+
+                System.out.println("\n----------------------------------------");
+                System.out.println(itemTemplate.getName() + " is a Custom-Only ingredient.");
+                System.out.println("It cannot be purchased individually.");
+                System.out.println("Please use 'Build Custom Milk Tea' instead.");
+                System.out.println("----------------------------------------");
+
+                return false;
+            }
+        }
+
         double itemPrice = itemTemplate.getPrice();
         double userInserted = this.transactionCashBox.getMoneyAmount();
 
@@ -241,11 +258,20 @@ public class RegularVendingMachine {
             this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
             this.totalSold[slotIndex] = 0;
 
-        } else {
-            System.out.println("This slot is permanently assigned to "
-                    + this.itemTemplates[slotIndex].getName()
-                    + ". Only this item may be restocked.");
-        }
+            System.out.println("\n========== RESTOCK SUCCESS ==========");
+
+            System.out.println("Item Restocked : " + item.getName());
+            System.out.println("Quantity Added : " + amount + " stock(s)");
+
+            System.out.println("Current Stock  : " + this.slots[slotIndex].getCurrentInSlotItems() + "/" + this.slots[slotIndex].getMaximumInSlotItems());
+
+            System.out.println("=====================================");
+
+            } else {
+
+            System.out.println("This slot is permanently assigned to " + this.itemTemplates[slotIndex].getName()
+            + ". Only this item may be restocked.");
+}
     }    
 
 
@@ -300,10 +326,24 @@ public class RegularVendingMachine {
             System.out.println(" - Total Units Sold:   " + sold);
             System.out.printf(" - Total Revenue:       PHP %.2f\n\n", itemRevenue);
         }
-        System.out.println("---------------------------------------------");
-        System.out.printf("TOTAL ENGINE REVENUE RECOVERED: PHP %.2f\n", totalRevenue);
-        System.out.println("=============================================");
-    }
+
+        // Special Vending Machine statistics
+        if (this instanceof SpecialVendingMachine) {
+
+            SpecialVendingMachine specialMachine = (SpecialVendingMachine) this;
+
+            System.out.println("---------------------------------------------");
+            System.out.println("CUSTOM MILK TEA SUMMARY");
+            System.out.println("---------------------------------------------");
+            System.out.println("Custom Milk Teas Sold : " + specialMachine.getCustomMilkTeaSold());
+            System.out.printf("Custom Drink Revenue  : PHP %.2f\n", specialMachine.getCustomMilkTeaRevenue());
+            
+            }
+
+            System.out.println("---------------------------------------------");
+            System.out.printf("TOTAL ENGINE REVENUE RECOVERED: PHP %.2f\n", totalRevenue);
+            System.out.println("=============================================");
+        }
 
     /**
      * Collects all money currently stored inside the machine and resets sales trackers.
