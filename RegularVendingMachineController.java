@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class RegularVendingMachineController {
@@ -456,7 +457,7 @@ private int chooseTea() {
         }
     }
 
-private ArrayList<Integer> chooseAddOns() {
+private ArrayList<Integer> chooseAddons() {
 
     SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
 
@@ -519,6 +520,26 @@ private ArrayList<Integer> chooseAddOns() {
         
     }
 
+    private void chooseAddons(int addon, ArrayList<Integer> addons) {
+        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+
+        int slot = -1;
+
+        switch(addon){
+            case 0: return;
+            case 1: slot = SpecialVendingMachine.MATCHA_POWDER; break;
+            case 2: slot = SpecialVendingMachine.TARO_POWDER; break;
+            case 3: slot = SpecialVendingMachine.OREO; break;
+            case 4: slot = SpecialVendingMachine.CREAM_CHEESE; break;
+            case 5: slot = SpecialVendingMachine.TAPIOCA_PEARLS; break;
+            case 6: slot = SpecialVendingMachine.GLASS_JELLY; break;
+            case 7: slot = SpecialVendingMachine.EGG_PUDDING; break;
+        }
+
+        addons.add(slot);
+        System.out.println("Added " + specialMachine.getItemTemplates()[addon].getName());
+    }
+
     private int chooseSize() {
 
         System.out.println("\n===== CHOOSE SIZE =====");
@@ -542,24 +563,72 @@ private ArrayList<Integer> chooseAddOns() {
     }
     
     private boolean customMilkTeaHandler() {
+        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;;
+        int tea;
+        int milk;
+        int sweetener;
+        int sugarLevel;
+        int iceLevel;
+        int size;
+        ArrayList<Integer> addons;
 
-        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
-        int tea = chooseTea();
-        int milk = chooseMilk();
+        textInterface.printMilkTeaToBuy();
+        switch (getInput(1, 4)) {
+            case 1:
+                break;
+            case 2:
+                return false;
+            case 3:
+                Random random = new Random();
+                tea = random.nextInt(4);
+                milk = random.nextInt(4);
+                sweetener = random.nextInt(3);
+                sugarLevel = random.nextInt(3);
+                iceLevel = random.nextInt(4);
+                size = random.nextInt(3) + 1;
 
-        int sweetener = chooseSweetener();
+                addons = new ArrayList<>();
+                int addonCount = random.nextInt(4);
+                for (int i = 0; i < addonCount; i++) {
+                    int addon = random.nextInt(7);
+                    chooseAddons(addon, addons);
+                }
 
-        int sugarLevel = SpecialVendingMachine.FULL_SUGAR;
+                textInterface.printCustomMilkTeaSummary(
+                        specialMachine,
+                        tea,
+                        milk,
+                        sweetener,
+                        sugarLevel,
+                        iceLevel,
+                        size,
+                        addons
+                );
+                return specialMachine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
+            case 4:
+                return false;
+            default:
+                System.out.println("Invalid user choice");
+                textInterface.pressEnterToContinue(scanner);
+                return false;
+        }
+
+        tea = chooseTea();
+        milk = chooseMilk();
+
+        sweetener = chooseSweetener();
+
+        sugarLevel = SpecialVendingMachine.FULL_SUGAR;
 
         if (sweetener != -1) {
             sugarLevel = chooseSugarLevel();
             }
 
-        ArrayList<Integer> addons = chooseAddOns();
+        addons = chooseAddons();
 
-        int iceLevel = chooseIceLevel();
+        iceLevel = chooseIceLevel();
 
-        int size = chooseSize();
+        size = chooseSize();
 
         textInterface.printCustomMilkTeaSummary(
             specialMachine,

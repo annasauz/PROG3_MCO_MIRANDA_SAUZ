@@ -298,6 +298,15 @@ public class TextInterface {
         System.out.println();
     }
 
+    public void printMilkTeaToBuy() {
+        System.out.println("\n--- Custom Milk Tea ---");
+        System.out.println("1. Create custom milk tea");
+        System.out.println("2. Purchase signature milk tea");
+        System.out.println("3. Randomized milk tea");
+        System.out.println("4. Cancel");
+        System.out.print("Choice: ");
+    }
+
     /**
      * Prints a horizontal bar to the console for visual separation.
      */
