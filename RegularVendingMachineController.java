@@ -540,6 +540,7 @@ private ArrayList<Integer> chooseAddOns() {
                 return SpecialVendingMachine.LARGE;
         }
     }
+    
     private boolean customMilkTeaHandler() {
 
         SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
