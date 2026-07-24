@@ -326,4 +326,45 @@ public class TextInterface {
         scanner.nextLine();
     }
 
+    public void printMaintenanceStockDisplay(Item[] items, SlotCompartment[] slots) {
+
+        printDivider();
+        System.out.println("           CURRENT INVENTORY");
+        printDivider();
+
+        System.out.printf("%-6s %-22s %-10s%n", "Slot", "Item", "Stock");
+
+        printDivider();
+
+        for (int i = 0; i < items.length; i++) {
+
+            if (items[i] != null) {
+
+                int current = slots[i].getCurrentInSlotItems();
+                int maximum = slots[i].getMaximumInSlotItems();
+
+                System.out.printf("%-6d %-22s %d/%d", i + 1, items[i].getName(), current, maximum);
+
+                if (current <= 3) {
+                    System.out.print("   !! LOW STOCK !!");
+            }
+
+        System.out.println();
+
+            } else {
+
+                int current = 0;
+                int maximum = slots[i].getMaximumInSlotItems();
+
+                System.out.printf("%-6d %-22s %d/%d", i + 1, "Empty", current, maximum);
+
+                System.out.print("   !! LOW STOCK !!");
+
+                System.out.println();
+                }
+            }
+
+            printDivider();
+        }
+
 }
