@@ -43,13 +43,25 @@ public class SlotCompartment {
     public void addInventory(Item item, int amount) {
 
         if (this.currentInSlotItems == this.MAXIMUM_IN_SLOT_ITEMS) {
-            System.out.println("At maximum capacity");
+            System.out.println("\n========== RESTOCK FAILED ==========");
+            System.out.println("The selected slot is already at maximum capacity.");
+            System.out.println("Current Stock : " + this.currentInSlotItems + "/" + this.MAXIMUM_IN_SLOT_ITEMS);
+            System.out.println("====================================");
         }
         else if (amount <= 0) {
-            System.out.println("Invalid number");
+            System.out.println("\n========== RESTOCK FAILED ==========");
+            System.out.println("Invalid quantity entered.");
+            System.out.println("Please enter a positive number.");
+            System.out.println("====================================");
         }
         else if (amount + this.currentInSlotItems > this.MAXIMUM_IN_SLOT_ITEMS) {
-            System.out.println("At overflowing capacity");
+            int availableSpace = this.MAXIMUM_IN_SLOT_ITEMS - this.currentInSlotItems;
+
+            System.out.println("\n========== RESTOCK FAILED ==========");
+            System.out.println("Adding " + amount + " stock(s) would exceed the slot capacity.");
+            System.out.println("Current Stock : " + this.currentInSlotItems + "/" + this.MAXIMUM_IN_SLOT_ITEMS);
+            System.out.println("Available Space: " + availableSpace + " stock(s)");
+            System.out.println("====================================");
         }
         else {
             
@@ -66,7 +78,10 @@ public class SlotCompartment {
                 
             }
             adjustCurrentInSlotItems(amount);
-            System.out.println("Stock added successfully.");
+            System.out.println("\n========== RESTOCK SUCCESS ==========");
+            System.out.println(amount + " stock(s) were successfully added.");
+            System.out.println("Current Stock : " + this.currentInSlotItems + "/" + this.MAXIMUM_IN_SLOT_ITEMS);
+            System.out.println("====================================");
         }
     }
 
