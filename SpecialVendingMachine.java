@@ -40,7 +40,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     public static final int GLASS_JELLY = 15;
     public static final int EGG_PUDDING = 16;
 
-    // Othersalize
+    // Others
     public static final int ICE = 17;
 
     /* ===========================
@@ -333,17 +333,29 @@ public class SpecialVendingMachine extends RegularVendingMachine {
                 }
             }
         }
-
         // Compute total price and calories
         double totalPrice = (teaTemplate.getPrice() * multiplier) + (milkTemplate.getPrice() * multiplier);
-        totalPrice += itemTemplates[ICE].getPrice() * iceServings;
 
         double totalCalories = (teaTemplate.getCalories() * multiplier) + (milkTemplate.getCalories() * multiplier);
 
+        // Sweetener
+        if (sweetenerSlot != -1) {
+
+            totalPrice += this.itemTemplates[sweetenerSlot].getPrice() * sweetenerServings;
+
+            totalCalories += this.itemTemplates[sweetenerSlot].getCalories() * sweetenerServings;
+            }
+
+        // Add-ons (scale with cup size)
         for (int addonSlot : addonSlots) {
-            totalPrice += this.itemTemplates[addonSlot].getPrice();
-            totalCalories += this.itemTemplates[addonSlot].getCalories();
-        }
+
+            totalPrice += this.itemTemplates[addonSlot].getPrice() * multiplier;
+
+            totalCalories += this.itemTemplates[addonSlot].getCalories() * multiplier;
+            }
+
+        // Ice (price only, 0 calories)
+        totalPrice += this.itemTemplates[ICE].getPrice() * iceServings;
 
         // Check user money
         double userInserted = this.transactionCashBox.getMoneyAmount();
@@ -476,6 +488,10 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
         System.out.println("Milk Tea Done!");
 
+        // Update custom milk tea statistics
+        this.customMilkTeaSold++;
+        this.customMilkTeaRevenue += totalPrice;
+
         // Save transaction
         this.mergeTransactionToInternal();
 
@@ -506,9 +522,6 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.println("Total Calories: " + totalCalories + " kcal");
         System.out.println("Total Change Dispensed: PHP " + changeDue);
 
-        customMilkTeaSold++;
-        customMilkTeaRevenue += totalPrice;
-
         return true;
     }
 
@@ -527,6 +540,22 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
 
         System.out.flush();
+    }
+
+    @Override
+    public void printTransactionSummary() {
+
+        // Print the normal vending machine summary first
+        super.printTransactionSummary();
+
+        // Then print custom milk tea statistics
+        System.out.println("\n========== CUSTOM MILK TEA SUMMARY ==========");
+
+        System.out.println("Custom Milk Teas Sold : " + customMilkTeaSold);
+
+        System.out.printf("Custom Milk Tea Revenue: PHP %.2f%n", customMilkTeaRevenue);
+
+        System.out.println("=============================================");
     }
 
     // Getters
