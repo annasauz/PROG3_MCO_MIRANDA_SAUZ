@@ -522,6 +522,8 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.println("Total Calories: " + totalCalories + " kcal");
         System.out.println("Total Change Dispensed: PHP " + changeDue);
 
+        printNutritionFacts(teaSlot, milkSlot, sugarLevel, iceServings, addonSlots, totalCalories);
+
         return true;
     }
 
@@ -557,6 +559,147 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
         System.out.println("=============================================");
     }
+
+    public boolean isRestrictedItem(int slot) {
+
+    return slot == BROWN_SUGAR_SYRUP || slot == CREAM_CHEESE || slot == TAPIOCA_PEARLS || slot == GLASS_JELLY;
+        }
+
+
+    private void printNutritionFacts(int teaSlot, int milkSlot, int sugarLevel, int iceServings, ArrayList<Integer> addonSlots, double totalCalories) {
+
+        System.out.println("\n========== NUTRITION FACTS ==========");
+
+        System.out.println("Calories : " + totalCalories + " kcal");
+        System.out.println();
+
+        // =========================
+        // CONTAINS
+        // =========================
+        System.out.println("Contains:");
+
+        if (teaSlot == BLACK_TEA || teaSlot == GREEN_TEA || teaSlot == EARL_GREY_TEA || teaSlot == OOLONG_TEA) {
+
+            System.out.println("[X] Caffeine");
+        }
+
+        if (milkSlot == WHOLE_MILK || milkSlot == SKIM_MILK) {
+
+            System.out.println("[X] Dairy");
+        }
+
+        System.out.println();
+
+        // =========================
+        // SUGAR LEVEL
+        // =========================
+        System.out.println("Sugar Level:");
+
+        switch (sugarLevel) {
+
+            case NO_SUGAR:
+                System.out.println("[X] 0%");
+                break;
+
+            case HALF_SUGAR:
+                System.out.println("[X] 50%");
+                break;
+
+            case FULL_SUGAR:
+                System.out.println("[X] 100%");
+                break;
+        }
+
+        System.out.println();
+
+        // =========================
+        // ALLERGENS
+        // =========================
+        System.out.println("Allergens:");
+
+        boolean allergenFound = false;
+
+        if (milkSlot == WHOLE_MILK || milkSlot == SKIM_MILK) {
+
+            System.out.println("[X] Milk");
+            allergenFound = true;
+        }
+
+        if (milkSlot == ALMOND_MILK) {
+            System.out.println("[X] Tree Nuts");
+            allergenFound = true;
+        }
+
+        if (addonSlots.contains(OREO)) {
+            System.out.println("[X] Gluten");
+            allergenFound = true;
+        }
+
+        if (!allergenFound) {
+            System.out.println("[X] None");
+        }
+
+        System.out.println();
+
+        // =========================
+        // NUTRITION NOTES
+        // =========================
+        System.out.println("Nutrition Notes:");
+
+        // Sugar description
+        switch (sugarLevel) {
+
+            case NO_SUGAR:
+                System.out.println("[X] No Added Sugar");
+                break;
+
+            case HALF_SUGAR:
+                System.out.println("[X] Moderate Sugar");
+                break;
+
+            case FULL_SUGAR:
+                System.out.println("[X] High Sugar");
+                break;
+        }
+
+        // Calorie description
+        if (totalCalories < 250) {
+
+            System.out.println("[X] Low Calorie");
+
+        } else if (totalCalories < 500) {
+
+            System.out.println("[X] Moderate Calorie");
+
+        } else {
+
+            System.out.println("[X] High Calorie");
+        }
+
+        // Dairy note
+        if (milkSlot == OAT_MILK || milkSlot == ALMOND_MILK) {
+
+            System.out.println("[X] Dairy-Free");
+
+        } else {
+
+            System.out.println("[X] Contains Dairy");
+        }
+
+        // Temperature
+        if (iceServings > 0) {
+
+            System.out.println("[X] Served Cold");
+        }
+
+        // Vegetarian
+        System.out.println("[X] Vegetarian");
+
+        System.out.println("===================================="); 
+    }
+
+
+
 
     // Getters
 
