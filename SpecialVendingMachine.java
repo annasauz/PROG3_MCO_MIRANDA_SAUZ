@@ -9,6 +9,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     private int customMilkTeaSold;
     private double customMilkTeaRevenue;
 
+
     /* ===========================
             SLOT CONSTANTS
     =========================== */
@@ -80,6 +81,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
         customMilkTeaSold = 0;
         customMilkTeaRevenue = 0;
+
 
     }
 
@@ -387,6 +389,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         for (int i = 0; i < multiplier; i++) {
             Item teaInstance = this.slots[teaSlot].dispense();
             this.totalSold[teaSlot]++;
+            this.revenuePerItem[teaSlot] += teaInstance.getPrice();
 
             String teaName = teaTemplate.getName();
             if (i == 0) {
@@ -402,6 +405,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         for (int i = 0; i < multiplier; i++) {
             Item milkInstance = this.slots[milkSlot].dispense();
             this.totalSold[milkSlot]++;
+            this.revenuePerItem[milkSlot] += milkInstance.getPrice();
 
             String milkName = milkTemplate.getName();
             if (i == 0) {
@@ -438,6 +442,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
             Item sweetener = this.slots[sweetenerSlot].dispense();
             this.totalSold[sweetenerSlot]++;
+            this.revenuePerItem[sweetenerSlot] += sweetener.getPrice();
 
             if (i == 0) {
                 System.out.println("Adding " + sweetener.getName() + " (" + sugarText + ")");
@@ -456,6 +461,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
                 Item addonInstance = this.slots[addonSlot].dispense();
                 this.totalSold[addonSlot]++;
+                this.revenuePerItem[addonSlot] += addonInstance.getPrice();
 
                 if (i == 0) {
                     System.out.println("Adding " + addonInstance.getName());
@@ -472,7 +478,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
             Item ice = this.slots[ICE].dispense();
             this.totalSold[ICE]++;
-
+            this.revenuePerItem[ICE] += ice.getPrice();
             if (i == 0) {
                 System.out.println("Adding Ice");
             } else {
@@ -698,10 +704,115 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.println("===================================="); 
     }
 
+    private boolean hasSales() {
 
+        for (int sold : totalSold) {
 
+            if (sold > 0) {
+                return true;
+            }
+        }
 
+        return false;
+    }
+
+    public void printMachineInsights() {
+
+        System.out.println();
+        System.out.println("=============================================");
+        System.out.println("             MACHINE INSIGHTS");
+        System.out.println("=============================================");
+
+        if (!hasSales()) {
+
+            System.out.println("No sales data available yet.");
+
+        } else {
+
+            int bestTea = getBestSellingItem(BLACK_TEA, OOLONG_TEA);
+
+            int bestMilk = getBestSellingItem(WHOLE_MILK, SKIM_MILK);
+
+            int bestSweetener = getBestSellingItem(HONEY, BROWN_SUGAR_SYRUP);
+
+            int bestFlavor = getBestSellingItem(MATCHA_POWDER, TARO_POWDER);
+
+            int bestTopping = getBestSellingItem(OREO, EGG_PUDDING);
+
+            int overall = getOverallBestSeller();
+
+            int highestRevenue = getHighestRevenueItem();
+
+            System.out.printf("Best Selling Tea        : %s (%d sold)%n", itemTemplates[bestTea].getName(), totalSold[bestTea]);
+
+            System.out.printf("Best Selling Milk       : %s (%d sold)%n", itemTemplates[bestMilk].getName(), totalSold[bestMilk]);
+
+            System.out.printf("Best Selling Sweetener  : %s (%d sold)%n", itemTemplates[bestSweetener].getName(), totalSold[bestSweetener]);
+
+            System.out.printf("Best Selling Flavor     : %s (%d sold)%n", itemTemplates[bestFlavor].getName(), totalSold[bestFlavor]);
+
+            System.out.printf("Best Selling Topping    : %s (%d sold)%n", itemTemplates[bestTopping].getName(), totalSold[bestTopping]);
+
+            System.out.println("---------------------------------------------");
+
+            System.out.printf("Overall Best Seller     : %s (%d sold)%n", itemTemplates[overall].getName(), totalSold[overall]);
+            
+            System.out.println("---------------------------------------------");
+
+            System.out.printf("Highest Revenue Item    : %s%n", itemTemplates[highestRevenue].getName());
+
+            System.out.printf("Revenue Generated       : PHP %.2f%n", revenuePerItem[highestRevenue]);
+
+            System.out.println("---------------------------------------------");
+            System.out.println("Analytics are based on sales");
+            System.out.println("since the last restocking.");
+            }
+
+        System.out.println("=============================================");
+        }
     // Getters
+
+    private int getBestSellingItem(int startSlot, int endSlot) {
+
+        int bestSlot = startSlot;
+
+        for (int i = startSlot + 1; i <= endSlot; i++) {
+
+            if (totalSold[i] > totalSold[bestSlot]) {
+                bestSlot = i;
+            }
+        }
+
+        return bestSlot;
+    }
+
+    private int getOverallBestSeller() {
+
+        int bestSlot = 0;
+
+        for (int i = 1; i < totalSold.length; i++) {
+            if (totalSold[i] > totalSold[bestSlot]) {
+                bestSlot = i;
+            }
+        }
+
+        return bestSlot;
+    }
+
+    private int getHighestRevenueItem() {
+
+        int best = 0;
+
+        for (int i = 1; i < revenuePerItem.length; i++) {
+
+            if (revenuePerItem[i] > revenuePerItem[best]) {
+                best = i;
+            }
+        }
+
+        return best;
+    }
+
 
     public int getCustomMilkTeaSold() {
         return customMilkTeaSold;
