@@ -255,27 +255,32 @@ public class RegularVendingMachine {
         else if (!isValidAmount) {
             System.out.println("Invalid restock amount. Must be a positive integer.");
         }
-
         else {
 
             this.itemTemplates[slotIndex] = item;
 
-                this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
+            int stockBefore = this.slots[slotIndex].getCurrentInSlotItems();
 
-                this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
+            this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
 
+            int stockAfter = this.slots[slotIndex].getCurrentInSlotItems();
+
+            if (stockAfter > stockBefore) {
+
+                this.startingInventory[slotIndex] = stockAfter;
                 this.totalSold[slotIndex] = 0;
+
                 System.out.println("\n========== RESTOCK SUCCESS ==========");
 
                 System.out.println("Item Restocked : " + item.getName());
                 System.out.println("Quantity Added : " + amount + " stock(s)");
 
-                System.out.println("Current Stock  : " + this.slots[slotIndex].getCurrentInSlotItems() + "/" + this.slots[slotIndex].getMaximumInSlotItems());
+                System.out.println("Current Stock  : " + stockAfter + "/" + this.slots[slotIndex].getMaximumInSlotItems());
 
                 System.out.println("=====================================");
             }
-        }      
-
+        }
+    }
 
     /**
      * Replenishes physical coin/bill counts for change reserves.
