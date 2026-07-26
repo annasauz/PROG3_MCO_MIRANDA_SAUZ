@@ -93,7 +93,8 @@ public class TextInterface {
     System.out.println("4. Collect Money");
     System.out.println("5. Print Transaction Summary");
     System.out.println("6. View Change Inventory");
-    System.out.println("7. Exit");
+    System.out.println("7. Machine Insights");
+    System.out.println("8. Exit");
 
     System.out.print("Maintenance Choice: ");
 
@@ -166,8 +167,7 @@ public class TextInterface {
         System.out.println("                SPECIAL VENDING MACHINE");
         printDivider();
 
-        System.out.printf("%-6s %-15s %-10s %-10s %-8s%n",
-                "Slot", "Item", "Price", "Calories", "Stock");
+        System.out.printf("%-6s %-15s %-10s %-10s %-8s%n", "Slot", "Item", "Price", "Calories", "Stock");
 
         printDivider();
 
