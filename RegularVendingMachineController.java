@@ -149,22 +149,28 @@ public class RegularVendingMachineController {
      */
     protected void displayItemsHandler() {
 
-    System.out.println();
+        System.out.println();
 
-    textInterface.printSpecialVendingMachineMenu(
-            vendingMachine.getItemTemplates(),
-            vendingMachine.getSlots());
+        if (vendingMachine instanceof SpecialVendingMachine) {
 
-    System.out.println();
+            textInterface.printSpecialVendingMachineMenu(vendingMachine.getItemTemplates(), vendingMachine.getSlots());
+
+        } else {
+
+        textInterface.printRegularVendingMachineMenu(vendingMachine.getItemTemplates(), vendingMachine.getSlots());
+        }
+
+        System.out.println();
     }
-
     /**
      * Handles the addition of money to the vending machine.
      */
     private void addMoneyHandler() {
         System.out.println("\n--- Add Money ---");
         displayItemsHandler();
-        System.out.print("Enter denomination of money (1,5,10,20,50,100,200,500,1000): ");
+        System.out.println("Denomination (PHP)");
+        System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
+        System.out.print("Choice: ");
         int denomination = getMoneyDenomination();
 
         System.out.print("Enter quantity: ");
@@ -193,37 +199,50 @@ public class RegularVendingMachineController {
                     addMoneyHandler();
                     break;
                 case 2:
-                    displayItemsHandler();
+                    boolean success = false;
+                    while (!success) {
 
-                    System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
-                    int slotChoice = getInput(1, maxSlots) - 1;
-                    System.out.print("\nAmount buying: ");
-                    int quantity = getInput(1, 10);
+                        displayItemsHandler();
 
-                    if (vendingMachine instanceof SpecialVendingMachine) {
+                        System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
+                        int slotChoice = getInput(1, maxSlots) - 1;
 
-                    SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+                        boolean restricted = false;
 
-                    if (specialMachine.isRestrictedItem(slotChoice)) {
+                        if (vendingMachine instanceof SpecialVendingMachine) {
 
-                        System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
-                        System.out.println("The selected item is marked as (Restricted) ");
-                        System.out.println("and cannot be purchased individually.");
-                        System.out.println("It is only available as an ingredient");
-                        System.out.println("for a custom milk tea.");
-                        System.out.println("==========================================");
+                            SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
 
-                        textInterface.pressEnterToContinue(scanner);
-                        break;
+                            if (specialMachine.isRestrictedItem(slotChoice)) {
+
+                                restricted = true;
+
+                                System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
+                                System.out.println("The selected item is marked as (Restricted)");
+                                System.out.println("and cannot be purchased individually.");
+                                System.out.println("It is only available as an ingredient");
+                                System.out.println("for a custom milk tea.");
+                                System.out.println("==========================================");
+
+                                System.out.println();
+                                System.out.println("Please select another item.");
+                            }
+                        }
+
+                        if (!restricted) {
+
+                            System.out.print("\nAmount buying: ");
+                            int quantity = getInput(1, 10);
+
+                            success = vendingMachine.purchaseItem(slotChoice, quantity);
+
+                            if (success) {
+                            customerRatingHandler();
+                            isPurchasing = false;
+                        }
                     }
                 }
-                    boolean success = vendingMachine.purchaseItem(slotChoice, quantity);
-
-                    if (success) {
-                        customerRatingHandler();
-                        isPurchasing = false;
-                    }
-                    break;
+                break;
                 case 3:
                     if (vendingMachine instanceof SpecialVendingMachine) {
                         if (customMilkTeaHandler()) {
@@ -311,9 +330,12 @@ public class RegularVendingMachineController {
      * Allows user to replenish change inside the vending machine
      */
     private void maintenanceAddChangeHandler(){
-        System.out.print("Add change denomination to replenish (1,5,10,20,50,100,200,500,1000): ");
+        System.out.println("\n--- Replenish Change ---");
+        System.out.println("Accepted Denominations (PHP)");
+        System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
+        System.out.print("Choice: ");
         int denomination = getMoneyDenomination();
-        System.out.print("Enter quantity:");
+        System.out.print("Enter quantity: ");
         int quantity = getPositiveInteger();
         vendingMachine.replenishChangeReserves(denomination,quantity);
     }
@@ -410,8 +432,11 @@ public class RegularVendingMachineController {
         int denomination = 0;
         while (!valid) {
             if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please try again.");
+                System.out.println("Invalid input. Please enter a valid denomination.");
                 scanner.next();
+                System.out.println("Denomination (PHP)");
+                System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
+                System.out.print("Choice: ");
             } else {
                 denomination = scanner.nextInt();
                 switch (denomination) {
@@ -427,7 +452,10 @@ public class RegularVendingMachineController {
                         valid = true;
                         break;
                     default:
-                        System.out.println("Invalid denomination. Please try again: ");
+                        System.out.println("Invalid denomination.");
+                        System.out.println("Denomination (PHP)");
+                        System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
+                        System.out.print("Choice: ");
                         break;
                 }
             }
