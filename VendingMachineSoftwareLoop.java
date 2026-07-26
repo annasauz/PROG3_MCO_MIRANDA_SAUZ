@@ -100,6 +100,7 @@ public class VendingMachineSoftwareLoop {
     private int getInput(int min, int max) {
         boolean valid = false;
         int input = 0;
+        String leftover;
 
         while (!valid) {
             System.out.print("Menu Choice: ");
@@ -107,10 +108,13 @@ public class VendingMachineSoftwareLoop {
             // check if num
             if (scanner.hasNextInt()) {
                 input = scanner.nextInt(); 
-                scanner.nextLine();        // clear enter and extra words
+                leftover = scanner.nextLine().trim();
 
+                if (!leftover.isEmpty()) {
+                    System.out.println("Invalid input. Please enter only one whole number.");
+                }
                 
-                if (input >= min && input <= max) {
+                else if (input >= min && input <= max) {
                     valid = true;
                 } else {
                     System.out.println("Input out of range. Please enter a number between "
