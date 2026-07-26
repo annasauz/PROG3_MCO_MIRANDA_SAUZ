@@ -97,7 +97,7 @@ public class RegularVendingMachineController {
 
             textInterface.printMaintenanceFeatures();
 
-            int option = getInput(1, 7);
+            int option = getInput(1, 8);
 
             switch (option) {
                 case 1:
@@ -125,6 +125,15 @@ public class RegularVendingMachineController {
                     textInterface.pressEnterToContinue(scanner);
                     break;
                 case 7:
+                    if (vendingMachine instanceof SpecialVendingMachine) {
+                    SpecialVendingMachine svm = (SpecialVendingMachine) vendingMachine;
+                    svm.printMachineInsights();
+                    } else {
+                    System.out.println("Machine Insights are only available for the Special Vending Machine.");
+                    }
+                    textInterface.pressEnterToContinue(scanner);
+                    break;
+                case 8:
                     isRunningMaintenance = false;
                     break;
                 default:
@@ -208,12 +217,14 @@ public class RegularVendingMachineController {
                     boolean success = vendingMachine.purchaseItem(slotChoice);
 
                     if (success) {
+                        customerRatingHandler();
                         isPurchasing = false;
                     }
                     break;
                 case 3:
                     if (vendingMachine instanceof SpecialVendingMachine) {
                         if (customMilkTeaHandler()) {
+                            customerRatingHandler();
                             isPurchasing = false;
                         }
                     } else {
@@ -730,6 +741,50 @@ private int chooseSugarLevel() {
             default:
                 return SpecialVendingMachine.EXTRA_ICE;
         }
+    }
+
+    private void customerRatingHandler() {
+
+        System.out.println();
+
+        System.out.println("========== RATE YOUR EXPERIENCE ==========");
+
+        System.out.println("How would you rate your purchase?");
+
+        System.out.println("1 - Poor");
+        System.out.println("2 - Fair");
+        System.out.println("3 - Good");
+        System.out.println("4 - Very Good");
+        System.out.println("5 - Excellent");
+
+        System.out.print("Rating (1-5): ");
+
+        int rating = getInput(1, 5);
+
+        vendingMachine.addCustomerRating(rating);
+
+        switch (rating) {
+
+            case 5:
+                System.out.println("Thank you! We're glad you enjoyed your drink!");
+                break;
+
+            case 4:
+                System.out.println("Thank you for your positive feedback!");
+                break;
+
+            case 3:
+                System.out.println("Thank you! We appreciate your feedback.");
+                break;
+
+            case 2:
+            case 1:
+                System.out.println("Thank you for your feedback.");
+                System.out.println("We'll strive to serve you better next time.");
+                break;
+        }
+
+        System.out.println("==========================================");
     }
 
 }
