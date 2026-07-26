@@ -103,18 +103,24 @@ public class VendingMachineSoftwareLoop {
         while (!valid) {
             System.out.print("Menu Choice: ");
 
-            if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a whole number.");
-                scanner.next();
-            } else {
-                input = scanner.nextInt();
+            // check if num
+            if (scanner.hasNextInt()) {
+                input = scanner.nextInt(); 
+                scanner.nextLine();        // clear enter and extra words
 
+                
                 if (input >= min && input <= max) {
                     valid = true;
                 } else {
                     System.out.println("Input out of range. Please enter a number between "
                             + min + " and " + max + ".");
                 }
+            } else {
+                // for letter and symbols
+                System.out.println("Invalid input. Please enter a whole number.");
+                
+                // clear to avoid looping
+                scanner.nextLine(); 
             }
         }
 
