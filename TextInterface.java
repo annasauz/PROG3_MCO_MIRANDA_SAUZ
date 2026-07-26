@@ -92,7 +92,8 @@ public class TextInterface {
     System.out.println("3. Replenish Change");
     System.out.println("4. Collect Money");
     System.out.println("5. Print Transaction Summary");
-    System.out.println("6. Exit");
+    System.out.println("6. View Change Inventory");
+    System.out.println("7. Exit");
 
     System.out.print("Maintenance Choice: ");
 
@@ -366,5 +367,73 @@ public class TextInterface {
 
             printDivider();
         }
+
+    public void printChangeInventory(CashBox cashBox) {
+
+        int[] denominations = cashBox.getDenominations();
+        int[] quantities = cashBox.getDenominationsAmount();
+
+        printDivider();
+        System.out.println("          CHANGE INVENTORY");
+        printDivider();
+
+        double totalCash = 0;
+
+        for (int i = denominations.length - 1; i >= 0; i--) {
+
+            int value = denominations[i];
+            int quantity = quantities[i];
+
+            System.out.printf("PHP %-4d : %-3d", value, quantity);
+
+            if (quantity == 0) {
+
+                System.out.print("   !! OUT OF CHANGE !!");
+
+            } else {
+
+                boolean lowStock = false;
+
+                switch (value) {
+
+                    case 1000:
+                    case 500:
+                        lowStock = quantity <= 1;
+                        break;
+
+                    case 200:
+                    case 100:
+                        lowStock = quantity <= 2;
+                        break;
+
+                    case 50:
+                    case 20:
+                        lowStock = quantity <= 3;
+                        break;
+
+                    case 10:
+                    case 5:
+                        lowStock = quantity <= 5;
+                        break;
+
+                    case 1:
+                        lowStock = quantity <= 10;
+                        break;
+                    }
+
+                if (lowStock) {
+                    System.out.print("   !! LOW CHANGE !!");
+                }
+            }
+
+            System.out.println();
+
+            totalCash += value * quantity;
+        }
+
+        printDivider();
+        System.out.printf("Total Change Available: PHP %.2f%n", totalCash);
+        printDivider();
+    }
 
 }
