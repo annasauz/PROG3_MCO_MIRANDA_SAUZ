@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Represents a Regular Vending Machine that handles items, inventory, transactions, and change dispensing.
  */
@@ -11,6 +13,12 @@ public class RegularVendingMachine {
     private int totalRatingCount;
     private int totalRatingScore;
     protected double[] revenuePerItem;
+    protected String lastPurchaseName;
+    protected ArrayList<String> lastPurchaseItems;
+    protected double lastPurchasePrice;
+    protected double lastAmountPaid;
+    protected double lastChange;
+    protected double lastCalories;
 
     
     // Constructors
@@ -42,6 +50,7 @@ public class RegularVendingMachine {
         this.internalCashBox = new CashBox();
         this.transactionCashBox = new CashBox();
         this.revenuePerItem = new double[numSlots];
+        this.lastPurchaseItems = new ArrayList<>();
 
         // Create the slot compartments
         for (int i = 0; i < numSlots; i++) {
@@ -215,6 +224,18 @@ public class RegularVendingMachine {
         this.totalSold[slotIndex] += quantity;
 
         this.revenuePerItem[slotIndex] += dispensedItem.getPrice() * quantity;
+
+        // ================= RECEIPT DATA =================
+
+        ArrayList<String> receiptItems = new ArrayList<>();
+
+        for (int i = 0; i < quantity; i++) {
+            receiptItems.add(dispensedItem.getName());
+        }
+
+        setLastTransaction(dispensedItem.getName(), receiptItems, dispensedItem.getPrice() * quantity, userInserted, changeDue, dispensedItem.getCalories() * quantity);
+
+        // ================================================
 
         this.mergeTransactionToInternal();
         
@@ -488,7 +509,7 @@ public class RegularVendingMachine {
                     remainingChange = remainingChange - (countToTake * denoms[i]);
                     
                     if (countToTake > 0) {
-                        System.out.println("   Dispensing: " + countToTake + "x PHP " + denoms[i]);
+                        System.out.println("Dispensing: " + countToTake + "x PHP " + denoms[i]);
                     }
                 }
             }
@@ -531,6 +552,42 @@ public class RegularVendingMachine {
             totalRatingScore += rating;
             totalRatingCount++;
         }
+    }
+
+
+    public void setLastTransaction(String purchaseName, ArrayList<String> purchaseItems, double totalPrice, double amountPaid, double change, double calories) {
+
+        this.lastPurchaseName = purchaseName;
+        this.lastPurchaseItems = purchaseItems;
+        this.lastPurchasePrice = totalPrice;
+        this.lastAmountPaid = amountPaid;
+        this.lastChange = change;
+        this.lastCalories = calories;
+    }
+
+
+    public String getLastPurchaseName() {
+        return lastPurchaseName;
+    }
+
+    public ArrayList<String> getLastPurchaseItems() {
+        return lastPurchaseItems;
+    }
+
+    public double getLastPurchasePrice() {
+        return lastPurchasePrice;
+    }
+
+    public double getLastAmountPaid() {
+        return lastAmountPaid;
+    }
+
+    public double getLastChange() {
+        return lastChange;
+    }
+
+    public double getLastCalories() {
+        return lastCalories;
     }
 
     /**
