@@ -496,6 +496,50 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
         System.out.println("Milk Tea Done!");
 
+        // ================= RECEIPT DATA =================
+
+        ArrayList<String> receiptItems = new ArrayList<>();
+
+        // Tea
+        for (int i = 0; i < multiplier; i++) {
+            receiptItems.add(teaTemplate.getName());
+        }
+
+        // Milk
+        for (int i = 0; i < multiplier; i++) {
+            receiptItems.add(milkTemplate.getName());
+        }
+
+        // Sweetener
+        if (sweetenerSlot != -1) {
+            for (int i = 0; i < sweetenerServings; i++) {
+            receiptItems.add(this.itemTemplates[sweetenerSlot].getName());
+            }
+        }
+
+        // Add-ons
+        for (int addonSlot : addonSlots) {
+            for (int i = 0; i < multiplier; i++) {
+                receiptItems.add(this.itemTemplates[addonSlot].getName());
+            }
+        }
+
+        // Ice
+        for (int i = 0; i < iceServings; i++) {
+            receiptItems.add(this.itemTemplates[ICE].getName());
+        }
+
+        String drinkName = switch (size) {
+            case SMALL -> "Small Custom Milk Tea";
+            case MEDIUM -> "Medium Custom Milk Tea";
+            case LARGE -> "Large Custom Milk Tea";
+            default -> "Custom Milk Tea";
+        };
+
+        setLastTransaction(drinkName, receiptItems, totalPrice, userInserted, changeDue, totalCalories);
+
+        // ================================================
+
         // Update custom milk tea statistics
         this.customMilkTeaSold++;
         this.customMilkTeaRevenue += totalPrice;
