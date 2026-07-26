@@ -97,7 +97,7 @@ public class RegularVendingMachineController {
 
             textInterface.printMaintenanceFeatures();
 
-            int option = getInput(1, 6);
+            int option = getInput(1, 7);
 
             switch (option) {
                 case 1:
@@ -121,6 +121,10 @@ public class RegularVendingMachineController {
                     textInterface.pressEnterToContinue(scanner);
                     break;
                 case 6:
+                    textInterface.printChangeInventory(vendingMachine.getInternalCashBox());
+                    textInterface.pressEnterToContinue(scanner);
+                    break;
+                case 7:
                     isRunningMaintenance = false;
                     break;
                 default:
@@ -182,8 +186,25 @@ public class RegularVendingMachineController {
                 case 2:
                     displayItemsHandler();
 
-                    System.out.print("\nSelect an item to purchase (1-8): ");
-                    int slotChoice = getInput(1, 8) - 1;
+                    System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
+                    int slotChoice = getInput(1, maxSlots) - 1;
+                    if (vendingMachine instanceof SpecialVendingMachine) {
+
+                    SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+
+                    if (specialMachine.isRestrictedItem(slotChoice)) {
+
+                        System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
+                        System.out.println("The selected item is marked as (Restricted) ");
+                        System.out.println("and cannot be purchased individually.");
+                        System.out.println("It is only available as an ingredient");
+                        System.out.println("for a custom milk tea.");
+                        System.out.println("==========================================");
+
+                        textInterface.pressEnterToContinue(scanner);
+                        break;
+                    }
+                }
                     boolean success = vendingMachine.purchaseItem(slotChoice);
 
                     if (success) {
@@ -630,16 +651,7 @@ private ArrayList<Integer> chooseAddons() {
 
         size = chooseSize();
 
-        textInterface.printCustomMilkTeaSummary(
-            specialMachine,
-            tea,
-            milk,
-            sweetener,
-            sugarLevel,
-            iceLevel,
-            size,
-            addons
-        );
+        textInterface.printCustomMilkTeaSummary(specialMachine, tea, milk, sweetener, sugarLevel, iceLevel, size, addons);
 
 
     return specialMachine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);   
