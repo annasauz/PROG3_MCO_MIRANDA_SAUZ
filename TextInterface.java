@@ -102,7 +102,19 @@ public class TextInterface {
 
     System.out.print("Maintenance Choice: ");
 
-}
+    }
+
+    public void printSignatureDrinks() {
+        clearScreen();
+        System.out.println("Signature Drinks");
+        printShortDivider();
+        System.out.println("1. Roasted Oolong Matcha Latte");
+        System.out.println("2. Classic Brown Sugar Earl Grey Cheese Foam");
+        System.out.println("3. Taro Cookie Crunch Green Tea");
+        System.out.println("4. Cancel");
+        System.out.print("Choice: ");
+    }
+
     /**
      * Displays the main menu of the vending machine application.
      */

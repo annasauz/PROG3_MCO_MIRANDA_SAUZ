@@ -492,6 +492,23 @@ private int chooseTea() {
         }
     }
 
+    private int chooseMilk(int randomChoice) {
+        switch (randomChoice) {
+            case 1:
+                return SpecialVendingMachine.WHOLE_MILK;
+
+            case 2:
+                return SpecialVendingMachine.OAT_MILK;
+
+            case 3:
+                return SpecialVendingMachine.ALMOND_MILK;
+
+            default:
+                return SpecialVendingMachine.SKIM_MILK;
+        }
+
+    }
+
 private ArrayList<Integer> chooseAddons() {
 
     SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
@@ -527,8 +544,6 @@ private ArrayList<Integer> chooseAddons() {
 
         System.out.print("Choice: ");
         int choice = getInput(0, 7);
-
-    
 
         int slot = -1;
 
@@ -612,12 +627,78 @@ private ArrayList<Integer> chooseAddons() {
             case 1:
                 break;
             case 2:
+                textInterface.printSignatureDrinks();
+                switch (getInput(1, 4)) {
+                    case 1:
+                        addons = new ArrayList<>();
+                        addons.add(SpecialVendingMachine.MATCHA_POWDER);
+                        addons.add(SpecialVendingMachine.EGG_PUDDING);
+                        textInterface.printCustomMilkTeaSummary(
+                                specialMachine,
+                                SpecialVendingMachine.BLACK_TEA,
+                                SpecialVendingMachine.WHOLE_MILK,
+                                SpecialVendingMachine.BROWN_SUGAR_SYRUP,
+                                SpecialVendingMachine.FULL_SUGAR,
+                                SpecialVendingMachine.REGULAR_ICE,
+                                SpecialVendingMachine.LARGE,
+                                addons);
+                        return specialMachine.purchaseCustomMilkTea(SpecialVendingMachine.OOLONG_TEA,
+                                                                    SpecialVendingMachine.OAT_MILK,
+                                                                    SpecialVendingMachine.HONEY,
+                                                                    SpecialVendingMachine.HALF_SUGAR,
+                                                                    addons,
+                                                                    SpecialVendingMachine.LESS_ICE,
+                                                                    SpecialVendingMachine.MEDIUM);
+                    case 2:
+                        addons = new ArrayList<>();
+                        addons.add(SpecialVendingMachine.TAPIOCA_PEARLS);
+                        addons.add(SpecialVendingMachine.CREAM_CHEESE);
+                        textInterface.printCustomMilkTeaSummary(
+                                specialMachine,
+                                SpecialVendingMachine.EARL_GREY_TEA,
+                                SpecialVendingMachine.WHOLE_MILK,
+                                SpecialVendingMachine.BROWN_SUGAR_SYRUP,
+                                SpecialVendingMachine.HALF_SUGAR,
+                                SpecialVendingMachine.REGULAR_ICE,
+                                SpecialVendingMachine.LARGE,
+                                addons);
+                        return specialMachine.purchaseCustomMilkTea(SpecialVendingMachine.EARL_GREY_TEA,
+                                                                    SpecialVendingMachine.WHOLE_MILK,
+                                                                    SpecialVendingMachine.BROWN_SUGAR_SYRUP,
+                                                                    SpecialVendingMachine.HALF_SUGAR,
+                                                                    addons,
+                                                                    SpecialVendingMachine.REGULAR_ICE,
+                                                                    SpecialVendingMachine.LARGE);
+                    case 3:
+                        addons = new ArrayList<>();
+                        addons.add(SpecialVendingMachine.TARO_POWDER);
+                        addons.add(SpecialVendingMachine.OREO);
+                        addons.add(SpecialVendingMachine.GLASS_JELLY);
+                        textInterface.printCustomMilkTeaSummary(
+                                specialMachine,
+                                SpecialVendingMachine.GREEN_TEA,
+                                SpecialVendingMachine.WHOLE_MILK,
+                                SpecialVendingMachine.HONEY,
+                                SpecialVendingMachine.NO_SUGAR,
+                                SpecialVendingMachine.REGULAR_ICE,
+                                SpecialVendingMachine.SMALL,
+                                addons);
+                        return specialMachine.purchaseCustomMilkTea(SpecialVendingMachine.GREEN_TEA,
+                                                                    SpecialVendingMachine.WHOLE_MILK,
+                                                                    SpecialVendingMachine.HONEY,
+                                                                    SpecialVendingMachine.NO_SUGAR,
+                                                                    addons,
+                                                                    SpecialVendingMachine.REGULAR_ICE,
+                                                                    SpecialVendingMachine.SMALL);
+                    case 4:
+                        return false;
+                }
                 return false;
             case 3:
                 Random random = new Random();
                 tea = random.nextInt(4);
-                milk = random.nextInt(4);
-                sweetener = random.nextInt(3);
+                milk = chooseMilk(random.nextInt(4));
+                sweetener = chooseSweetener(random.nextInt(3));
                 sugarLevel = random.nextInt(3);
                 iceLevel = random.nextInt(4);
                 size = random.nextInt(3) + 1;
@@ -717,6 +798,20 @@ private int chooseSugarLevel() {
             default:
                 return SpecialVendingMachine.BROWN_SUGAR_SYRUP;
         }
+    }
+
+    private int chooseSweetener(int randomChoice) {
+
+        switch (randomChoice) {
+            case 1:
+                return -1;
+            case 2:
+                return SpecialVendingMachine.HONEY;
+
+            default:
+                return SpecialVendingMachine.BROWN_SUGAR_SYRUP;
+        }
+
     }
 
     private int chooseIceLevel() {
