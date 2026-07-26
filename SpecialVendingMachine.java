@@ -74,7 +74,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      * Inherited from RegularVendingMachine.
      */
     public SpecialVendingMachine() {
-        super(20);
+        super(18);
 
         // Initializes extra custom toppings
         initializeSpecialItems();
