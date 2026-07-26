@@ -78,10 +78,7 @@ public class SlotCompartment {
                 
             }
             adjustCurrentInSlotItems(amount);
-            System.out.println("\n========== RESTOCK SUCCESS ==========");
-            System.out.println(amount + " stock(s) were successfully added.");
-            System.out.println("Current Stock : " + this.currentInSlotItems + "/" + this.MAXIMUM_IN_SLOT_ITEMS);
-            System.out.println("====================================");
+
         }
     }
 
