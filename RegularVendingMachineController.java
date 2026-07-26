@@ -189,10 +189,15 @@ public class RegularVendingMachineController {
         int maxSlots = vendingMachine.getSlots().length;
         while (isPurchasing) {
 
-            textInterface.purchaseMenu();
+        int choice;
 
-            
-            int choice = getInput(1, 4);
+        if (vendingMachine instanceof SpecialVendingMachine) {
+        textInterface.purchaseMenuSpecial();
+        choice = getInput(1, 4);
+        } else {
+        textInterface.purchaseMenuRegular();
+        choice = getInput(1, 3);
+        }
 
             switch (choice) {
                 case 1:
@@ -244,15 +249,16 @@ public class RegularVendingMachineController {
                 }
                 break;
                 case 3:
-                    if (vendingMachine instanceof SpecialVendingMachine) {
-                        if (customMilkTeaHandler()) {
-                            customerRatingHandler();
-                            isPurchasing = false;
-                        }
-                    } else {
-                        System.out.println("Custom Milk Tea is only available in the Special Vending Machine.");
+                if (vendingMachine instanceof SpecialVendingMachine) {
+                    if (customMilkTeaHandler()) {
+                        customerRatingHandler();
+                        isPurchasing = false;
                     }
-                    break;
+                    } else {
+                    vendingMachine.produceChangeWithoutPurchase();
+                    isPurchasing = false;
+                    }
+                break;
                 case 4:
                     vendingMachine.produceChangeWithoutPurchase();
                     isPurchasing = false;
