@@ -234,45 +234,35 @@ public class RegularVendingMachine {
 
         if (!isItemNotNull) {
             System.out.println("Invalid item. Please provide a valid item to restock.");
-            return;
         }
 
-        if (!isValidSlot) {
+        else if (!isValidSlot) {
             System.out.println("Invalid slot index. Must be between 0 and " + (this.slots.length - 1));
-            return;
         }
 
-        if (!isValidAmount) {
+        else if (!isValidAmount) {
             System.out.println("Invalid restock amount. Must be a positive integer.");
-            return;
         }
 
-        if (isValidSlot) {
+        else {
+
             this.itemTemplates[slotIndex] = item;
-        }
 
-        if (this.itemTemplates[slotIndex].getName().equals(item.getName())) {
+                this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
 
-            this.slots[slotIndex].addInventory(this.itemTemplates[slotIndex], amount);
+                this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
 
-            this.startingInventory[slotIndex] = this.slots[slotIndex].getCurrentInSlotItems();
-            this.totalSold[slotIndex] = 0;
+                this.totalSold[slotIndex] = 0;
+                System.out.println("\n========== RESTOCK SUCCESS ==========");
 
-            System.out.println("\n========== RESTOCK SUCCESS ==========");
+                System.out.println("Item Restocked : " + item.getName());
+                System.out.println("Quantity Added : " + amount + " stock(s)");
 
-            System.out.println("Item Restocked : " + item.getName());
-            System.out.println("Quantity Added : " + amount + " stock(s)");
+                System.out.println("Current Stock  : " + this.slots[slotIndex].getCurrentInSlotItems() + "/" + this.slots[slotIndex].getMaximumInSlotItems());
 
-            System.out.println("Current Stock  : " + this.slots[slotIndex].getCurrentInSlotItems() + "/" + this.slots[slotIndex].getMaximumInSlotItems());
-
-            System.out.println("=====================================");
-
-            } else {
-
-            System.out.println("This slot is permanently assigned to " + this.itemTemplates[slotIndex].getName()
-            + ". Only this item may be restocked.");
-}
-    }    
+                System.out.println("=====================================");
+            }
+        }      
 
 
     /**
@@ -497,4 +487,9 @@ public class RegularVendingMachine {
     public SlotCompartment[] getSlots() {
         return slots;
     }
+
+    public CashBox getInternalCashBox() {
+        return this.internalCashBox;
+    }
+
 }
