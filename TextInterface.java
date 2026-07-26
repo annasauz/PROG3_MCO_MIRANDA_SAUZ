@@ -14,14 +14,13 @@ public class TextInterface {
      */
     public void printCreateAndTest() {
         clearScreen();
-
-        System.out.println("==================================");
-        System.out.println("      VENDING MACHINE FACTORY");
-        System.out.println("==================================");
+        printShortDivider();
+        System.out.println("          VENDING MACHINE FACTORY");
+        printShortDivider();
         System.out.println("1. Create Vending Machine");
         System.out.println("2. Test Vending Machine");
         System.out.println("3. Exit");
-        System.out.println("==================================");
+        printShortDivider();
         System.out.print("Choice: ");
     }
 
@@ -31,6 +30,7 @@ public class TextInterface {
     public void printTestMenu(){
         clearScreen();
         System.out.println("Test menu");
+        printShortDivider();
         System.out.println("1. Test vending features");
         System.out.println("2. Test maintenance features");
         System.out.println("3. Exit");
@@ -44,7 +44,7 @@ public class TextInterface {
     public void printVendingFeatures(){
         clearScreen();
         System.out.println("Vending Features");
-        System.out.println("------------------------------");
+        printShortDivider();
         System.out.println("1. Display items");
         System.out.println("2. Purchase Item / Insert Money");
         System.out.println("3. Exit");
@@ -55,13 +55,17 @@ public class TextInterface {
      * Displays the type of vending machine to be created.
      */
     public void printVendingMachineType(){
-        System.out.println("Select Vending Machine Type:");
+        clearScreen();
+        System.out.println("Select Vending Machine Type");
+        printShortDivider();
         System.out.println("1. Regular Vending Machine");
         System.out.println("2. Special Vending Machine");
     }
 
     public void printTypeOfVendingMachineToTest() {
-        System.out.println("Select Vending Machine Type to Test:");
+        clearScreen();
+        System.out.println("Select Vending Machine Type to Test");
+        printShortDivider();
         System.out.println("1. Regular Vending Machine");
         System.out.println("2. Special Vending Machine");
     }
@@ -70,7 +74,9 @@ public class TextInterface {
      * Displays purchase menu
      */
     public void purchaseMenu() {
-        System.out.println("\n--- Purchase Menu ---");
+        clearScreen();
+        System.out.println("Purchase Menu");
+        printShortDivider();
         System.out.println("1. Insert Money");
         System.out.println("2. Select Regular Item to Buy");
         System.out.println("3. Build Custom Milk Tea"); 
@@ -82,11 +88,9 @@ public class TextInterface {
      * Displays maintenance features menu
      */
     public void printMaintenanceFeatures() {
-
     clearScreen();
-
     System.out.println("Maintenance Features");
-    System.out.println("------------------------------");
+    printShortDivider();
     System.out.println("1. Set Price");
     System.out.println("2. Restock Item");
     System.out.println("3. Replenish Change");
@@ -103,6 +107,7 @@ public class TextInterface {
      * Displays the main menu of the vending machine application.
      */
     public void printMainMenu() {
+        clearScreen();
         System.out.println("=========================");
         System.out.println("    Vending Machine    ");
         System.out.println("=========================");
@@ -202,6 +207,18 @@ public class TextInterface {
         printDivider();
     }
 
+    /**
+     * Prints a summary of the custom milk tea order, including the selected tea base, milk base, sweetener, sugar level, ice level, size, and any add-ons.
+     *
+     * @param specialMachine the SpecialVendingMachine instance used to retrieve item names
+     * @param tea the index of the selected tea base in the item templates
+     * @param milk the index of the selected milk base in the item templates
+     * @param sweetener the index of the selected sweetener in the item templates, or -1 if no sweetener is selected
+     * @param sugarLevel the selected sugar level (NO_SUGAR, HALF_SUGAR, FULL_SUGAR)
+     * @param iceLevel the selected ice level (NO_ICE, LESS_ICE, REGULAR_ICE, EXTRA_ICE)
+     * @param size the selected size (SMALL, MEDIUM, LARGE)
+     * @param addons the list of indices of the selected add-ons in the item templates
+     */
     public void printCustomMilkTeaSummary(SpecialVendingMachine specialMachine, int tea, int milk, int sweetener, int sugarLevel, int iceLevel, int size, java.util.List<Integer> addons) {
         System.out.println("\n========== ORDER SUMMARY ==========");
 
@@ -299,8 +316,12 @@ public class TextInterface {
         System.out.println();
     }
 
+    /**
+     * Displays the menu for purchasing milk tea, allowing the user to choose between creating a custom milk tea, purchasing a signature milk tea, or getting a randomized milk tea.
+     */
     public void printMilkTeaToBuy() {
         System.out.println("\n--- Custom Milk Tea ---");
+        printShortDivider();
         System.out.println("1. Create custom milk tea");
         System.out.println("2. Purchase signature milk tea");
         System.out.println("3. Randomized milk tea");
@@ -313,7 +334,14 @@ public class TextInterface {
      */
     private void printDivider(){
         System.out.println("=".repeat(62));
+    }
 
+
+    /**
+     * Prints a shorter horizontal bar to the console for visual separation.
+     */
+    private void printShortDivider() {
+        System.out.println("=".repeat(42));
     }
 
     /**
@@ -327,6 +355,13 @@ public class TextInterface {
         scanner.nextLine();
     }
 
+
+    /**
+     * Prints the maintenance stock display for the vending machine, showing the current stock levels of each item in the slots.
+     *
+     * @param items the items in the vending machine
+     * @param slots the slots in the vending machine
+     */
     public void printMaintenanceStockDisplay(Item[] items, SlotCompartment[] slots) {
 
         printDivider();
@@ -437,3 +472,5 @@ public class TextInterface {
     }
 
 }
+
+

@@ -76,7 +76,7 @@ public class VendingMachineSoftwareLoop {
                             textInterface.pressEnterToContinue(scanner);
                             break;
                         }
-                        break;
+                      break;
                 case 3:
                     this.isRunning = false;
                     break;
