@@ -160,7 +160,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      * @return true if the purchase was successful, false otherwise.
      */
     @Override
-    public boolean purchaseItem(int slotIndex) {
+    public boolean purchaseItem(int slotIndex, int quantity) {
 
         if (slotIndex < 0 || slotIndex >= this.slots.length) {
             return false;
@@ -184,10 +184,12 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             }
         }
 
-        return super.purchaseItem(slotIndex);
+        return super.purchaseItem(slotIndex, quantity);
     }
 
-
+    public boolean purchaseItem(int slotIndex) {
+        return purchaseItem(slotIndex, 1);
+    }
 
     /**
      * Creates and dispenses a custom milk tea based on the user's selected ingredients.
