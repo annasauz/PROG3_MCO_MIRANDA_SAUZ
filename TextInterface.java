@@ -184,7 +184,7 @@ public class TextInterface {
         System.out.println("                SPECIAL VENDING MACHINE");
         printDivider();
 
-        System.out.printf("%-6s %-15s %-10s %-10s %-8s%n", "Slot", "Item", "Price", "Calories", "Stock");
+        System.out.printf("%-6s %-28s %-13s %-10s %-8s%n", "Slot", "Item", "Price", "Calories", "Stock");
 
         printDivider();
 
@@ -200,7 +200,7 @@ public class TextInterface {
                 SpecialItem specialItem = (SpecialItem) items[i];
 
                 if (!specialItem.isSellableIndividually()) {
-                    itemName += " (Restricted)";
+                    itemName += " *";
                 }
             }
 
@@ -213,9 +213,13 @@ public class TextInterface {
 
             } else {
 
-                System.out.printf("%-6d %-28s %-10s %-10s %-8d%n", i + 1, "Empty", "-", "-", 0);
+                System.out.printf("%-6d %-28s %-13s %-10s %-8d%n", i + 1, "Empty", "-", "-", 0);
                 }
             }
+
+        System.out.println();
+        System.out.println("* Restricted ingredient");
+        System.out.println("Available only for Custom Milk Tea.");
         printDivider();
     }
 
@@ -345,7 +349,7 @@ public class TextInterface {
      * Prints a horizontal bar to the console for visual separation.
      */
     private void printDivider(){
-        System.out.println("=".repeat(62));
+        System.out.println("=".repeat(68));
     }
 
 
