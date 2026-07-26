@@ -8,6 +8,9 @@ public class RegularVendingMachine {
     protected CashBox transactionCashBox;   
     private int[] startingInventory;
     protected int[] totalSold;
+    private int totalRatingCount;
+    private int totalRatingScore;
+    protected double[] revenuePerItem;
 
     
     // Constructors
@@ -20,6 +23,7 @@ public class RegularVendingMachine {
     public RegularVendingMachine() {
         this(8); // passes 8 to consructor below
         initializeDefaultItems();
+
     }
     /**
      * Initializes a Regular Vending Machine with a custom number of slots.
@@ -37,6 +41,7 @@ public class RegularVendingMachine {
         this.totalSold = new int[numSlots];
         this.internalCashBox = new CashBox();
         this.transactionCashBox = new CashBox();
+        this.revenuePerItem = new double[numSlots];
 
         // Create the slot compartments
         for (int i = 0; i < numSlots; i++) {
@@ -195,9 +200,16 @@ public class RegularVendingMachine {
             this.dispenseChange(changeDue); 
         }
         
-        Item dispensedItem = selectedSlot.dispense();
+       Item dispensedItem = selectedSlot.dispense();
 
-        this.totalSold[slotIndex] = this.totalSold[slotIndex] + 1;
+        if (dispensedItem == null) {
+            System.out.println("Error: Item could not be dispensed.");
+            return false;
+        }
+
+        this.totalSold[slotIndex]++;
+
+        this.revenuePerItem[slotIndex] += dispensedItem.getPrice();
 
         if (dispensedItem == null) {
             System.out.println("Error: Item could not be dispensed.");
@@ -329,6 +341,45 @@ public class RegularVendingMachine {
             System.out.printf("Custom Drink Revenue  : PHP %.2f\n", specialMachine.getCustomMilkTeaRevenue());
             
             }
+
+
+        // ===========================
+        // CUSTOMER RATINGS
+        // ===========================
+
+        System.out.println("---------------------------------------------");
+        System.out.println("CUSTOMER FEEDBACK");
+        System.out.println("---------------------------------------------");
+
+        if (this.totalRatingCount == 0) {
+
+            System.out.println("No customer ratings yet.");
+
+        } else {
+
+            System.out.printf("Average Rating : %.2f / 5%n", getAverageRating());
+            System.out.println("Total Ratings  : " + this.totalRatingCount);
+
+            double average = getAverageRating();
+
+            System.out.print("Overall Feedback: ");
+
+            if (average >= 4.5) {
+                System.out.println("Excellent");
+            }
+            else if (average >= 3.5) {
+                System.out.println("Very Good");
+            }
+            else if (average >= 2.5) {
+            System.out.println("Good");
+            }
+            else if (average >= 1.5) {
+                System.out.println("Fair");
+            }
+            else {
+            System.out.println("Needs Improvement");
+            }
+        }
 
             System.out.println("---------------------------------------------");
             System.out.printf("TOTAL ENGINE REVENUE RECOVERED: PHP %.2f\n", totalRevenue);
@@ -465,6 +516,37 @@ public class RegularVendingMachine {
             amounts[i] = 0;
         }
     }
+
+    /**
+     * Customer Rating [bonus feature]
+     */
+
+    public void addCustomerRating(int rating){
+        if(rating >= 1 && rating <= 5){
+            totalRatingScore += rating;
+            totalRatingCount++;
+        }
+    }
+
+    /**
+     * Average Rating Getter [bonus feature]
+     */
+
+    public double getAverageRating(){
+        if(totalRatingCount == 0){
+            return 0;
+        }
+        return (double) totalRatingScore / totalRatingCount;
+    }
+
+    /**
+     * Number of Ratings Getter
+     */
+
+    public int getTotalRatingCount(){
+        return totalRatingCount;
+    }
+
 
     /**
      * Returns the item templates for external inspection.
