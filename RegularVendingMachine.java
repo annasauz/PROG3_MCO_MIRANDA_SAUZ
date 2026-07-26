@@ -143,10 +143,15 @@ public class RegularVendingMachine {
      * @param slotIndex The index of the slot the user wishes to purchase from.
      * @return true if the purchase and dispensing were successful, false otherwise.
      */
-    public boolean purchaseItem(int slotIndex) {
+    public boolean purchaseItem(int slotIndex, int quantity) {
         // Enforce boundary checks
         if (slotIndex < 0 || slotIndex >= this.slots.length) {
             System.out.println("Invalid slot selection.");
+            return false;
+        }
+
+        if (quantity <= 0 || quantity > 10) {
+            System.out.println("Invalid quantity");
             return false;
         }
 
@@ -154,7 +159,7 @@ public class RegularVendingMachine {
         Item itemTemplate = this.itemTemplates[slotIndex];
 
         // Check item availability 
-        if (itemTemplate == null || selectedSlot.getCurrentInSlotItems() == 0) {
+        if (itemTemplate == null || selectedSlot.getCurrentInSlotItems() == 0 || selectedSlot.getCurrentInSlotItems() < quantity) {
             System.out.println("Item is out of stock or unavailable.");
             return false;
         }
@@ -180,12 +185,12 @@ public class RegularVendingMachine {
         double userInserted = this.transactionCashBox.getMoneyAmount();
 
         // Verify user has sufficient credit
-        if (userInserted < itemPrice) {
+        if (userInserted < itemPrice * quantity) {
             System.out.println("Insufficient funds. Item price: PHP " + itemPrice + " | Inserted: PHP " + userInserted);
             return false;
         }
 
-        double changeDue = userInserted - itemPrice;
+        double changeDue = userInserted - (itemPrice * quantity);
         
         if (changeDue > 0) {
             boolean changeAvailable = this.canMakeChange(changeDue);
@@ -207,14 +212,9 @@ public class RegularVendingMachine {
             return false;
         }
 
-        this.totalSold[slotIndex]++;
+        this.totalSold[slotIndex] += quantity;
 
-        this.revenuePerItem[slotIndex] += dispensedItem.getPrice();
-
-        if (dispensedItem == null) {
-            System.out.println("Error: Item could not be dispensed.");
-            return false;
-        }
+        this.revenuePerItem[slotIndex] += dispensedItem.getPrice() * quantity;
 
         this.mergeTransactionToInternal();
         

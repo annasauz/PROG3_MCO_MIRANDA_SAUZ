@@ -197,6 +197,9 @@ public class RegularVendingMachineController {
 
                     System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
                     int slotChoice = getInput(1, maxSlots) - 1;
+                    System.out.print("\nAmount buying: ");
+                    int quantity = getInput(1, 10);
+
                     if (vendingMachine instanceof SpecialVendingMachine) {
 
                     SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
@@ -214,7 +217,7 @@ public class RegularVendingMachineController {
                         break;
                     }
                 }
-                    boolean success = vendingMachine.purchaseItem(slotChoice);
+                    boolean success = vendingMachine.purchaseItem(slotChoice, quantity);
 
                     if (success) {
                         customerRatingHandler();
