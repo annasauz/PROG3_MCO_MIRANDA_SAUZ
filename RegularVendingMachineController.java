@@ -243,6 +243,7 @@ public class RegularVendingMachineController {
 
                             if (success) {
                             customerRatingHandler();
+                            receiptHandler();
                             isPurchasing = false;
                         }
                     }
@@ -252,6 +253,7 @@ public class RegularVendingMachineController {
                 if (vendingMachine instanceof SpecialVendingMachine) {
                     if (customMilkTeaHandler()) {
                         customerRatingHandler();
+                        receiptHandler();
                         isPurchasing = false;
                     }
                     } else {
@@ -919,8 +921,73 @@ private int chooseSugarLevel() {
         System.out.println("==========================================");
     }
 
-}
+    private void receiptHandler() {
 
+        System.out.println();
+        System.out.println("Would you like to print a receipt?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        System.out.print("Choice: ");
+
+        int choice = getInput(1, 2);
+
+        if (choice == 1) {
+            printReceipt();
+        }
+    }
+
+    private void printReceipt() {
+
+        System.out.println();
+        System.out.println("========================================");
+        System.out.println("           PURCHASE RECEIPT");
+        System.out.println("========================================");
+
+        System.out.println();
+        System.out.println("Items Purchased");
+        System.out.println("----------------------------------------");
+
+        ArrayList<String> printedItems = new ArrayList<>();
+
+        for (String item : vendingMachine.getLastPurchaseItems()) {
+
+            if (!printedItems.contains(item)) {
+
+                int count = 0;
+
+                for (String compare : vendingMachine.getLastPurchaseItems()) {
+                    if (compare.equals(item)) {
+                        count++;
+                    }
+                }
+
+                if (count == 1) {
+                    System.out.println("- " + item);
+                } else {
+                    System.out.println("- " + item + " x" + count);
+                }
+
+                printedItems.add(item);
+            }
+        }
+
+        System.out.println("----------------------------------------");
+
+        System.out.printf("%-13s PHP %.2f%n", "Total Price", vendingMachine.getLastPurchasePrice());
+
+        System.out.printf("%-13s PHP %.2f%n", "Amount Paid", vendingMachine.getLastAmountPaid());
+
+        System.out.printf("%-13s PHP %.2f%n", "Change", vendingMachine.getLastChange());
+
+        System.out.printf("%-13s %.0f kcal%n", "Calories", vendingMachine.getLastCalories());
+
+        System.out.println("----------------------------------------");
+
+        System.out.println();
+        System.out.println("Thank you for your purchase!");
+        System.out.println("========================================");
+    }
+}
 
 
 
