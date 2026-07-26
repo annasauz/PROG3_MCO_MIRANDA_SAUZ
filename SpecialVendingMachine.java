@@ -201,11 +201,6 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      */
     public boolean purchaseCustomMilkTea(int teaSlot, int milkSlot, int sweetenerSlot, int sugarLevel, ArrayList<Integer> addonSlots, int iceLevel, int size) {
 
-        if (addonSlots == null || addonSlots.isEmpty()) {
-            System.out.println("No add-ons selected. Please select at least one add-on.");
-            return false;
-        }
-
         // Determine ingredient multiplier based on size
         int multiplier;
 
