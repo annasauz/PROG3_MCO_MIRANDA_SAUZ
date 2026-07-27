@@ -243,6 +243,9 @@ public class RegularVendingMachineController {
                                 receiptHandler();
                                 isPurchasing = false;
                         }
+                        else {    
+                            textInterface.pressEnterToContinue(scanner);
+                        }
                     }               
                 break;
                 case 3:
@@ -251,6 +254,9 @@ public class RegularVendingMachineController {
                         customerRatingHandler();
                         receiptHandler();
                         isPurchasing = false;
+                    }
+                    else {      
+                        textInterface.pressEnterToContinue(scanner);
                     }
                     } else {
                     vendingMachine.produceChangeWithoutPurchase();
@@ -1016,6 +1022,12 @@ private int chooseSugarLevel() {
         System.out.println("========================================");
     }
 }
+
+
+
+
+
+
 
 
 
