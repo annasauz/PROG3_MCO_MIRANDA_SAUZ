@@ -365,7 +365,13 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         double userInserted = this.transactionCashBox.getMoneyAmount();
 
         if (userInserted < totalPrice) {
-            System.out.println("Not enough money. Drink price: PHP " + totalPrice + " | You inserted: PHP " + userInserted);
+             System.out.println("\n========== TRANSACTION FAILED ==========");
+            System.out.println("Error: Insufficient Funds!");
+            System.out.printf("Custom Milk Tea Price: PHP %.2f%n", totalPrice);
+            System.out.printf("Amount Inserted:       PHP %.2f%n", userInserted);
+            System.out.printf("Missing Amount:        PHP %.2f%n", (totalPrice - userInserted));
+            System.out.println("Please add more money or cancel your transaction.");
+            System.out.println("========================================");
             return false;
         }
 
@@ -373,7 +379,13 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         double changeDue = userInserted - totalPrice;
 
         if (changeDue > 0 && !this.canMakeChange(changeDue)) {
-            System.out.println("Transaction Failed: Machine does not have enough exact change.");
+            System.out.println("\n========== TRANSACTION FAILED ==========");
+            System.out.println("Error: Exact Change Unavailable!");
+            System.out.printf("Change Due: PHP %.2f%n", changeDue);
+            System.out.println("The machine does not have the exact physical denominations");
+            System.out.println("to dispense your change.");
+            System.out.println("\nRefunding your inserted money...");
+            System.out.println("========================================");
             this.produceChangeWithoutPurchase();
             return false;
         }
