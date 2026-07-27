@@ -382,7 +382,6 @@ public class TextInterface {
     public void pressEnterToContinue(Scanner scanner) {
         System.out.print("\nPress Enter to continue...");
         scanner.nextLine();
-        scanner.nextLine();
     }
 
 
