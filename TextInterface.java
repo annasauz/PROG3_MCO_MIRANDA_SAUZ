@@ -1,5 +1,5 @@
+import java.util.ArrayList;
 import java.util.Scanner;
-
 public class TextInterface {
     /**
      * Clears screen
@@ -249,7 +249,7 @@ public class TextInterface {
      * @param size the selected size (SMALL, MEDIUM, LARGE)
      * @param addons the list of indices of the selected add-ons in the item templates
      */
-    public void printCustomMilkTeaSummary(SpecialVendingMachine specialMachine, int tea, int milk, int sweetener, int sugarLevel, int iceLevel, int size, java.util.List<Integer> addons) {
+    public void printCustomMilkTeaSummary(SpecialVendingMachine specialMachine, int tea, int milk, int sweetener, int sugarLevel, int iceLevel, int size, ArrayList<Integer> addons) {
         System.out.println("\n========== ORDER SUMMARY ==========");
 
         System.out.println("Tea Base : " + specialMachine.getItemTemplates()[tea].getName());
@@ -502,5 +502,6 @@ public class TextInterface {
     }
 
 }
+
 
 
