@@ -9,7 +9,7 @@ public class RegularVendingMachineController {
 
     // Constructor
     /**
-     * Creates a controller for a vending mahine
+     * Creates a controller for a vending machine
      *
      * @param textInterface shared instance of TextInterface
      * @param vendingMachine instance of RegularVendingMachine
@@ -355,29 +355,39 @@ public class RegularVendingMachineController {
      * @param max largest user choice
      * @return the user choice if within range, otherwise returns 0
      */
-    private int getInput(int min, int max){
-        if (max < min){
-            System.out.println("Invalid input call");
-            return 0;
+    private int getInput(int min, int max) {
+        boolean valid = false;
+        int input = 0;
+        String leftover;
+
+        while (!valid) {
+            System.out.print("Menu Choice: ");
+
+            // check if num
+            if (scanner.hasNextInt()) {
+                input = scanner.nextInt(); 
+                leftover = scanner.nextLine().trim();
+
+                if (!leftover.isEmpty()) {
+                    System.out.println("Invalid input. Please enter only one whole number.");
+                }
+                
+                else if (input >= min && input <= max) {
+                    valid = true;
+                } else {
+                    System.out.println("Input out of range. Please enter a number between "
+                            + min + " and " + max + ".");
+                }
+            } else {
+                // for letter and symbols
+                System.out.println("Invalid input. Please enter a whole number.");
+                
+                // clear to avoid looping
+                scanner.nextLine(); 
+            }
         }
 
-        while (true) {
-            // Wait for an integer token
-            if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Enter a whole number between " + min + " and " + max + ".");
-                scanner.next(); // consume invalid token
-                System.out.print("Choice: ");
-                continue;
-            }
-
-            int choice = scanner.nextInt();
-            if (choice >= min && choice <= max) {
-                return choice;
-            }
-
-            System.out.println("Choice must be between " + min + " and " + max + ". Try again.");
-            System.out.print("Choice: ");
-        }
+        return input;
     }
 
     /**
@@ -385,24 +395,31 @@ public class RegularVendingMachineController {
      *
      * @return checked integer
      */
+
     private int getPositiveInteger() {
-        boolean valid = false;
-        int value = 0;
-        while (!valid) {
-            if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Enter a whole number.\n");
-                scanner.next();
+    boolean valid = false;
+    int value = 0;
+    String leftover;
+
+    while (!valid) {
+        if (scanner.hasNextInt()) {
+            value = scanner.nextInt();
+            leftover = scanner.nextLine().trim();
+
+            if (!leftover.isEmpty()) {
+                System.out.println("Invalid input. Please enter only one whole number.");
+            } else if (value > 0) {
+                valid = true;
             } else {
-                value = scanner.nextInt();
-                if (value > 0) {
-                    valid = true;
-                } else {
-                    System.out.println("Value must be greater than zero. Try again:");
-                }
+                System.out.println("Value must be greater than zero. Try again:");
             }
+        } else {
+            System.out.println("Invalid input. Enter a whole number.");
+            scanner.nextLine(); // clear buffer
         }
-        return value;
     }
+    return value;
+}
 
     /**
      * Checks if valid positive double.
@@ -412,65 +429,80 @@ public class RegularVendingMachineController {
     private double getPositiveDouble() {
         boolean valid = false;
         double value = 0;
+        String leftover;
+
         while (!valid) {
-            if (!scanner.hasNextDouble()) {
-                System.out.println("Invalid input. Enter a valid number/decimal.");
-                scanner.next();
-                                         } 
-            else {
+            if (scanner.hasNextDouble()) {
                 value = scanner.nextDouble();
-                if (value > 0)  {
+                leftover = scanner.nextLine().trim();
+
+                if (!leftover.isEmpty()) {
+                    System.out.println("Invalid input. Please enter only one number.");
+                } else if (value > 0) {
                     valid = true;
-                                } 
-                else {
+                } else {
                     System.out.println("Value must be greater than zero. Try again:");
-                     }
                 }
-                      }
+            } else {
+                System.out.println("Invalid input. Enter a valid number/decimal.");
+                scanner.nextLine(); // clear buffer
+            }
+        }
         return value;
     }
-
     /**
      * Checks if valid denomination.
      *
      * @return checked denomination
      */
+
     private int getMoneyDenomination() {
         boolean valid = false;
         int denomination = 0;
+        String leftover;
+
         while (!valid) {
-            if (!scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
+                denomination = scanner.nextInt();
+                leftover = scanner.nextLine().trim();
+
+                if (!leftover.isEmpty()) {
+                    System.out.println("Invalid input. Please enter only one whole number.");
+                    System.out.println("Denomination (PHP)");
+                    System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
+                    System.out.print("Choice: ");
+                } else {
+                    switch (denomination) {
+                        case 1:
+                        case 5: 
+                        case 10: 
+                        case 20: 
+                        case 50: 
+                        case 100: 
+                        case 200: 
+                        case 500: 
+                        case 1000:
+                            valid = true;
+                            break;
+                        default:
+                            System.out.println("Invalid denomination.");
+                            System.out.println("Denomination (PHP)");
+                            System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
+                            System.out.print("Choice: ");
+                            break;
+                    }
+                }
+            } else {
                 System.out.println("Invalid input. Please enter a valid denomination.");
-                scanner.next();
+                scanner.nextLine(); // clear buffer
                 System.out.println("Denomination (PHP)");
                 System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
                 System.out.print("Choice: ");
-            } else {
-                denomination = scanner.nextInt();
-                switch (denomination) {
-                    case 1:
-                    case 5: 
-                    case 10: 
-                    case 20: 
-                    case 50: 
-                    case 100: 
-                    case 200: 
-                    case 500: 
-                    case 1000:
-                        valid = true;
-                        break;
-                    default:
-                        System.out.println("Invalid denomination.");
-                        System.out.println("Denomination (PHP)");
-                        System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
-                        System.out.print("Choice: ");
-                        break;
-                }
             }
         }
         return denomination;
     }
-
+ 
 
     /* =============================================
             SPECIAL VENDING MACHINE METHODS
@@ -649,7 +681,7 @@ private ArrayList<Integer> chooseAddons() {
     }
     
     private boolean customMilkTeaHandler() {
-        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;;
+        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
         int tea;
         int milk;
         int sweetener;
@@ -988,6 +1020,12 @@ private int chooseSugarLevel() {
         System.out.println("========================================");
     }
 }
+
+
+
+
+
+
 
 
 
