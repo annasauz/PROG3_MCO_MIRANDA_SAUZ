@@ -195,7 +195,13 @@ public class RegularVendingMachine {
 
         // Verify user has sufficient credit
         if (userInserted < itemPrice * quantity) {
-            System.out.println("Insufficient funds. Item price: PHP " + itemPrice + " | Inserted: PHP " + userInserted);
+            System.out.println("\n========== TRANSACTION FAILED ==========");
+            System.out.println("Error: Insufficient Funds!");
+            System.out.printf("Total Price:     PHP %.2f%n", (itemPrice * quantity));
+            System.out.printf("Amount Inserted: PHP %.2f%n", userInserted);
+            System.out.printf("Missing Amount:  PHP %.2f%n", ((itemPrice * quantity) - userInserted));
+            System.out.println("Please add more money or cancel your transaction.");
+            System.out.println("========================================");
             return false;
         }
 
@@ -204,7 +210,13 @@ public class RegularVendingMachine {
         if (changeDue > 0) {
             boolean changeAvailable = this.canMakeChange(changeDue);
             if (!changeAvailable) {
-                System.out.println("Transaction Failed: Machine cannot produce exact change. Returning your original money.");
+                System.out.println("\n========== TRANSACTION FAILED ==========");
+                System.out.println("Error: Exact Change Unavailable!");
+                System.out.printf("Change Due: PHP %.2f%n", changeDue);
+                System.out.println("The machine does not have the exact physical denominations");
+                System.out.println("to dispense your change.");
+                System.out.println("\nRefunding your inserted money...");
+                System.out.println("========================================");
                 this.produceChangeWithoutPurchase(); // Safe refund execution
                 return false;
             }
