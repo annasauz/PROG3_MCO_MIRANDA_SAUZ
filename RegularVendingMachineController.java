@@ -204,9 +204,6 @@ public class RegularVendingMachineController {
                     addMoneyHandler();
                     break;
                 case 2:
-                    boolean success = false;
-                    while (!success) {
-
                         displayItemsHandler();
 
                         System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
@@ -239,15 +236,14 @@ public class RegularVendingMachineController {
                             System.out.print("\nAmount buying: ");
                             int quantity = getInput(1, 10);
 
-                            success = vendingMachine.purchaseItem(slotChoice, quantity);
+                            boolean success = vendingMachine.purchaseItem(slotChoice, quantity);
 
                             if (success) {
-                            customerRatingHandler();
-                            receiptHandler();
-                            isPurchasing = false;
+                                customerRatingHandler();
+                                receiptHandler();
+                                isPurchasing = false;
                         }
-                    }
-                }
+                    }               
                 break;
                 case 3:
                 if (vendingMachine instanceof SpecialVendingMachine) {
@@ -1020,6 +1016,11 @@ private int chooseSugarLevel() {
         System.out.println("========================================");
     }
 }
+
+
+
+
+
 
 
 
