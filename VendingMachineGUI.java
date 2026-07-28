@@ -25,6 +25,10 @@ public class VendingMachineGUI extends JFrame {
 
         cards.add(new PurchasePanel(this), "Purchase");
 
+        cards.add(new InsertMoneyPanel(this), "Insert Money");
+
+        cards.add(new ReturnChangePanel(this), "Return Change");
+
         add(cards);
 
         setSize(950,650);
