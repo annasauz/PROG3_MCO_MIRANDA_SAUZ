@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 public class MainMenu extends JPanel{
 
     public MainMenu(VendingMachineGUI gui){
@@ -35,9 +36,29 @@ public class MainMenu extends JPanel{
         JButton exit = createButton("Exit");
 
         // Button Actions
-        regular.addActionListener(e -> gui.showPanel("Regular"));
+        regular.addActionListener(e -> {
 
-        special.addActionListener(e -> gui.showPanel("Special"));
+            RegularVendingMachine machine = new RegularVendingMachine();
+
+            gui.setRegularMachine(machine);
+
+            gui.setViewingSpecialMachine(false);
+
+            gui.showPanel("Regular");
+
+        });
+
+        special.addActionListener(e -> {
+
+            SpecialVendingMachine machine = new SpecialVendingMachine();
+
+            gui.setSpecialMachine(machine);
+
+            gui.setViewingSpecialMachine(true);
+
+            gui.showPanel("Special");
+
+        });
 
         exit.addActionListener(e -> System.exit(0));
 
