@@ -56,7 +56,11 @@ public class PurchasePanel extends JPanel {
 
         add(bottom, BorderLayout.SOUTH);
 
-        back.addActionListener(e -> {
+        insertMoney.addActionListener(e -> gui.showPanel("Insert Money"));
+
+        returnChange.addActionListener(e -> gui.showPanel("Return Change"));
+
+            back.addActionListener(e -> {
 
             if(gui.isViewingSpecialMachine()){
                 gui.showPanel("Special");
