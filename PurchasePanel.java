@@ -1,13 +1,15 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.Component;
-
 
 public class PurchasePanel extends JPanel {
 
@@ -59,6 +61,8 @@ public class PurchasePanel extends JPanel {
 
         JButton insertMoney = new JButton("Insert Money");
 
+        JButton buyItem = new JButton("Buy Selected Item");
+
         JButton returnChange = new JButton("Return Change");
 
         JButton back = new JButton("Back");
@@ -71,29 +75,123 @@ public class PurchasePanel extends JPanel {
 
         bottom.add(insertMoney);
 
+        bottom.add(buyItem);
+
         bottom.add(returnChange);
 
         bottom.add(back);
 
         add(bottom, BorderLayout.SOUTH);
 
-        insertMoney.addActionListener(e -> gui.showPanel("Insert Money"));
-
-        returnChange.addActionListener(e -> gui.showPanel("Return Change"));
-
-            back.addActionListener(e -> {
-
-            if(gui.isViewingSpecialMachine()){
-                gui.showPanel("Special");
+      insertMoney.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gui.showPanel("Insert Money");
             }
-            else{
-                gui.showPanel("Regular");
-            }
-
         });
 
-    }
+        returnChange.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gui.showPanel("Return Change");
+            }
+        });
 
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (gui.isViewingSpecialMachine()) {
+                    gui.showPanel("Special");
+                } else {
+                    gui.showPanel("Regular");
+                }
+            }
+        });
+
+       
+        buyItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            
+                boolean purchaseSuccessful = processPurchase();
+                
+         
+                if (purchaseSuccessful) {
+                    System.out.println("Transaction completed successfully.");
+                } else {
+                    System.out.println("Transaction was not completed.");
+                }
+            }
+        });
+    }
+   
+
+    /**
+     * Helper method to handle purchase logic.
+     * 
+     * @return true if purchase was completed, false if error/failed
+     */
+    public boolean processPurchase() {
+        int selectedRow = table.getSelectedRow();
+
+        
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, 
+                "Please select an item from the table first!", 
+                "No Item Selected", 
+                JOptionPane.WARNING_MESSAGE);
+            return false; // Returns boolean!
+        }
+
+        RegularVendingMachine machine;
+        
+        if (gui.isViewingSpecialMachine()) {
+            machine = gui.getSpecialMachine();
+        } else {
+            machine = gui.getRegularMachine();
+        }
+
+        if (machine == null) {
+            JOptionPane.showMessageDialog(this, "No active vending machine found!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false; // Returns boolean!
+        }
+
+        //   GUI typed credit transferred to backend cashbox
+        double currentBackendMoney = machine.transactionCashBox.getMoneyAmount();
+        double guiMoney = gui.getInsertedMoney();
+        
+        if (guiMoney > currentBackendMoney) {
+            int diff = (int) (guiMoney - currentBackendMoney);
+            machine.receivePayment(diff, 1);
+        }
+
+        // purchase 1 unit 
+        boolean success = machine.purchaseItem(selectedRow, 1);
+
+        // update GUI 
+        if (success) {
+            JOptionPane.showMessageDialog(this, 
+                "Purchase successful! Item dispensed.", 
+                "Success", 
+                JOptionPane.INFORMATION_MESSAGE);
+
+            // sync GUI credit and backend cash credit
+            gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
+
+           
+            loadItems(machine);
+            refreshCredit(gui);
+            
+            return true; 
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Transaction Failed! Make sure you inserted enough money and the item is in stock.", 
+                "Purchase Failed", 
+                JOptionPane.ERROR_MESSAGE);
+            
+            return false; 
+        }
+    }
     public void loadItems(RegularVendingMachine machine){
 
         model.setRowCount(0);
