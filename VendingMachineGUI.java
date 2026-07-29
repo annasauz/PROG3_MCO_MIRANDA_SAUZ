@@ -66,7 +66,7 @@ public class VendingMachineGUI extends JFrame {
                 purchasePanel.loadItems(regularMachine);
 
             }
-
+        purchasePanel.refreshCredit(this);
         }
 
         cardLayout.show(cards,panelName);
@@ -109,3 +109,4 @@ public class VendingMachineGUI extends JFrame {
         return insertedMoney;
     }
 }
+
