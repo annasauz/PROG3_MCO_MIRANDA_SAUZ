@@ -7,7 +7,15 @@ public class VendingMachineGUI extends JFrame {
     private boolean viewingSpecialMachine = false;
     private CardLayout cardLayout;
 
+    private RegularVendingMachine regularMachine;
+
+    private SpecialVendingMachine specialMachine;
+
     private JPanel cards;
+
+    private PurchasePanel purchasePanel;
+
+    private double insertedMoney = 0;
 
     public VendingMachineGUI() {
 
@@ -23,7 +31,9 @@ public class VendingMachineGUI extends JFrame {
 
         cards.add(new SpecialVMMenuPanel(this), "Special");
 
-        cards.add(new PurchasePanel(this), "Purchase");
+        purchasePanel = new PurchasePanel(this);
+
+        cards.add(purchasePanel, "Purchase");
 
         cards.add(new InsertMoneyPanel(this), "Insert Money");
 
@@ -44,9 +54,41 @@ public class VendingMachineGUI extends JFrame {
     }
 
     public void showPanel(String panelName){
+        if(panelName.equals("Purchase")){
+
+            if(viewingSpecialMachine){
+
+                purchasePanel.loadItems(specialMachine);
+
+            }
+            else{
+
+                purchasePanel.loadItems(regularMachine);
+
+            }
+
+        }
+
         cardLayout.show(cards,panelName);
+
     }
 
+
+    public void setRegularMachine(RegularVendingMachine machine){
+        regularMachine = machine;
+    }
+
+    public RegularVendingMachine getRegularMachine(){
+        return regularMachine;
+    }
+
+    public void setSpecialMachine(SpecialVendingMachine machine){
+        specialMachine = machine;
+    }
+
+    public SpecialVendingMachine getSpecialMachine(){
+        return specialMachine;
+    }
     public JPanel getCards(){
         return cards;
     }
@@ -57,5 +99,13 @@ public class VendingMachineGUI extends JFrame {
 
     public boolean isViewingSpecialMachine() {
         return viewingSpecialMachine;
+    }
+
+    public void setInsertedMoney(double amount){
+        insertedMoney = amount;
+    }
+
+    public double getInsertedMoney(){
+        return insertedMoney;
     }
 }
