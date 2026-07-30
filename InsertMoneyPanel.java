@@ -1,7 +1,7 @@
 import java.awt.*;
-import javax.swing.*;
-import java.awt.event.ActionEvent;      
-import java.awt.event.ActionListener;   
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;   
 
 public class InsertMoneyPanel extends JPanel {
     
@@ -84,21 +84,6 @@ public class InsertMoneyPanel extends JPanel {
             
             buttonGrid.add(btn);
         }
-               
-               
-                    // call helper method
-        //             boolean insertSuccessful = insertDenomination(denom);
-                    
-        //             if (insertSuccessful) {
-        //                 System.out.println("Successfully inserted PHP " + denom);
-        //             } else {
-        //                 System.out.println("Failed to insert money.");
-        //             }
-        //         }
-        //     });
-            
-        //     buttonGrid.add(btn);
-        // }
 
         centerPanel.add(buttonGrid);
         add(centerPanel, BorderLayout.CENTER);
