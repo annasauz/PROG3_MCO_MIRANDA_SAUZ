@@ -1,7 +1,7 @@
 import java.awt.*;
-import javax.swing.*;
-import java.awt.event.ActionEvent;      
-import java.awt.event.ActionListener;   
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;   
 
 public class InsertMoneyPanel extends JPanel {
     
@@ -50,13 +50,34 @@ public class InsertMoneyPanel extends JPanel {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // call helper method
-                    boolean insertSuccessful = insertDenomination(denom);
+                    // Ask user input on denomination quantity
+                    String input = JOptionPane.showInputDialog(
+                            InsertMoneyPanel.this, 
+                            "Enter the number of PHP " + denom + " to insert:", 
+                            "Enter Quantity", 
+                            JOptionPane.QUESTION_MESSAGE
+                    );
                     
-                    if (insertSuccessful) {
-                        System.out.println("Successfully inserted PHP " + denom);
-                    } else {
-                        System.out.println("Failed to insert money.");
+                    // Input validation
+                    if (input != null && !input.trim().isEmpty()) {
+                        try {
+                            int quantity = Integer.parseInt(input.trim());
+                            
+                            if (quantity > 0) {
+
+                                boolean insertSuccessful = insertDenomination(denom, quantity);
+                                
+                                if (insertSuccessful) {
+                                    System.out.println("Successfully inserted " + quantity + " pcs of PHP " + denom);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(InsertMoneyPanel.this, 
+                                        "Please enter a positive number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(InsertMoneyPanel.this, 
+                                    "Please enter a valid whole number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             });
@@ -95,7 +116,7 @@ public class InsertMoneyPanel extends JPanel {
      * @param amount denomination to insert
      * @return true if successfully inserted, false false otherwise
      */
-    private boolean insertDenomination(int amount) {
+    private boolean insertDenomination(int amount, int quantity) {
         RegularVendingMachine machine;
         
         if (gui.isViewingSpecialMachine()) {
@@ -110,7 +131,7 @@ public class InsertMoneyPanel extends JPanel {
         }
 
         // Send to backend cashbox
-        machine.receivePayment(amount, 1);
+        machine.receivePayment(amount, quantity);
 
         // fetch updated total from backend
         double newTotal = machine.transactionCashBox.getMoneyAmount();
