@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -143,6 +145,24 @@ public class PurchasePanel extends JPanel {
             return false; // Returns boolean!
         }
 
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+
+        int result = JOptionPane.showConfirmDialog(
+                this, 
+                spinner, 
+                "Select Quantity to Buy", 
+                JOptionPane.OK_CANCEL_OPTION, 
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+
+        if (result != JOptionPane.OK_OPTION) {
+            return false;
+        }
+
+
+        int quantity = (Integer) spinner.getValue();
+
         RegularVendingMachine machine;
         
         if (gui.isViewingSpecialMachine()) {
@@ -153,10 +173,10 @@ public class PurchasePanel extends JPanel {
 
         if (machine == null) {
             JOptionPane.showMessageDialog(this, "No active vending machine found!", "Error", JOptionPane.ERROR_MESSAGE);
-            return false; // Returns boolean!
+            return false;
         }
 
-        //   GUI typed credit transferred to backend cashbox
+        
         double currentBackendMoney = machine.transactionCashBox.getMoneyAmount();
         double guiMoney = gui.getInsertedMoney();
         
@@ -165,7 +185,7 @@ public class PurchasePanel extends JPanel {
             machine.receivePayment(diff, 1);
         }
 
-        // purchase 1 unit 
+      
         boolean success = machine.purchaseItem(selectedRow, quantity);
 
         // update GUI 
@@ -230,3 +250,4 @@ public class PurchasePanel extends JPanel {
 
     }
 }
+
