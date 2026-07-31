@@ -192,9 +192,9 @@ public class RegularVendingMachine {
 
         double itemPrice = itemTemplate.getPrice();
         double userInserted = this.transactionCashBox.getMoneyAmount();
-
+		double totalCost = itemPrice * quantity;
         // Verify user has sufficient credit
-        if (userInserted < itemPrice * quantity) {
+        if (userInserted < totalCost) {
             System.out.println("\n========== TRANSACTION FAILED ==========");
             System.out.println("Error: Insufficient Funds!");
             System.out.printf("Total Price:     PHP %.2f%n", (itemPrice * quantity));
@@ -205,7 +205,7 @@ public class RegularVendingMachine {
             return false;
         }
 
-        double changeDue = userInserted - (itemPrice * quantity);
+        double changeDue = userInserted - totalCost;
         
         if (changeDue > 0) {
             boolean changeAvailable = this.canMakeChange(changeDue);
@@ -226,8 +226,11 @@ public class RegularVendingMachine {
             this.dispenseChange(changeDue); 
         }
         
-       Item dispensedItem = selectedSlot.dispense();
-
+       // Item dispensedItem = selectedSlot.dispense();
+		Item dispensedItem = null;
+        for (int i = 0; i < quantity; i++) {
+            dispensedItem = selectedSlot.dispense();
+        }
         if (dispensedItem == null) {
             System.out.println("Error: Item could not be dispensed.");
             return false;
@@ -235,7 +238,7 @@ public class RegularVendingMachine {
 
         this.totalSold[slotIndex] += quantity;
 
-        this.revenuePerItem[slotIndex] += dispensedItem.getPrice() * quantity;
+        this.revenuePerItem[slotIndex] += totalCost;
 
         // ================= RECEIPT DATA =================
 
@@ -245,7 +248,7 @@ public class RegularVendingMachine {
             receiptItems.add(dispensedItem.getName());
         }
 
-        setLastTransaction(dispensedItem.getName(), receiptItems, dispensedItem.getPrice() * quantity, userInserted, changeDue, dispensedItem.getCalories() * quantity);
+        setLastTransaction(dispensedItem.getName(), receiptItems, totalCost, userInserted, changeDue, dispensedItem.getCalories() * quantity);
 
         // ================================================
 
