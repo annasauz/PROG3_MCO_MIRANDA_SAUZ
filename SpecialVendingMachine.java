@@ -201,9 +201,8 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      */
     public boolean purchaseCustomMilkTea(int teaSlot, int milkSlot, int sweetenerSlot, int sugarLevel, ArrayList<Integer> addonSlots, int iceLevel, int size) {
 
-        if (addonSlots == null || addonSlots.isEmpty()) {
-            System.out.println("No add-ons selected.");
-            return false;
+        if (addonSlots == null) {
+            addonSlots = new ArrayList<>();
         }
 
         // Determine ingredient multiplier based on size
@@ -488,20 +487,34 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     }
 
         // Ice
-        for (int i = 0; i < iceServings; i++) {
+        if (iceServings > 0) {
 
-            Item ice = this.slots[ICE].dispense();
-            this.totalSold[ICE]++;
-            this.revenuePerItem[ICE] += ice.getPrice();
-            if (i == 0) {
-                System.out.println("Adding Ice");
-            } else {
-                System.out.println("Adding extra Ice");
+            for (int i = 0; i < iceServings; i++) {
+                Item ice = this.slots[ICE].dispense();
+                this.totalSold[ICE]++;
+                this.revenuePerItem[ICE] += ice.getPrice();
             }
 
-        flushLoad();
-    }
+            switch (iceLevel) {
+            case NO_ICE:
+                break;
 
+            case LESS_ICE:
+                System.out.println("Adding Less Ice");
+                flushLoad();
+                break;
+
+            case REGULAR_ICE:
+                System.out.println("Adding Regular Ice");
+                flushLoad();
+                break;
+
+            case EXTRA_ICE:
+                System.out.println("Adding Extra Ice");
+                flushLoad();
+                break;
+        }
+    }
 
         System.out.println("Shaking and sealing cup");
         flushLoad();
