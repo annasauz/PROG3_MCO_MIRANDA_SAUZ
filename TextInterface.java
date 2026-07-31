@@ -270,7 +270,7 @@ public class TextInterface {
 
         if (sweetener == -1) {
 
-            System.out.println("N/A");
+            System.out.println("0%");
 
         } else {
 
