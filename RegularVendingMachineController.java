@@ -204,49 +204,55 @@ public class RegularVendingMachineController {
                     addMoneyHandler();
                     break;
                 case 2:
-                        displayItemsHandler();
+                    displayItemsHandler();
+                    boolean success = false;
+                    while (!success) {
 
-                        System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
-                        int slotChoice = getInput(1, maxSlots) - 1;
+                    System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
+                    int slotChoice = getInput(1, maxSlots) - 1;
 
-                        boolean restricted = false;
+                    boolean restricted = false;
 
-                        if (vendingMachine instanceof SpecialVendingMachine) {
+                    if (vendingMachine instanceof SpecialVendingMachine) {
 
-                            SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+                        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
 
-                            if (specialMachine.isRestrictedItem(slotChoice)) {
+                        if (specialMachine.isRestrictedItem(slotChoice)) {
 
-                                restricted = true;
+                            restricted = true;
 
-                                System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
-                                System.out.println("The selected item is marked as (Restricted)");
-                                System.out.println("and cannot be purchased individually.");
-                                System.out.println("It is only available as an ingredient");
-                                System.out.println("for a custom milk tea.");
-                                System.out.println("==========================================");
-
-                                System.out.println();
-                                System.out.println("Please select another item.");
-                            }
+                            System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
+                            System.out.println("The selected item is marked as (Restricted)");
+                            System.out.println("and cannot be purchased individually.");
+                            System.out.println("It is only available as an ingredient");
+                            System.out.println("for a custom milk tea.");
+                            System.out.println("==========================================");
+                            System.out.println();
+                            System.out.println("Please select another item.");
                         }
+                    }
 
-                        if (!restricted) {
+                    if (!restricted) {
 
-                            System.out.print("\nAmount buying: ");
-                            int quantity = getInput(1, 10);
+                        System.out.print("\nAmount buying: ");
+                        int quantity = getInput(1, 10);
 
-                            boolean success = vendingMachine.purchaseItem(slotChoice, quantity);
+                        success = vendingMachine.purchaseItem(slotChoice, quantity);
 
-                            if (success) {
-                                customerRatingHandler();
-                                receiptHandler();
-                                isPurchasing = false;
+                        if (success) {
+
+                        customerRatingHandler();
+                        receiptHandler();
+
+                        isPurchasing = false;
+
+                    } else {
+
+                    textInterface.pressEnterToContinue(scanner);
                         }
-                        else {    
-                            textInterface.pressEnterToContinue(scanner);
-                        }
-                    }               
+                    }
+                }
+
                 break;
                 case 3:
                 if (vendingMachine instanceof SpecialVendingMachine) {
@@ -363,7 +369,7 @@ public class RegularVendingMachineController {
         String leftover;
 
         while (!valid) {
-            System.out.print("Menu Choice: ");
+            //System.out.print("Menu Choice: ");
 
             // check if num
             if (scanner.hasNextInt()) {
@@ -656,8 +662,10 @@ private ArrayList<Integer> chooseAddons() {
             case 7: slot = SpecialVendingMachine.EGG_PUDDING; break;
         }
 
-        addons.add(slot);
-        System.out.println("Added " + specialMachine.getItemTemplates()[addon].getName());
+        if (slot != -1 && !addons.contains(slot)) {
+            addons.add(slot);
+            System.out.println("Added " + specialMachine.getItemTemplates()[slot].getName());
+        }
     }
 
     private int chooseSize() {
@@ -705,12 +713,12 @@ private ArrayList<Integer> chooseAddons() {
                         addons.add(SpecialVendingMachine.EGG_PUDDING);
                         textInterface.printCustomMilkTeaSummary(
                                 specialMachine,
-                                SpecialVendingMachine.BLACK_TEA,
-                                SpecialVendingMachine.WHOLE_MILK,
-                                SpecialVendingMachine.BROWN_SUGAR_SYRUP,
-                                SpecialVendingMachine.FULL_SUGAR,
-                                SpecialVendingMachine.REGULAR_ICE,
-                                SpecialVendingMachine.LARGE,
+                                SpecialVendingMachine.OOLONG_TEA,
+                                SpecialVendingMachine.OAT_MILK,
+                                SpecialVendingMachine.HONEY,
+                                SpecialVendingMachine.HALF_SUGAR,
+                                SpecialVendingMachine.LESS_ICE,
+                                SpecialVendingMachine.MEDIUM,
                                 addons);
                         return specialMachine.purchaseCustomMilkTea(SpecialVendingMachine.OOLONG_TEA,
                                                                     SpecialVendingMachine.OAT_MILK,
@@ -766,6 +774,7 @@ private ArrayList<Integer> chooseAddons() {
                 return false;
             case 3:
                 Random random = new Random();
+
                 tea = random.nextInt(4);
                 milk = chooseMilk(random.nextInt(4));
                 sweetener = chooseSweetener(random.nextInt(3));
@@ -773,10 +782,16 @@ private ArrayList<Integer> chooseAddons() {
                 iceLevel = random.nextInt(4);
                 size = random.nextInt(3) + 1;
 
+                if (sweetener == -1) {
+                    sugarLevel = SpecialVendingMachine.NO_SUGAR;
+                }
+
                 addons = new ArrayList<>();
+
                 int addonCount = random.nextInt(4);
-                for (int i = 0; i < addonCount; i++) {
-                    int addon = random.nextInt(7);
+
+                while (addons.size() < addonCount) {
+                    int addon = random.nextInt(7) + 1;
                     chooseAddons(addon, addons);
                 }
 
