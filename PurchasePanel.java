@@ -166,7 +166,7 @@ public class PurchasePanel extends JPanel {
         }
 
         // purchase 1 unit 
-        boolean success = machine.purchaseItem(selectedRow, 1);
+        boolean success = machine.purchaseItem(selectedRow, quantity);
 
         // update GUI 
         if (success) {
