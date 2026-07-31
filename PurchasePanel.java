@@ -12,13 +12,16 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class PurchasePanel extends JPanel {
-
     private JTable table;
     private DefaultTableModel model;
     private JLabel creditLabel;
     private VendingMachineGUI gui;
+    private JButton buildCustomMilkTea;
 
     public PurchasePanel(VendingMachineGUI gui){
         this.gui = gui;
@@ -48,7 +51,7 @@ public class PurchasePanel extends JPanel {
             public boolean isCellEditable(int row, int column){
             return false;
         }
-
+       
     };
 
         table = new JTable(model);
@@ -60,13 +63,10 @@ public class PurchasePanel extends JPanel {
         //----------------------------------
 
         JPanel bottom = new JPanel(new FlowLayout());
-
         JButton insertMoney = new JButton("Insert Money");
-
         JButton buyItem = new JButton("Buy Selected Item");
-
+        buildCustomMilkTea = new JButton("Build Custom Milk Tea");
         JButton returnChange = new JButton("Return Change");
-
         JButton back = new JButton("Back");
 
         creditLabel = new JLabel("Credit: PHP 0.00");
@@ -74,18 +74,16 @@ public class PurchasePanel extends JPanel {
         creditLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         bottom.add(creditLabel);
-
         bottom.add(insertMoney);
-
         bottom.add(buyItem);
-
+        bottom.add(buildCustomMilkTea);
         bottom.add(returnChange);
 
         bottom.add(back);
 
         add(bottom, BorderLayout.SOUTH);
 
-      insertMoney.addActionListener(new ActionListener() {
+        insertMoney.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gui.showPanel("Insert Money");
@@ -125,6 +123,16 @@ public class PurchasePanel extends JPanel {
                 }
             }
         });
+
+        buildCustomMilkTea.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (gui.isViewingSpecialMachine()) {
+                gui.showPanel("Milk Tea Type");
+            }
+        }
+    });
+        buildCustomMilkTea.setVisible(false);
     }
    
 
@@ -145,7 +153,7 @@ public class PurchasePanel extends JPanel {
             return false; // Returns boolean!
         }
 
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
 
         int result = JOptionPane.showConfirmDialog(
                 this, 
@@ -177,33 +185,15 @@ public class PurchasePanel extends JPanel {
         }
 
         
-        double currentBackendMoney = machine.transactionCashBox.getMoneyAmount();
-        double guiMoney = gui.getInsertedMoney();
-        
-        if (guiMoney > currentBackendMoney) {
-            int diff = (int) (guiMoney - currentBackendMoney);
-            machine.receivePayment(diff, 1);
-        }
-
       
         boolean success = machine.purchaseItem(selectedRow, quantity);
 
-        // update GUI 
         if (success) {
-            JOptionPane.showMessageDialog(this, 
-                "Purchase successful! Item dispensed.", 
-                "Success", 
-                JOptionPane.INFORMATION_MESSAGE);
 
-            // sync GUI credit and backend cash credit
-            gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
-
-           
-            loadItems(machine);
-            refreshCredit(gui);
-            
-            return true; 
-        } else {
+            completePurchaseFlow(machine);
+            return true;
+        }
+         else {
             JOptionPane.showMessageDialog(this, 
                 "Transaction Failed! Make sure you inserted enough money and the item is in stock.", 
                 "Purchase Failed", 
@@ -211,7 +201,8 @@ public class PurchasePanel extends JPanel {
             
             return false; 
         }
-    }
+   
+    }    
     public void loadItems(RegularVendingMachine machine){
 
         model.setRowCount(0);
@@ -249,5 +240,168 @@ public class PurchasePanel extends JPanel {
         );
 
     }
-}
+
+    private void showCustomerRatingDialog(RegularVendingMachine machine) {
+
+        String[] ratingOptions = {"1 - Poor", "2 - Fair", "3 - Good", "4 - Very Good", "5 - Excellent"};
+
+        String selectedRating = (String) JOptionPane.showInputDialog(this, "How would you rate your purchase?", "Rate Your Experience", JOptionPane.QUESTION_MESSAGE, null, ratingOptions, ratingOptions[4]);
+
+        if (selectedRating != null) {
+
+            int rating = Integer.parseInt(selectedRating.substring(0, 1));
+
+            machine.addCustomerRating(rating);
+
+            String responseMessage;
+
+            switch (rating) {
+                case 5:
+                    responseMessage = "Thank you! We're glad you enjoyed your drink!";
+                    break;
+
+                case 4:
+                    responseMessage = "Thank you for your positive feedback!";
+                    break;
+
+                case 3:
+                    responseMessage = "Thank you! We appreciate your feedback.";
+                break;
+
+                case 2:
+                case 1:
+                responseMessage = "Thank you for your feedback.\n" + "We'll strive to serve you better next time.";
+                break;
+
+                default:
+                responseMessage = "Thank you for your feedback.";
+            }
+
+            JOptionPane.showMessageDialog(this, responseMessage, "Rating Submitted", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void showReceiptChoiceDialog(RegularVendingMachine machine) {
+
+        int choice = JOptionPane.showConfirmDialog(this,
+            "Would you like to print a receipt?",
+            "Receipt",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            showReceiptDialog(machine);
+        }
+    }
+
+
+    private void showReceiptDialog(RegularVendingMachine machine) {
+
+        String receipt = buildReceipt(machine);
+
+        JTextArea receiptArea = new JTextArea(receipt);
+
+        receiptArea.setEditable(false);
+        receiptArea.setFocusable(false);
+        receiptArea.setFont(FontStyle.NORMAL);
+    
+
+        receiptArea.setRows(18);
+        receiptArea.setColumns(40);
+        receiptArea.setCaretPosition(0);
+
+        JScrollPane receiptScrollPane = new JScrollPane(receiptArea);
+
+        JOptionPane.showMessageDialog(this, receiptScrollPane, "Purchase Receipt", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private String buildReceipt(RegularVendingMachine machine) {
+
+        StringBuilder receipt = new StringBuilder();
+
+        receipt.append("========================================\n");
+        receipt.append("           PURCHASE RECEIPT\n");
+        receipt.append("========================================\n\n");
+
+        receipt.append("Items Purchased\n");
+        receipt.append("----------------------------------------\n");
+
+        ArrayList<String> printedItems = new ArrayList<>();
+
+        for (String item : machine.getLastPurchaseItems()) {
+
+            if (!printedItems.contains(item)) {
+
+                int count = 0;
+
+                for (String comparedItem : machine.getLastPurchaseItems()) {
+
+                    if (comparedItem.equals(item)) {
+                        count++;
+                    }
+                }
+
+                if (count == 1) {
+                    receipt.append("- ").append(item).append("\n");
+                } else {
+                    receipt.append("- ").append(item).append(" x").append(count).append("\n");
+            }
+
+                printedItems.add(item);
+            }
+        }   
+
+        receipt.append("----------------------------------------\n");
+
+        receipt.append(String.format("%-14s PHP %.2f%n", "Total Price", machine.getLastPurchasePrice()));
+
+        receipt.append(String.format("%-14s PHP %.2f%n", "Amount Paid", machine.getLastAmountPaid()));
+
+        receipt.append(String.format("%-14s PHP %.2f%n", "Change", machine.getLastChange()));
+
+        receipt.append(String.format("%-14s %.0f kcal%n", "Calories", machine.getLastCalories()));
+
+        receipt.append("----------------------------------------\n\n");
+
+        receipt.append("Thank you for your purchase!\n");
+
+        receipt.append("========================================");
+
+        return receipt.toString();
+    }
+
+    public void refreshMachineButtons() {
+
+        buildCustomMilkTea.setVisible(
+            gui.isViewingSpecialMachine()
+        );
+    }
+
+    public void completePurchaseFlow(RegularVendingMachine machine) {
+
+        gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
+
+        loadItems(machine);
+        refreshCredit(gui);
+
+        String successMessage =
+            "Transaction complete!\n"
+            + "Total Price: PHP "
+            + String.format("%.2f", machine.getLastPurchasePrice())
+            + "\nCalories: "
+            + String.format("%.0f", machine.getLastCalories())
+            + " kcal"
+            + "\nChange Dispensed: PHP "
+            + String.format("%.2f", machine.getLastChange());
+
+        JOptionPane.showMessageDialog(this, successMessage, "Vending Success", JOptionPane.INFORMATION_MESSAGE);
+
+        showCustomerRatingDialog(machine);
+        showReceiptChoiceDialog(machine);
+    }
+    public void showFeedbackAndReceipt(RegularVendingMachine machine) {
+        showCustomerRatingDialog(machine);
+        showReceiptChoiceDialog(machine);
+    }
+}   
 
