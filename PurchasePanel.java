@@ -7,14 +7,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 
 public class PurchasePanel extends JPanel {
     private JTable table;
@@ -55,6 +54,10 @@ public class PurchasePanel extends JPanel {
     };
 
         table = new JTable(model);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(true);
+        table.setColumnSelectionAllowed(false);
+        table.setCellSelectionEnabled(false);
 
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -153,24 +156,6 @@ public class PurchasePanel extends JPanel {
             return false; // Returns boolean!
         }
 
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
-
-        int result = JOptionPane.showConfirmDialog(
-                this, 
-                spinner, 
-                "Select Quantity to Buy", 
-                JOptionPane.OK_CANCEL_OPTION, 
-                JOptionPane.QUESTION_MESSAGE
-        );
-
-
-        if (result != JOptionPane.OK_OPTION) {
-            return false;
-        }
-
-
-        int quantity = (Integer) spinner.getValue();
-
         RegularVendingMachine machine;
         
         if (gui.isViewingSpecialMachine()) {
@@ -183,8 +168,6 @@ public class PurchasePanel extends JPanel {
             JOptionPane.showMessageDialog(this, "No active vending machine found!", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-
-        
       
         boolean success = machine.purchaseItem(selectedRow);
 
