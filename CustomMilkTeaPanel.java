@@ -1100,48 +1100,61 @@ public class CustomMilkTeaPanel extends JPanel {
 
         } else {
 
-            String orderSummary = buildPresetOrderSummary(drinkName, machine, tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
+            purchaseSuccessful = machine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
 
-            int confirmation = JOptionPane.showConfirmDialog(this, orderSummary + "\n\nProceed with this purchase?", drinkName, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (purchaseSuccessful) {
 
-            if (confirmation == JOptionPane.YES_OPTION) {
+                gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
 
-                purchaseSuccessful = machine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
+                ArrayList<String> preparationSteps =
+                    buildPreparationSteps(machine, tea, milk, sweetener, sugarLevel,addons,
+                            iceLevel,
+                            size
+                    );
 
-                if (purchaseSuccessful) {
-
-                    gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
-
-                    ArrayList<String> preparationSteps = buildPreparationSteps(machine, tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
-
-                    showPreparationAnimation(preparationSteps, new Runnable() {
+            showPreparationAnimation(
+                    preparationSteps,
+                    new Runnable() {
                         @Override
                         public void run() {
 
                             showTransactionComplete(machine, size);
 
-                            showNutritionFacts(tea, milk, sugarLevel, iceLevel, addons, machine.getLastCalories());
+                            showNutritionFacts(
+                                    tea,
+                                    milk,
+                                    sugarLevel,
+                                    iceLevel,
+                                    addons,
+                                    machine.getLastCalories()
+                            );
 
-                            gui.getPurchasePanel().showFeedbackAndReceipt(machine);
+                            gui.getPurchasePanel()
+                                    .showFeedbackAndReceipt(machine);
 
                             gui.showPanel("Purchase");
                         }
-                    });
+                    }
+            );
 
-                } else {
+        } else {
 
-                    gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
+            gui.setInsertedMoney(
+                    machine.transactionCashBox.getMoneyAmount()
+            );
 
-                    JOptionPane.showMessageDialog(this,
-                        "Signature milk tea purchase failed.\n"
-                        + "Check your credit, ingredient stock, and machine change availability.",
-                        "Transaction Failed",
-                        JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            JOptionPane.showMessageDialog(
+                    this,
+                    drinkName + " purchase failed.\n"
+                    + "Check your credit, ingredient stock, "
+                    + "and machine change availability.",
+                    "Transaction Failed",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
+    }
 
-            return purchaseSuccessful;
+    return purchaseSuccessful;
     }
 
     private String buildPresetOrderSummary(String drinkName, SpecialVendingMachine machine, int tea, int milk, int sweetener, int sugarLevel, ArrayList<Integer> addons, int iceLevel, int size) {
