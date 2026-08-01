@@ -809,15 +809,11 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
             int highestRevenue = getHighestRevenueItem();
 
-            System.out.printf("Best Selling Tea        : %s (%d sold)%n", itemTemplates[bestTea].getName(), totalSold[bestTea]);
-
-            System.out.printf("Best Selling Milk       : %s (%d sold)%n", itemTemplates[bestMilk].getName(), totalSold[bestMilk]);
-
-            System.out.printf("Best Selling Sweetener  : %s (%d sold)%n", itemTemplates[bestSweetener].getName(), totalSold[bestSweetener]);
-
-            System.out.printf("Best Selling Flavor     : %s (%d sold)%n", itemTemplates[bestFlavor].getName(), totalSold[bestFlavor]);
-
-            System.out.printf("Best Selling Topping    : %s (%d sold)%n", itemTemplates[bestTopping].getName(), totalSold[bestTopping]);
+            printBestSellingCategory("Best Selling Tea", bestTea);
+            printBestSellingCategory("Best Selling Milk", bestMilk);
+            printBestSellingCategory("Best Selling Sweetener", bestSweetener);
+            printBestSellingCategory("Best Selling Flavor", bestFlavor);
+            printBestSellingCategory("Best Selling Topping", bestTopping);
 
             System.out.println("---------------------------------------------");
 
@@ -835,17 +831,30 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             }
 
         System.out.println("=============================================");
+    }
+
+    private void printBestSellingCategory(String category, int slot) {
+        if (slot == -1) {
+            System.out.printf("%-24s: No sales%n", category);
+        } else {
+            System.out.printf("%-24s: %s (%d sold)%n",
+                category,
+                itemTemplates[slot].getName(),
+                totalSold[slot]);
         }
+    }
+
     // Getters
 
     private int getBestSellingItem(int startSlot, int endSlot) {
 
-        int bestSlot = startSlot;
+        int bestSlot = -1;
 
-        for (int i = startSlot + 1; i <= endSlot; i++) {
-
-            if (totalSold[i] > totalSold[bestSlot]) {
-                bestSlot = i;
+        for (int i = startSlot; i <= endSlot; i++) {
+            if (totalSold[i] > 0) {
+                if (bestSlot == -1 || totalSold[i] > totalSold[bestSlot]) {
+                    bestSlot = i;
+                }
             }
         }
 
