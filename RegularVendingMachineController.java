@@ -143,7 +143,6 @@ public class RegularVendingMachineController {
         }
     }
 
-
     /**
      * Displays the items available in the vending machine.
      */

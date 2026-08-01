@@ -21,7 +21,7 @@ public class ReturnChangePanel extends JPanel {
         add(Box.createVerticalStrut(40));
 
        
-        displayLabel = new JLabel("Current Credit: PHP 0.00");
+        displayLabel = new JLabel("Current Credit:" + String.format("PHP %.2f", gui.getInsertedMoney()));
         displayLabel.setFont(FontStyle.NORMAL);
         displayLabel.setAlignmentX(CENTER_ALIGNMENT);
         add(displayLabel);

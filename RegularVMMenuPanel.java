@@ -48,6 +48,7 @@ public class RegularVMMenuPanel extends JPanel {
 
         add(Box.createVerticalStrut(20));
 
+        maintenance.addActionListener(e -> gui.showPanel("Maintenance"));
         add(maintenance);
 
         add(Box.createVerticalStrut(20));
