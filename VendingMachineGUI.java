@@ -15,6 +15,7 @@ public class VendingMachineGUI extends JFrame {
     private MilkTeaTypePanel milkTeaTypePanel;
     private SignatureMilkTeaPanel signatureMilkTeaPanel;
     private MaintenanceGuiPanel maintenanceGuiPanel;
+    private ReturnChangePanel returnChangePanel;
     private double insertedMoney = 0;
 
     public VendingMachineGUI() {
@@ -38,7 +39,8 @@ public class VendingMachineGUI extends JFrame {
         insertMoneyPanel = new InsertMoneyPanel(this);
         cards.add(insertMoneyPanel, "Insert Money");
 
-        cards.add(new ReturnChangePanel(this), "Return Change");
+        returnChangePanel = new ReturnChangePanel(this);
+        cards.add(returnChangePanel, "Return Change");
 
         milkTeaTypePanel = new MilkTeaTypePanel(this);
         cards.add(milkTeaTypePanel, "Milk Tea Type");
@@ -73,10 +75,16 @@ public class VendingMachineGUI extends JFrame {
             } else {
                 purchasePanel.loadItems(regularMachine);
             }
+
             purchasePanel.refreshCredit(this);
             purchasePanel.refreshMachineButtons();
+
         } else if ("Insert Money".equals(panelName)) {
             insertMoneyPanel.refreshDisplay();
+
+        } else if ("Return Change".equals(panelName)) {
+            returnChangePanel.refreshDisplay();
+
         } else if ("Maintenance".equals(panelName)) {
             maintenanceGuiPanel.loadMaintenanceOptions();
         }
