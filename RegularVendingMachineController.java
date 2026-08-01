@@ -232,11 +232,7 @@ public class RegularVendingMachineController {
                     }
 
                     if (!restricted) {
-
-                        System.out.print("\nAmount buying: ");
-                        int quantity = getInput(1, 10);
-
-                        success = vendingMachine.purchaseItem(slotChoice, quantity);
+                        success = vendingMachine.purchaseItem(slotChoice);
 
                         if (success) {
 
@@ -248,6 +244,7 @@ public class RegularVendingMachineController {
                     } else {
 
                     textInterface.pressEnterToContinue(scanner);
+                    break;
                         }
                     }
                 }

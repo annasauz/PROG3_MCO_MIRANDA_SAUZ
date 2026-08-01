@@ -152,15 +152,10 @@ public class RegularVendingMachine {
      * @param slotIndex The index of the slot the user wishes to purchase from.
      * @return true if the purchase and dispensing were successful, false otherwise.
      */
-    public boolean purchaseItem(int slotIndex, int quantity) {
+    public boolean purchaseItem(int slotIndex) {
         // Enforce boundary checks
         if (slotIndex < 0 || slotIndex >= this.slots.length) {
             System.out.println("Invalid slot selection.");
-            return false;
-        }
-
-        if (quantity <= 0 || quantity > 10) {
-            System.out.println("Invalid quantity");
             return false;
         }
 
@@ -168,7 +163,7 @@ public class RegularVendingMachine {
         Item itemTemplate = this.itemTemplates[slotIndex];
 
         // Check item availability 
-        if (itemTemplate == null || selectedSlot.getCurrentInSlotItems() == 0 || selectedSlot.getCurrentInSlotItems() < quantity) {
+        if (itemTemplate == null || selectedSlot.getCurrentInSlotItems() == 0) {
             System.out.println("Item is out of stock or unavailable.");
             return false;
         }
@@ -192,14 +187,14 @@ public class RegularVendingMachine {
 
         double itemPrice = itemTemplate.getPrice();
         double userInserted = this.transactionCashBox.getMoneyAmount();
-		double totalCost = itemPrice * quantity;
+		double totalCost = itemPrice;
         // Verify user has sufficient credit
         if (userInserted < totalCost) {
             System.out.println("\n========== TRANSACTION FAILED ==========");
             System.out.println("Error: Insufficient Funds!");
-            System.out.printf("Total Price:     PHP %.2f%n", (itemPrice * quantity));
+            System.out.printf("Total Price:     PHP %.2f%n", (itemPrice));
             System.out.printf("Amount Inserted: PHP %.2f%n", userInserted);
-            System.out.printf("Missing Amount:  PHP %.2f%n", ((itemPrice * quantity) - userInserted));
+            System.out.printf("Missing Amount:  PHP %.2f%n", ((itemPrice) - userInserted));
             System.out.println("Please add more money or cancel your transaction.");
             System.out.println("========================================");
             return false;
@@ -228,15 +223,13 @@ public class RegularVendingMachine {
         
        // Item dispensedItem = selectedSlot.dispense();
 		Item dispensedItem = null;
-        for (int i = 0; i < quantity; i++) {
-            dispensedItem = selectedSlot.dispense();
-        }
+        dispensedItem = selectedSlot.dispense();
         if (dispensedItem == null) {
             System.out.println("Error: Item could not be dispensed.");
             return false;
         }
 
-        this.totalSold[slotIndex] += quantity;
+        this.totalSold[slotIndex]++;
 
         this.revenuePerItem[slotIndex] += totalCost;
 
@@ -244,11 +237,9 @@ public class RegularVendingMachine {
 
         ArrayList<String> receiptItems = new ArrayList<>();
 
-        for (int i = 0; i < quantity; i++) {
-            receiptItems.add(dispensedItem.getName());
-        }
+        receiptItems.add(dispensedItem.getName());
 
-        setLastTransaction(dispensedItem.getName(), receiptItems, totalCost, userInserted, changeDue, dispensedItem.getCalories() * quantity);
+        setLastTransaction(dispensedItem.getName(), receiptItems, totalCost, userInserted, changeDue, dispensedItem.getCalories());
 
         // ================================================
 

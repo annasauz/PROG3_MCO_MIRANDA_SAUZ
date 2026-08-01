@@ -159,8 +159,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
      * @param slotIndex The index of the slot the user wishes to purchase from.
      * @return true if the purchase was successful, false otherwise.
      */
-    @Override
-    public boolean purchaseItem(int slotIndex, int quantity) {
+    public boolean purchaseItem(int slotIndex) {
 
         if (slotIndex < 0 || slotIndex >= this.slots.length) {
             return false;
@@ -184,11 +183,7 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             }
         }
 
-        return super.purchaseItem(slotIndex, quantity);
-    }
-
-    public boolean purchaseItem(int slotIndex) {
-        return purchaseItem(slotIndex, 1);
+        return super.purchaseItem(slotIndex);
     }
 
     /**
