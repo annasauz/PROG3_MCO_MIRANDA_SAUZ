@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 public class MaintenanceGuiPanel extends JPanel {
     private static final int[] DENOMINATIONS = {1, 5, 10, 20, 50, 100, 200, 500, 1000};
@@ -44,7 +46,6 @@ public class MaintenanceGuiPanel extends JPanel {
         JButton collectCashButton = createButton("Collect cash");
         JButton printTransactionsButton = createButton("Print Transactions Summary");
         JButton viewChangeInventoryButton = createButton("View Change Inventory");
-        JButton refillButton = createButton("Refill");
         JButton machineInsightButton = createButton("Machine Insight");
         JButton backButton = createButton("Back");
 
@@ -54,7 +55,6 @@ public class MaintenanceGuiPanel extends JPanel {
         collectCashButton.addActionListener(e -> collectCash());
         printTransactionsButton.addActionListener(e -> printTransactionsSummary());
         viewChangeInventoryButton.addActionListener(e -> showChangeInventoryDialog());
-        refillButton.addActionListener(e -> refillMachine());
         machineInsightButton.addActionListener(e -> showMachineInsight());
         backButton.addActionListener(e -> {
             if (gui.isViewingSpecialMachine()) {
@@ -75,8 +75,11 @@ public class MaintenanceGuiPanel extends JPanel {
         buttonPanel.add(collectCashButton);
         buttonPanel.add(printTransactionsButton);
         buttonPanel.add(viewChangeInventoryButton);
-        buttonPanel.add(refillButton);
-        buttonPanel.add(machineInsightButton);
+
+        if (gui.isViewingSpecialMachine()) {
+            buttonPanel.add(machineInsightButton);
+        }
+
         buttonPanel.add(backButton);
 
         JPanel wrapperPanel = new JPanel(new GridBagLayout());
@@ -362,11 +365,43 @@ public class MaintenanceGuiPanel extends JPanel {
             return;
         }
 
-        machine.restockSlot(slotIndex, item, quantity);
-        JOptionPane.showMessageDialog(this,
-                item.getName() + " restocked by " + quantity + " unit(s).",
-                "Restock Item",
-                JOptionPane.INFORMATION_MESSAGE);
+        SlotCompartment slot = machine.getSlots()[slotIndex];
+
+        int stockBefore = slot.getCurrentInSlotItems();
+        int maximumStock = slot.getMaximumInSlotItems();
+
+        if (stockBefore >= maximumStock) {
+
+            JOptionPane.showMessageDialog(
+            this,
+            item.getName() + " is already fully stocked.",
+            "Restock Failed",
+            JOptionPane.ERROR_MESSAGE);
+
+        } else if (stockBefore + quantity > maximumStock) {
+
+            int availableSpace = maximumStock - stockBefore;
+
+                JOptionPane.showMessageDialog(this,
+                "Unable to add " + quantity + " unit(s).\n"
+                + "Available space: " + availableSpace + " unit(s).",
+                "Restock Failed",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else {
+
+            machine.restockSlot(slotIndex, item, quantity);
+
+            int stockAfter = slot.getCurrentInSlotItems();
+
+            JOptionPane.showMessageDialog(this,
+            item.getName() + " restocked successfully.\n"
+            + "Previous Stock: " + stockBefore + "\n"
+            + "Quantity Added: " + quantity + "\n"
+            + "Current Stock: " + stockAfter + "/" + maximumStock,
+            "Restock Successful",
+            JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**
@@ -428,14 +463,10 @@ public class MaintenanceGuiPanel extends JPanel {
 
         if (machine == null) {
             showMissingMachineError();
-            return;
+        } else {
+            String report = captureConsoleOutput(() -> machine.printTransactionSummary());
+            showReportDialog(report, "Transaction Summary", 650, 470);
         }
-
-        machine.printTransactionSummary();
-        JOptionPane.showMessageDialog(this,
-                "Transaction summary was printed to the console.",
-                "Print Transactions Summary",
-                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -493,24 +524,6 @@ public class MaintenanceGuiPanel extends JPanel {
     }
 
     /**
-     * Refills all initialized slots in the vending machine to their full capacity.
-     */
-    private void refillMachine() {
-        RegularVendingMachine machine = getActiveMachine();
-
-        if (machine == null) {
-            showMissingMachineError();
-            return;
-        }
-
-        machine.refillAllSlots();
-        JOptionPane.showMessageDialog(this,
-                "All initialized slots were refilled to full capacity.",
-                "Refill",
-                JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    /**
      * Displays machine insights for the Special Vending Machine, if applicable.
      */
     private void showMachineInsight() {
@@ -518,21 +531,46 @@ public class MaintenanceGuiPanel extends JPanel {
 
         if (machine == null) {
             showMissingMachineError();
-            return;
+        } else if (machine instanceof SpecialVendingMachine) {
+            SpecialVendingMachine specialMachine = (SpecialVendingMachine) machine;
+            String report = captureConsoleOutput(() -> specialMachine.printMachineInsights());
+            showReportDialog(report, "Machine Insights", 600, 400);
+        }
+    }
+
+    private void showReportDialog(String report, String title, int width, int height) {
+
+        JTextArea output = new JTextArea(report);
+
+        output.setEditable(false);
+        output.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+        output.setCaretPosition(0);
+
+        JScrollPane scrollPane = new JScrollPane(output);
+        scrollPane.setPreferredSize(new Dimension(width, height));
+
+        JOptionPane.showMessageDialog(
+            this,
+            scrollPane,
+            title,
+            JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private String captureConsoleOutput(Runnable action) {
+        PrintStream originalOutput = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream temporaryOutput = new PrintStream(outputStream);
+
+        try {
+        System.setOut(temporaryOutput);
+        action.run();
+        } finally {
+            temporaryOutput.flush();
+            System.setOut(originalOutput);
+            temporaryOutput.close();
         }
 
-        if (machine instanceof SpecialVendingMachine) {
-            ((SpecialVendingMachine) machine).printMachineInsights();
-            JOptionPane.showMessageDialog(this,
-                    "Machine insights were printed to the console.",
-                    "Machine Insight",
-                    JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Machine insights are only available for the Special Vending Machine.",
-                    "Machine Insight",
-                    JOptionPane.INFORMATION_MESSAGE);
-        }
+        return outputStream.toString();
     }
 
     /**
