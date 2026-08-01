@@ -32,7 +32,7 @@ public class VendingMachineController {
     while (isRunningTest) {
         textInterface.printTestMenu();
 
-        int choice = getInput(1, 3);
+        int choice = getInput("Menu Choice: ", 1, 3);
 
         switch (choice) {
 
@@ -65,7 +65,7 @@ public class VendingMachineController {
         while (isRunningVending) {
             textInterface.printVendingFeatures();
 
-            int option = getInput(1, 3);
+            int option = getInput("Vending Choice: ", 1, 3);
 
             switch (option) {
                 case 1:
@@ -95,9 +95,16 @@ public class VendingMachineController {
 
         while (isRunningMaintenance) {
 
-            textInterface.printMaintenanceFeatures();
+            textInterface.printMaintenanceFeatures(vendingMachine instanceof SpecialVendingMachine);
+            int maxChoice;
 
-            int option = getInput(1, 8);
+            if (vendingMachine instanceof SpecialVendingMachine) {
+                maxChoice = 8;
+            } else {
+                maxChoice = 7;
+            }
+
+            int option = getInput("Maintenance Choice: ", 1, maxChoice);
 
             switch (option) {
                 case 1:
@@ -125,13 +132,13 @@ public class VendingMachineController {
                     textInterface.pressEnterToContinue(scanner);
                     break;
                 case 7:
-                    if (vendingMachine instanceof SpecialVendingMachine) {
-                    SpecialVendingMachine svm = (SpecialVendingMachine) vendingMachine;
-                    svm.printMachineInsights();
+                     if (vendingMachine instanceof SpecialVendingMachine) {
+                        SpecialVendingMachine svm = (SpecialVendingMachine) vendingMachine;
+                        svm.printMachineInsights();
+                        textInterface.pressEnterToContinue(scanner);
                     } else {
-                    System.out.println("Machine Insights are only available for the Special Vending Machine.");
+                        isRunningMaintenance = false;
                     }
-                    textInterface.pressEnterToContinue(scanner);
                     break;
                 case 8:
                     isRunningMaintenance = false;
@@ -192,10 +199,10 @@ public class VendingMachineController {
 
         if (vendingMachine instanceof SpecialVendingMachine) {
         textInterface.purchaseMenuSpecial();
-        choice = getInput(1, 4);
+        choice = getInput("Purchase Choice: ", 1, 4);
         } else {
         textInterface.purchaseMenuRegular();
-        choice = getInput(1, 3);
+        choice = getInput("Purchase Choice: ", 1, 3);
         }
 
             switch (choice) {
@@ -207,8 +214,7 @@ public class VendingMachineController {
                     boolean success = false;
                     while (!success) {
 
-                    System.out.print("\nSelect an item to purchase (1-" + maxSlots + "): ");
-                    int slotChoice = getInput(1, maxSlots) - 1;
+                    int slotChoice = getInput("\nSelect an item to purchase (1-" + maxSlots + "): ", 1, maxSlots) - 1;
 
                     boolean restricted = false;
 
@@ -286,8 +292,7 @@ public class VendingMachineController {
         System.out.println("\n--- Restock Items ---");
         textInterface.printMaintenanceStockDisplay(vendingMachine.getItemTemplates(), vendingMachine.getSlots());
         int maxSlots = vendingMachine.getSlots().length;
-        System.out.print("Select a slot to restock (1-" + maxSlots + "): ");
-        int userInput = getInput(1, maxSlots);
+        int userInput = getInput("Select a slot to restock (1-" + maxSlots + "): ", 1, maxSlots);
        if (userInput <= 0) {
             System.out.println("Invalid slot choice. Returning to menu.");
         } else {
@@ -316,8 +321,7 @@ public class VendingMachineController {
     private void maintenancePriceHandler() {
         displayItemsHandler();
         int maxSlots = vendingMachine.getSlots().length;
-        System.out.print("Select an item to update (1-" + maxSlots + "): ");
-        int userInput = getInput(1, maxSlots);
+        int userInput = getInput("Select an item to update (1-" + maxSlots + "): ", 1, maxSlots);
         if (userInput <= 0) {
             System.out.println("Invalid slot choice. Returning to menu.");
         } else {           
@@ -359,13 +363,13 @@ public class VendingMachineController {
      * @param max largest user choice
      * @return the user choice if within range, otherwise returns 0
      */
-    private int getInput(int min, int max) {
+    private int getInput(String prompt, int min, int max) {
         boolean valid = false;
         int input = 0;
         String leftover;
 
         while (!valid) {
-            //System.out.print("Menu Choice: ");
+            System.out.print(prompt);
 
             // check if num
             if (scanner.hasNextInt()) {
@@ -520,8 +524,7 @@ private int chooseTea() {
         System.out.println("3. Earl Grey Tea");
         System.out.println("4. Oolong Tea");
 
-        System.out.print("Choice: ");
-        int choice = getInput(1, 4);
+        int choice = getInput("Choice: ", 1, 4);
 
         switch (choice) {
             case 1:
@@ -546,8 +549,7 @@ private int chooseTea() {
         System.out.println("3. Almond Milk");
         System.out.println("4. Skim Milk");
 
-        System.out.print("Choice: ");
-        int choice = getInput(1, 4);
+        int choice = getInput("Choice: ", 1, 4);
 
         switch (choice) {
             case 1:
@@ -614,8 +616,7 @@ private ArrayList<Integer> chooseAddons() {
         System.out.println("7. Egg Pudding");
         System.out.println("0. Finish");
 
-        System.out.print("Choice: ");
-        int choice = getInput(0, 7);
+        int choice = getInput("Choice: ", 0, 7);
 
         int slot = -1;
 
@@ -671,8 +672,7 @@ private ArrayList<Integer> chooseAddons() {
         System.out.println("2. Medium");
         System.out.println("3. Large");
 
-        System.out.print("Choice: ");
-        int choice = getInput(1, 3);
+        int choice = getInput("Choice: ", 1, 3);
 
         switch (choice) {
             case 1:
@@ -697,12 +697,12 @@ private ArrayList<Integer> chooseAddons() {
         ArrayList<Integer> addons;
 
         textInterface.printMilkTeaToBuy();
-        switch (getInput(1, 4)) {
+        switch (getInput("Choice: ", 1, 4)) {
             case 1:
                 break;
             case 2:
                 textInterface.printSignatureDrinks();
-                switch (getInput(1, 4)) {
+                switch (getInput("Choice: ", 1, 4)) {
                     case 1:
                         addons = new ArrayList<>();
                         addons.add(SpecialVendingMachine.MATCHA_POWDER);
@@ -774,7 +774,11 @@ private ArrayList<Integer> chooseAddons() {
                 tea = random.nextInt(4);
                 milk = chooseMilk(random.nextInt(4));
                 sweetener = chooseSweetener(random.nextInt(3));
-                sugarLevel = random.nextInt(3);
+                if (sweetener == -1) {
+                    sugarLevel = SpecialVendingMachine.NO_SUGAR;
+                } else {
+                    sugarLevel = random.nextInt(2) + 1;
+                }
                 iceLevel = random.nextInt(4);
                 size = random.nextInt(3) + 1;
 
@@ -812,51 +816,45 @@ private ArrayList<Integer> chooseAddons() {
 
         tea = chooseTea();
         milk = chooseMilk();
-
         sweetener = chooseSweetener();
+        size = chooseSize();
 
-        sugarLevel = SpecialVendingMachine.FULL_SUGAR;
-
-        if (sweetener != -1) {
+        if (sweetener == -1) {
+            sugarLevel = SpecialVendingMachine.NO_SUGAR;
+        } else if (size == SpecialVendingMachine.SMALL) {
+            sugarLevel = SpecialVendingMachine.FULL_SUGAR;
+            System.out.println("\nSugar Level: 100% automatically selected for Small size.");
+        } else {
             sugarLevel = chooseSugarLevel();
-            }
-
-        addons = chooseAddons();
+        }
 
         iceLevel = chooseIceLevel();
-
-        size = chooseSize();
+        addons = chooseAddons();
 
         textInterface.printCustomMilkTeaSummary(specialMachine, tea, milk, sweetener, sugarLevel, iceLevel, size, addons);
 
 
-    return specialMachine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);   
+        return specialMachine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);   
 
-}
-
-private int chooseSugarLevel() {
-
-    System.out.println("\n===== CHOOSE SUGAR LEVEL =====");
-    System.out.println("1. 0%");
-    System.out.println("2. 50%");
-    System.out.println("3. 100%");
-
-    System.out.print("Choice: ");
-
-    int choice = getInput(1, 3);
-
-    switch (choice) {
-
-        case 1:
-            return SpecialVendingMachine.NO_SUGAR;
-
-        case 2:
-            return SpecialVendingMachine.HALF_SUGAR;
-
-        default:
-            return SpecialVendingMachine.FULL_SUGAR;
     }
-}
+
+    private int chooseSugarLevel() {
+
+        System.out.println("\n===== CHOOSE SUGAR LEVEL =====");
+        System.out.println("1. 50%");
+        System.out.println("2. 100%");
+
+        int choice = getInput("Choice: ", 1, 2);
+        int sugarLevel;
+
+        if (choice == 1) {
+            sugarLevel = SpecialVendingMachine.HALF_SUGAR;
+        } else {
+            sugarLevel = SpecialVendingMachine.FULL_SUGAR;
+        }
+
+        return sugarLevel;
+    }
 
     private int chooseSweetener() {
 
@@ -865,9 +863,7 @@ private int chooseSugarLevel() {
         System.out.println("2. Honey");
         System.out.println("3. Brown Sugar Syrup");
 
-        System.out.print("Choice: ");
-
-        int choice = getInput(1, 3);
+        int choice = getInput("Choice: ", 1, 3);
 
         switch (choice) {
 
@@ -903,8 +899,7 @@ private int chooseSugarLevel() {
         System.out.println("3. Regular Ice");
         System.out.println("4. Extra Ice");
 
-        System.out.print("Choice: ");
-        int choice = getInput(1, 4);
+        int choice = getInput("Choice: ", 1, 4);
 
         switch (choice) {
 
@@ -936,9 +931,7 @@ private int chooseSugarLevel() {
         System.out.println("4 - Very Good");
         System.out.println("5 - Excellent");
 
-        System.out.print("Rating (1-5): ");
-
-        int rating = getInput(1, 5);
+        int rating = getInput("Rating (1-5): ", 1, 5);
 
         vendingMachine.addCustomerRating(rating);
 
@@ -972,9 +965,8 @@ private int chooseSugarLevel() {
         System.out.println("Would you like to print a receipt?");
         System.out.println("1. Yes");
         System.out.println("2. No");
-        System.out.print("Choice: ");
 
-        int choice = getInput(1, 2);
+        int choice = getInput("Choice: ", 1, 2);
 
         if (choice == 1) {
             printReceipt();
