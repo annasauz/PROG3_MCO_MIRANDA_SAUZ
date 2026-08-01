@@ -119,11 +119,25 @@ public class TextInterface {
 
     public void printSignatureDrinks() {
         clearScreen();
-        System.out.println("Signature Drinks");
-        printShortDivider();
-        System.out.println("1. Roasted Oolong Matcha Latte");
-        System.out.println("2. Classic Brown Sugar Earl Grey Cheese Foam");
-        System.out.println("3. Taro Cookie Crunch Green Tea");
+    System.out.println("\nSignature Drinks");
+    System.out.println("==========================================");
+    System.out.println("Signature drinks have fixed recipes,");
+    System.out.println("sizes, and prices.");
+    System.out.println();
+
+    System.out.println("1. Roasted Oolong Matcha Latte");
+    System.out.println("   Medium: PHP 315.00");
+    System.out.println();
+
+    System.out.println("2. Classic Brown Sugar Earl Grey Cheese Foam");
+    System.out.println("   Large: PHP 490.00");
+    System.out.println();
+
+    System.out.println("3. Taro Cookie Crunch Green Tea");
+    System.out.println("   Small: PHP 188.00");
+    System.out.println();
+
+    System.out.println("4. Cancel");
 
     }
 
@@ -325,7 +339,7 @@ public class TextInterface {
                 break;
         }
 
-        System.out.println("Add-ons  :");
+        System.out.println("Add-ons:");
 
         if (addons.isEmpty()) {
 
