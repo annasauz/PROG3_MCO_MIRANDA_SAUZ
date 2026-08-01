@@ -91,7 +91,7 @@ public class TextInterface {
         printShortDivider();
         System.out.println("1. Insert Money");
         System.out.println("2. Select Individual Item to Buy");
-        System.out.println("3. Build Custom Milk Tea");
+        System.out.println("3. Special Milk Tea");
         System.out.println("4. Cancel and Return Change");
 
     }
@@ -362,7 +362,7 @@ public class TextInterface {
      * Displays the menu for purchasing milk tea, allowing the user to choose between creating a custom milk tea, purchasing a signature milk tea, or getting a randomized milk tea.
      */
     public void printMilkTeaToBuy() {
-        System.out.println("\n--- Custom Milk Tea ---");
+        System.out.println("\n--- Special Milk Tea ---");
         printShortDivider();
         System.out.println("1. Create custom milk tea");
         System.out.println("2. Purchase signature milk tea");
