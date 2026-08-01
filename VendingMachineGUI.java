@@ -14,6 +14,7 @@ public class VendingMachineGUI extends JFrame {
     private CustomMilkTeaPanel customMilkTeaPanel;
     private MilkTeaTypePanel milkTeaTypePanel;
     private SignatureMilkTeaPanel signatureMilkTeaPanel;
+    private MaintenanceGuiPanel maintenanceGuiPanel;
     private double insertedMoney = 0;
 
     public VendingMachineGUI() {
@@ -48,6 +49,9 @@ public class VendingMachineGUI extends JFrame {
         signatureMilkTeaPanel = new SignatureMilkTeaPanel(this);
         cards.add(signatureMilkTeaPanel, "Signature Milk Tea");
 
+        maintenanceGuiPanel = new MaintenanceGuiPanel(this);
+        cards.add(maintenanceGuiPanel, "Maintenance");
+
         add(cards);
 
         setSize(950,650);
@@ -63,28 +67,22 @@ public class VendingMachineGUI extends JFrame {
     }
 
     public void showPanel(String panelName){
-    
-        
-        if(panelName.equals("Purchase")){
-
-            if(viewingSpecialMachine){
+        if ("Purchase".equals(panelName)) {
+            if (viewingSpecialMachine) {
                 purchasePanel.loadItems(specialMachine);
-            }
-            else{
+            } else {
                 purchasePanel.loadItems(regularMachine);
             }
-        purchasePanel.refreshCredit(this);
-        purchasePanel.refreshMachineButtons();
-        }
-
-        if (panelName.equals("Insert Money")) {
+            purchasePanel.refreshCredit(this);
+            purchasePanel.refreshMachineButtons();
+        } else if ("Insert Money".equals(panelName)) {
             insertMoneyPanel.refreshDisplay();
+        } else if ("Maintenance".equals(panelName)) {
+            maintenanceGuiPanel.loadMaintenanceOptions();
         }
 
-        cardLayout.show(cards,panelName);
-
+        cardLayout.show(cards, panelName);
     }
-
 
     public void setRegularMachine(RegularVendingMachine machine){
         regularMachine = machine;
@@ -129,4 +127,3 @@ public class VendingMachineGUI extends JFrame {
         return customMilkTeaPanel;
     }
 }
-

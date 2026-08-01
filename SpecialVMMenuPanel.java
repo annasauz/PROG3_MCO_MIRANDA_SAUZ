@@ -41,6 +41,8 @@ public class SpecialVMMenuPanel extends JPanel {
 
         });
 
+        maintenance.addActionListener(e -> gui.showPanel("Maintenance"));
+
         back.addActionListener(e -> gui.showPanel("Main"));
 
         add(purchase);

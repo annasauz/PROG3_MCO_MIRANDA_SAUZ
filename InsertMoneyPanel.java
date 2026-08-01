@@ -21,7 +21,6 @@ public class InsertMoneyPanel extends JPanel {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-        
         JPanel display = new JPanel();
         display.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         display.setMaximumSize(new Dimension(400, 50));
@@ -142,7 +141,6 @@ public class InsertMoneyPanel extends JPanel {
         
         return true; 
     }
-    
 
     /**
      * Label is updated in order to match current balance

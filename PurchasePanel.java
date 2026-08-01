@@ -186,7 +186,7 @@ public class PurchasePanel extends JPanel {
 
         
       
-        boolean success = machine.purchaseItem(selectedRow, quantity);
+        boolean success = machine.purchaseItem(selectedRow);
 
         if (success) {
 
@@ -404,4 +404,3 @@ public class PurchasePanel extends JPanel {
         showReceiptChoiceDialog(machine);
     }
 }   
-
