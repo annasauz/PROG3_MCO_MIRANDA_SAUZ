@@ -91,23 +91,21 @@ public class InsertMoneyPanel extends JPanel {
         // bottom navigation
         JPanel bottom = new JPanel();
         bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
-        
+
         JButton back = new JButton("Done / Back to Purchase");
-        back.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        
+
         back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gui.showPanel("Purchase");
-            }
-        });
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            gui.showPanel("Purchase");
+        }
+    });
 
-        bottom.add(Box.createVerticalStrut(30));
-        bottom.add(back);
-        bottom.add(Box.createVerticalStrut(20));
+    bottom.add(Box.createVerticalStrut(30));
+    bottom.add(back);
+    bottom.add(Box.createVerticalStrut(20));
 
-        add(bottom, BorderLayout.SOUTH);
+    add(bottom, BorderLayout.SOUTH);
     }
 
     /**
@@ -145,6 +143,7 @@ public class InsertMoneyPanel extends JPanel {
         return true; 
     }
     
+
     /**
      * Label is updated in order to match current balance
      */
