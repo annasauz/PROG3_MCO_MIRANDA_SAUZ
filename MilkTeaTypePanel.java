@@ -42,7 +42,7 @@ public class MilkTeaTypePanel extends JPanel {
         signatureButton.addActionListener(e -> gui.showPanel("Signature Milk Tea"));
 
         randomButton.addActionListener(e -> purchaseRandomMilkTea());
-        backButton.addActionListener(e -> gui.showPanel("Milk Tea Type"));
+        backButton.addActionListener(e -> gui.showPanel("Purchase"));
         add(customButton);
         add(Box.createVerticalStrut(20));
 
