@@ -6,15 +6,14 @@ public class VendingMachineGUI extends JFrame {
 
     private boolean viewingSpecialMachine = false;
     private CardLayout cardLayout;
-
     private RegularVendingMachine regularMachine;
-
     private SpecialVendingMachine specialMachine;
-
+    private InsertMoneyPanel insertMoneyPanel;
     private JPanel cards;
-
     private PurchasePanel purchasePanel;
-
+    private CustomMilkTeaPanel customMilkTeaPanel;
+    private MilkTeaTypePanel milkTeaTypePanel;
+    private SignatureMilkTeaPanel signatureMilkTeaPanel;
     private double insertedMoney = 0;
 
     public VendingMachineGUI() {
@@ -35,9 +34,19 @@ public class VendingMachineGUI extends JFrame {
 
         cards.add(purchasePanel, "Purchase");
 
-        cards.add(new InsertMoneyPanel(this), "Insert Money");
+        insertMoneyPanel = new InsertMoneyPanel(this);
+        cards.add(insertMoneyPanel, "Insert Money");
 
         cards.add(new ReturnChangePanel(this), "Return Change");
+
+        milkTeaTypePanel = new MilkTeaTypePanel(this);
+        cards.add(milkTeaTypePanel, "Milk Tea Type");
+
+        customMilkTeaPanel = new CustomMilkTeaPanel(this);
+        cards.add(customMilkTeaPanel, "Custom Milk Tea");
+
+        signatureMilkTeaPanel = new SignatureMilkTeaPanel(this);
+        cards.add(signatureMilkTeaPanel, "Signature Milk Tea");
 
         add(cards);
 
@@ -54,19 +63,22 @@ public class VendingMachineGUI extends JFrame {
     }
 
     public void showPanel(String panelName){
+    
+        
         if(panelName.equals("Purchase")){
 
             if(viewingSpecialMachine){
-
                 purchasePanel.loadItems(specialMachine);
-
             }
             else{
-
                 purchasePanel.loadItems(regularMachine);
-
             }
         purchasePanel.refreshCredit(this);
+        purchasePanel.refreshMachineButtons();
+        }
+
+        if (panelName.equals("Insert Money")) {
+            insertMoneyPanel.refreshDisplay();
         }
 
         cardLayout.show(cards,panelName);
@@ -107,6 +119,14 @@ public class VendingMachineGUI extends JFrame {
 
     public double getInsertedMoney(){
         return insertedMoney;
+    }
+
+    public PurchasePanel getPurchasePanel() {
+        return purchasePanel;
+    }
+
+    public CustomMilkTeaPanel getCustomMilkTeaPanel() {
+        return customMilkTeaPanel;
     }
 }
 
