@@ -14,12 +14,15 @@ import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 
 public class PurchasePanel extends JPanel {
     private JTable table;
     private DefaultTableModel model;
     private JLabel creditLabel;
     private VendingMachineGUI gui;
+    private JLabel restrictedLabel;
     private JButton buildCustomMilkTea;
 
     public PurchasePanel(VendingMachineGUI gui){
@@ -32,7 +35,32 @@ public class PurchasePanel extends JPanel {
 
         title.setFont(FontStyle.TITLE);
 
-        add(title, BorderLayout.NORTH);
+        JLabel instructionLabel = new JLabel(
+            "Select one item from the table, then click Buy Selected Item.",
+            JLabel.CENTER);
+
+        restrictedLabel = new JLabel(
+            "* Restricted ingredients cannot be purchased separately.",
+            JLabel.CENTER);
+
+        instructionLabel.setFont(FontStyle.NORMAL);
+        restrictedLabel.setFont(FontStyle.NORMAL);
+
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        instructionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        restrictedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        topPanel.add(title);
+        topPanel.add(Box.createVerticalStrut(8));
+        topPanel.add(instructionLabel);
+        topPanel.add(Box.createVerticalStrut(4));
+        topPanel.add(restrictedLabel);
+        topPanel.add(Box.createVerticalStrut(10));
+
+        add(topPanel, BorderLayout.NORTH);
 
         //----------------------------------
 
@@ -68,11 +96,11 @@ public class PurchasePanel extends JPanel {
         JPanel bottom = new JPanel(new FlowLayout());
         JButton insertMoney = new JButton("Insert Money");
         JButton buyItem = new JButton("Buy Selected Item");
-        buildCustomMilkTea = new JButton("Build Custom Milk Tea");
+        buildCustomMilkTea = new JButton("Build Special Milk Tea");
         JButton returnChange = new JButton("Return Change");
         JButton back = new JButton("Back");
 
-        creditLabel = new JLabel("Credit: PHP 0.00");
+        creditLabel = new JLabel("Current Credit: PHP 0.00");
         creditLabel.setFont(FontStyle.NORMAL);
         creditLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -145,81 +173,184 @@ public class PurchasePanel extends JPanel {
      * @return true if purchase was completed, false if error/failed
      */
     public boolean processPurchase() {
+
         int selectedRow = table.getSelectedRow();
+        boolean purchaseSuccessful = false;
 
-        
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, 
-                "Please select an item from the table first!", 
-                "No Item Selected", 
-                JOptionPane.WARNING_MESSAGE);
-            return false; // Returns boolean!
-        }
 
-        RegularVendingMachine machine;
-        
-        if (gui.isViewingSpecialMachine()) {
-            machine = gui.getSpecialMachine();
+            JOptionPane.showMessageDialog(
+                this,
+                "Please select an item from the table first.",
+                "No Item Selected",
+                JOptionPane.WARNING_MESSAGE
+            );
+
         } else {
-            machine = gui.getRegularMachine();
+
+            int slotIndex =
+                (int) model.getValueAt(selectedRow, 0) - 1;
+
+            RegularVendingMachine machine;
+
+            if (gui.isViewingSpecialMachine()) {
+                machine = gui.getSpecialMachine();
+            } else {
+                machine = gui.getRegularMachine();
+            }
+
+            if (machine == null) {
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No active vending machine found.",
+                    "Machine Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+
+            } else {
+
+                boolean purchaseAllowed = true;
+
+                Item selectedItem =
+                    machine.getItemTemplates()[slotIndex];
+
+                if (selectedItem instanceof SpecialItem) {
+
+                    SpecialItem specialItem =
+                        (SpecialItem) selectedItem;
+
+                    if (!specialItem.isSellableIndividually()) {
+
+                        purchaseAllowed = false;
+
+                        JOptionPane.showMessageDialog(
+                            this,
+                            selectedItem.getName()
+                            + " is a restricted ingredient.\n\n"
+                            + "This ingredient is reserved for\n"
+                            + "special milk tea recipes and\n"
+                            + "cannot be purchased separately.",
+                            "Restricted Ingredient",
+                            JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                }
+
+                if (purchaseAllowed) {
+
+                    purchaseSuccessful =
+                        machine.purchaseItem(slotIndex);
+
+                    double currentCredit =
+                        machine.transactionCashBox.getMoneyAmount();
+
+                    gui.setInsertedMoney(currentCredit);
+                    refreshCredit(gui);
+
+                    if (purchaseSuccessful) {
+
+                        loadItems(machine);
+
+                        JOptionPane.showMessageDialog(
+                            this,
+                            "Item purchased successfully.",
+                            "Purchase Complete",
+                            JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                    } else {
+
+                        double itemPrice =
+                            selectedItem.getPrice();
+
+                        if (currentCredit < itemPrice) {
+
+                            double missingAmount =
+                                itemPrice - currentCredit;
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                "Insufficient funds.\n\n"
+                                + "Item Price: PHP "
+                                + String.format("%.2f", itemPrice)
+                                + "\n"
+                                + "Current Credit: PHP "
+                                + String.format("%.2f", currentCredit)
+                                + "\n"
+                                + "Missing Amount: PHP "
+                                + String.format("%.2f", missingAmount)
+                                + "\n\n"
+                                + "Please insert more money or return your credit.",
+                                "Insufficient Funds",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        } else {
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                "The purchase could not be completed.\n\n"
+                                + "The item may be out of stock, or the machine "
+                                + "may be unable to dispense exact change.",
+                                "Transaction Failed",
+                                JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    }
+                }
+            }
         }
 
-        if (machine == null) {
-            JOptionPane.showMessageDialog(this, "No active vending machine found!", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-      
-        boolean success = machine.purchaseItem(selectedRow);
-
-        if (success) {
-
-            completePurchaseFlow(machine);
-            return true;
-        }
-         else {
-            JOptionPane.showMessageDialog(this, 
-                "Transaction Failed! Make sure you inserted enough money and the item is in stock.", 
-                "Purchase Failed", 
-                JOptionPane.ERROR_MESSAGE);
-            
-            return false; 
-        }
-   
-    }    
-    public void loadItems(RegularVendingMachine machine){
+        return purchaseSuccessful;
+    }
+     
+    public void loadItems(RegularVendingMachine machine) {
 
         model.setRowCount(0);
 
-        if(machine != null){
+        boolean specialMachineActive =
+        machine instanceof SpecialVendingMachine;
+
+        restrictedLabel.setVisible(specialMachineActive);
+        if (machine != null) {
 
             SlotCompartment[] slots = machine.getSlots();
-
             Item[] items = machine.getItemTemplates();
 
-            for(int i = 0; i < slots.length; i++){
+            for (int i = 0; i < slots.length; i++) {
 
-                if(items[i] != null){
+                if (items[i] != null) {
+
+                    Item item = items[i];
+
+                    String itemName = item.getName();
+
+                    if (item instanceof SpecialItem) {
+
+                        SpecialItem specialItem = (SpecialItem) item;
+
+                        if (!specialItem.isSellableIndividually()) {
+                            itemName += " *";
+                        }
+                    }
 
                     model.addRow(new Object[]{
                         i + 1,
-                        items[i].getName(),
-                        "PHP " + String.format("%.2f", items[i].getPrice()),
-                        (int) items[i].getCalories(),
+                        itemName,
+                        "PHP " + String.format("%.2f", item.getPrice()),
+                        (int) item.getCalories(),
                         slots[i].getCurrentInSlotItems()
                     });
-
-                }   
-
+                }
             }
-
         }
-
     }
 
     public void refreshCredit(VendingMachineGUI gui){
 
         creditLabel.setText(
-            "Credit: PHP " + String.format("%.2f", gui.getInsertedMoney())
+            "Current Credit: PHP " + String.format("%.2f", gui.getInsertedMoney())
         );
 
     }
