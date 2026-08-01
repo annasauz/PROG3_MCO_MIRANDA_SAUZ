@@ -21,7 +21,6 @@ public class TextInterface {
         System.out.println("2. Test Vending Machine");
         System.out.println("3. Exit");
         printShortDivider();
-        System.out.print("Choice: ");
     }
 
     /**
@@ -49,7 +48,6 @@ public class TextInterface {
         System.out.println("2. Purchase Item / Insert Money");
         System.out.println("3. Exit");
         System.out.print("Vending Choice: ");
-
     }
     /**
      * Displays the type of vending machine to be created.
