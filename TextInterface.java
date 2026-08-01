@@ -33,7 +33,7 @@ public class TextInterface {
         System.out.println("1. Test vending features");
         System.out.println("2. Test maintenance features");
         System.out.println("3. Exit");
-        System.out.print("Menu Choice: ");
+
 
     }
 
@@ -47,7 +47,7 @@ public class TextInterface {
         System.out.println("1. Display items");
         System.out.println("2. Purchase Item / Insert Money");
         System.out.println("3. Exit");
-        System.out.print("Vending Choice: ");
+
     }
     /**
      * Displays the type of vending machine to be created.
@@ -78,7 +78,7 @@ public class TextInterface {
         System.out.println("1. Insert Money");
         System.out.println("2. Select Item to Buy");
         System.out.println("3. Cancel and Return Change");
-        System.out.print("Purchase Choice: ");
+
     }
 
     /**
@@ -93,27 +93,28 @@ public class TextInterface {
         System.out.println("2. Select Individual Item to Buy");
         System.out.println("3. Build Custom Milk Tea");
         System.out.println("4. Cancel and Return Change");
-        System.out.print("Purchase Choice: ");
+
     }
 
     /**
      * Displays maintenance features menu
      */
-    public void printMaintenanceFeatures() {
-    clearScreen();
-    System.out.println("Maintenance Features");
-    printShortDivider();
-    System.out.println("1. Set Price");
-    System.out.println("2. Restock Item");
-    System.out.println("3. Replenish Change");
-    System.out.println("4. Collect Money");
-    System.out.println("5. Print Transaction Summary");
-    System.out.println("6. View Change Inventory");
-    System.out.println("7. Machine Insights");
-    System.out.println("8. Exit");
-
-    System.out.print("Maintenance Choice: ");
-
+    public void printMaintenanceFeatures(boolean specialMachine) {
+        clearScreen();
+        System.out.println("Maintenance Features");
+        printShortDivider();
+        System.out.println("1. Set Price");
+        System.out.println("2. Restock Item");
+        System.out.println("3. Replenish Change");
+        System.out.println("4. Collect Money");
+        System.out.println("5. Print Transaction Summary");
+        System.out.println("6. View Change Inventory");
+        if (specialMachine) {
+            System.out.println("7. Machine Insights");
+        System.out.println("8. Exit");
+        } else {
+            System.out.println("7. Exit");
+        }
     }
 
     public void printSignatureDrinks() {
@@ -123,8 +124,7 @@ public class TextInterface {
         System.out.println("1. Roasted Oolong Matcha Latte");
         System.out.println("2. Classic Brown Sugar Earl Grey Cheese Foam");
         System.out.println("3. Taro Cookie Crunch Green Tea");
-        System.out.println("4. Cancel");
-        System.out.print("Choice: ");
+
     }
 
     /**
@@ -354,7 +354,7 @@ public class TextInterface {
         System.out.println("2. Purchase signature milk tea");
         System.out.println("3. Randomized milk tea");
         System.out.println("4. Cancel");
-        System.out.print("Choice: ");
+
     }
 
     /**
