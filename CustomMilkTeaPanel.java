@@ -91,8 +91,7 @@ public class CustomMilkTeaPanel extends JPanel {
 
         addIceSection(formPanel);
         addAddonsSection(formPanel);
-        addSummarySection(formPanel);
-
+     
         JScrollPane scrollPane =
             new JScrollPane(formPanel);
 
@@ -353,31 +352,6 @@ public class CustomMilkTeaPanel extends JPanel {
 
         formPanel.add(addonsPanel);
         formPanel.add(Box.createVerticalStrut(20));
-    }
-
-    private void addSummarySection(JPanel formPanel) {
-
-        JPanel summaryPanel = new JPanel(
-            new GridLayout(2, 1, 5, 5)
-        );
-
-        priceLabel =
-            new JLabel("Estimated Price: PHP 0.00");
-
-        caloriesLabel =
-            new JLabel("Estimated Calories: 0 kcal");
-
-        priceLabel.setFont(FontStyle.NORMAL);
-        caloriesLabel.setFont(FontStyle.NORMAL);
-
-        summaryPanel.add(priceLabel);
-        summaryPanel.add(caloriesLabel);
-
-        summaryPanel.setAlignmentX(
-            Component.CENTER_ALIGNMENT
-        );
-
-        formPanel.add(summaryPanel);
     }
 
     private void addBottomButtons() {
