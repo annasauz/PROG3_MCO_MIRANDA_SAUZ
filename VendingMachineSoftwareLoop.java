@@ -60,7 +60,7 @@ public class VendingMachineSoftwareLoop {
                                 textInterface.pressEnterToContinue(scanner);
                                 break;
                             }
-                            RegularVendingMachineController regularController = new RegularVendingMachineController(textInterface, vendingMachine, scanner);
+                            VendingMachineController regularController = new VendingMachineController(textInterface, vendingMachine, scanner);
                             regularController.testingMenu();
                             textInterface.pressEnterToContinue(scanner);
                             break;
@@ -71,7 +71,7 @@ public class VendingMachineSoftwareLoop {
                                 textInterface.pressEnterToContinue(scanner);
                                 break;
                             }
-                            RegularVendingMachineController controller = new RegularVendingMachineController(textInterface, specialVendingMachine, scanner);
+                            VendingMachineController controller = new VendingMachineController(textInterface, specialVendingMachine, scanner);
                             controller.testingMenu();
                             textInterface.pressEnterToContinue(scanner);
                             break;
