@@ -82,9 +82,14 @@ public class CustomMilkTeaPanel extends JPanel {
         );
 
         addComboBoxSections(formPanel);
-        addSugarSection(formPanel);
-        addIceSection(formPanel);
         addSizeSection(formPanel);
+        addSugarSection(formPanel);
+
+        sweetenerComboBox.addActionListener(e -> sugarLevelHandler());
+        addSugarSizeListeners();
+        sugarLevelHandler();
+
+        addIceSection(formPanel);
         addAddonsSection(formPanel);
         addSummarySection(formPanel);
 
@@ -1218,5 +1223,40 @@ public class CustomMilkTeaPanel extends JPanel {
         }
 
         return iceText;
+    }
+
+    private void addSugarSizeListeners() {
+        smallButton.addActionListener(e -> sugarLevelHandler());
+        mediumButton.addActionListener(e -> sugarLevelHandler());
+        largeButton.addActionListener(e -> sugarLevelHandler());
+    }
+
+    private void sugarLevelHandler() {
+        String selectedSweetener = (String) sweetenerComboBox.getSelectedItem();
+        int selectedSize = getSelectedSize();
+
+        if ("None".equals(selectedSweetener)) {
+            noSugarButton.setEnabled(true);
+            halfSugarButton.setEnabled(false);
+            fullSugarButton.setEnabled(false);
+
+            noSugarButton.setSelected(true);
+
+        } else if (selectedSize == SpecialVendingMachine.SMALL) {
+            noSugarButton.setEnabled(false);
+            halfSugarButton.setEnabled(false);
+            fullSugarButton.setEnabled(true);
+
+            fullSugarButton.setSelected(true);
+
+        } else {
+            noSugarButton.setEnabled(false);
+            halfSugarButton.setEnabled(true);
+            fullSugarButton.setEnabled(true);
+
+            if (noSugarButton.isSelected()) {
+                halfSugarButton.setSelected(true);
+            }
+        }
     }
 }
