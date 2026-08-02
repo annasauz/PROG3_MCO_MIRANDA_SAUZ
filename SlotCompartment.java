@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * Represents a compartment within a vending machine slot that can hold
+ * a specific number of items. Provides methods to dispense items,
+ * add inventory, and update item prices.
+ */
 public class SlotCompartment {
     private final int MAXIMUM_IN_SLOT_ITEMS;
     private final int MINIMUMIN_SLOT_ITEMS = 10;
