@@ -155,6 +155,102 @@ public class TextInterface {
     }
 
     /**
+     * Displays the menu for purchasing a randomized milk tea, explaining that the recipe, cup size, and total price will be randomly generated.
+     */
+    public void randomizedTeaMenu() {
+        System.out.println("==========================================");
+        System.out.println("           RANDOMIZED MILK TEA");
+        System.out.println("==========================================");
+        System.out.println("The recipe, cup size, and total");
+        System.out.println("price are randomly generated.");
+        System.out.println();
+        System.out.println("If your inserted credit is");
+        System.out.println("insufficient, the purchase");
+        System.out.println("will not proceed.");
+        System.out.println("==========================================");
+    }
+
+    /**
+     * Displays the menu for selecting the sugar level of a milk tea.
+     */
+    public void iceLevel(){
+        System.out.println("\n===== CHOOSE ICE LEVEL =====");
+        System.out.println("1. No Ice");
+        System.out.println("2. Less Ice");
+        System.out.println("3. Regular Ice");
+        System.out.println("4. Extra Ice");
+    }
+
+    /**
+     * Displays the menu for selecting the sugar level of a milk tea.
+     */
+    public void chooseMilk() {
+        System.out.println("\n===== CHOOSE MILK =====");
+        System.out.println("1. Whole Milk");
+        System.out.println("2. Oat Milk");
+        System.out.println("3. Almond Milk");
+        System.out.println("4. Skim Milk");
+    }
+
+    /**
+     * Displays the menu for selecting the tea base of a milk tea.
+     */
+    public void chooseTea() {
+        System.out.println("\n===== CHOOSE TEA BASE =====");
+        System.out.println("1. Black Tea");
+        System.out.println("2. Green Tea");
+        System.out.println("3. Earl Grey Tea");
+        System.out.println("4. Oolong Tea");
+    }
+
+    /**
+     * Displays the menu for selecting the sugar level of a milk tea.
+     */
+    public void purchaseNotAllowed() {
+        System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
+        System.out.println("The selected item is marked as (Restricted)");
+        System.out.println("and cannot be purchased individually.");
+        System.out.println("It is only available as an ingredient");
+        System.out.println("for a custom milk tea.");
+        System.out.println("==========================================");
+        System.out.println();
+        System.out.println("Please select another item.");
+    }
+
+    /**
+     * Displays the menu for signature drinks, explaining that each signature drink has a fixed recipe, size, and price.
+     */
+    public void signatureDrinks() {
+        System.out.println("==========================================");
+        System.out.println("         SIGNATURE DRINKS");
+        System.out.println("==========================================");
+        System.out.println("Each signature drink has a fixed");
+        System.out.println("recipe, size, and price.");
+        System.out.println();
+        System.out.println("Please ensure you have inserted");
+        System.out.println("enough money before purchasing.");
+        System.out.println("==========================================");
+
+    }
+
+    /**
+     * Displays the menu for rating the user's experience after a purchase.
+     */
+    public void rateExperience() {
+        System.out.println();
+
+        System.out.println("========== RATE YOUR EXPERIENCE ==========");
+
+        System.out.println("How would you rate your purchase?");
+
+        System.out.println("1 - Poor");
+        System.out.println("2 - Fair");
+        System.out.println("3 - Good");
+        System.out.println("4 - Very Good");
+        System.out.println("5 - Excellent");
+    }
+
+    /**
      * Displays the menu of items available in the regular vending machine.
      *
      * @param items Array of Item objects representing the items in the vending machine
