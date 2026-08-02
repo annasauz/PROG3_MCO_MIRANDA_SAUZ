@@ -320,44 +320,70 @@ public class MaintenanceGuiPanel extends JPanel {
      * Validates user input and updates the item's price if valid.
      */
     private void showSetPriceDialog() {
+
         RegularVendingMachine machine = getActiveMachine();
 
         if (machine == null) {
+
             showMissingMachineError();
-            return;
-        }
 
-        int slotIndex = promptSlotSelection(machine, "Set Price", "Set Price");
-        if (slotIndex == -1) {
-            return;
-        }
-
-        Item item = machine.getItemTemplates()[slotIndex];
-        if (item == null) {
-            JOptionPane.showMessageDialog(this,
-                    "That slot is empty.",
-                    "Set Price",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Double price = promptPositiveDouble(
-                "Enter the new price for " + item.getName() + ":",
-                "Set Price");
-        if (price == null) {
-            return;
-        }
-
-        if (item.setPrice(price)) {
-            JOptionPane.showMessageDialog(this,
-                    item.getName() + " price updated to PHP " + String.format("%.2f", price),
-                    "Set Price",
-                    JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Unable to update the price.",
-                    "Set Price",
-                    JOptionPane.ERROR_MESSAGE);
+
+            int slotIndex = promptSlotSelection(
+                machine,
+                "Set Price",
+                "Set Price");
+
+            if (slotIndex != -1) {
+
+                Item item = machine.getItemTemplates()[slotIndex];
+
+                if (item == null) {
+
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "That slot is empty.",
+                        "Set Price",
+                        JOptionPane.ERROR_MESSAGE);
+
+                } else {
+
+                    double currentPrice = item.getPrice();
+
+                    Double price = promptPositiveDouble(
+                        "Item: " + item.getName()
+                        + "\nCurrent Price: PHP "
+                        + String.format("%.2f", currentPrice)
+                        + "\n\nEnter the new whole-peso price:",
+                        "Set Price");
+
+                    if (price != null) {
+
+                        if (item.setPrice(price)) {
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                item.getName()
+                                + " price updated successfully.\n"
+                                + "Previous Price: PHP "
+                                + String.format("%.2f", currentPrice)
+                                + "\n"
+                                + "New Price: PHP "
+                                + String.format("%.2f", price),
+                                "Set Price",
+                                JOptionPane.INFORMATION_MESSAGE);
+
+                        } else {
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                "Unable to update the price.",
+                                "Set Price",
+                                JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }   
+            }
         }
     }
 
@@ -366,122 +392,173 @@ public class MaintenanceGuiPanel extends JPanel {
      * Validates user input and updates the item's stock if valid.
      */
     private void showRestockDialog() {
+
         RegularVendingMachine machine = getActiveMachine();
 
         if (machine == null) {
+
             showMissingMachineError();
-            return;
-        }
-
-        int slotIndex = promptSlotSelection(machine, "Restock Item", "Restock Item");
-        if (slotIndex == -1) {
-            return;
-        }
-
-        Item item = machine.getItemTemplates()[slotIndex];
-        if (item == null) {
-            JOptionPane.showMessageDialog(this,
-                    "That slot has not been initialized yet.",
-                    "Restock Item",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int quantity = promptPositiveint(
-                "Enter quantity to add for " + item.getName() + ":",
-                "Restock Item");
-        if (quantity == -1) {
-            return;
-        }
-
-        SlotCompartment slot = machine.getSlots()[slotIndex];
-
-        int stockBefore = slot.getCurrentInSlotItems();
-        int maximumStock = slot.getMaximumInSlotItems();
-
-        if (stockBefore >= maximumStock) {
-
-            JOptionPane.showMessageDialog(
-            this,
-            item.getName() + " is already fully stocked.",
-            "Restock Failed",
-            JOptionPane.ERROR_MESSAGE);
-
-        } else if (stockBefore + quantity > maximumStock) {
-
-            int availableSpace = maximumStock - stockBefore;
-
-                JOptionPane.showMessageDialog(this,
-                "Unable to add " + quantity + " unit(s).\n"
-                + "Available space: " + availableSpace + " unit(s).",
-                "Restock Failed",
-                JOptionPane.ERROR_MESSAGE);
 
         } else {
 
-            machine.restockSlot(slotIndex, item, quantity);
+            int slotIndex = promptSlotSelection(
+                machine,
+                "Restock Item",
+                "Restock Item");
 
-            int stockAfter = slot.getCurrentInSlotItems();
+            if (slotIndex != -1) {
 
-            JOptionPane.showMessageDialog(this,
-            item.getName() + " restocked successfully.\n"
-            + "Previous Stock: " + stockBefore + "\n"
-            + "Quantity Added: " + quantity + "\n"
-            + "Current Stock: " + stockAfter + "/" + maximumStock,
-            "Restock Successful",
-            JOptionPane.INFORMATION_MESSAGE);
+                Item item = machine.getItemTemplates()[slotIndex];
+
+                if (item == null) {
+
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "That slot has not been initialized yet.",
+                        "Restock Item",
+                        JOptionPane.ERROR_MESSAGE);
+
+                } else {
+
+                    SlotCompartment slot = machine.getSlots()[slotIndex];
+
+                    int stockBefore = slot.getCurrentInSlotItems();
+
+                    int maximumStock = slot.getMaximumInSlotItems();
+
+                    int quantity = promptPositiveint(
+                        "Item: " + item.getName()
+                        + "\nCurrent Stock: "
+                        + stockBefore
+                        + " / "
+                        + maximumStock
+                        + "\n\nEnter quantity to add:",
+                        "Restock Item");
+
+                    if (quantity != -1) {
+
+                        if (stockBefore >= maximumStock) {
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                item.getName()
+                                + " is already fully stocked.",
+                                "Restock Failed",
+                                JOptionPane.ERROR_MESSAGE);
+
+                        } else if (stockBefore + quantity > maximumStock) {
+
+                            int availableSpace = maximumStock - stockBefore;
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                "Unable to add "
+                                + quantity
+                                + " unit(s).\n"
+                                + "Available space: "
+                                + availableSpace
+                                + " unit(s).",
+                                "Restock Failed",
+                                JOptionPane.ERROR_MESSAGE);
+
+                        } else {
+
+                            machine.restockSlot(
+                                slotIndex,
+                                item,
+                                quantity);
+
+                            int stockAfter = slot.getCurrentInSlotItems();
+
+                            JOptionPane.showMessageDialog(
+                                this,
+                                item.getName()
+                                + " restocked successfully.\n"
+                                + "Previous Stock: "
+                                + stockBefore
+                                + "\n"
+                                + "Quantity Added: "
+                                + quantity
+                                + "\n"
+                                + "Current Stock: "
+                                + stockAfter
+                                + " / "
+                                + maximumStock,
+                                "Restock Successful",
+                                JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                }
+            }
         }
-    }
+     
 
     /**
      * Displays a dialog to replenish the change reserves of the vending machine.
      * Validates user input and updates the change reserves if valid.
      */
     private void showReplenishChangeDialog() {
+
         RegularVendingMachine machine = getActiveMachine();
 
         if (machine == null) {
+
             showMissingMachineError();
-            return;
-        }
 
-        int denomination = promptDenomination();
-        if (denomination == -1) {
-            return;
-        }
+        } else {
 
-        int quantity = promptPositiveint(
-                "Enter quantity to add for PHP " + denomination + ":",
-                "Replenish Change");
-        if (quantity == -1) {
-            return;
-        }
+            int denomination = promptDenomination();
 
-        machine.replenishChangeReserves(denomination, quantity);
-        JOptionPane.showMessageDialog(this,
-                "Added " + quantity + " unit(s) of PHP " + denomination + " to the change reserves.",
-                "Replenish Change",
-                JOptionPane.INFORMATION_MESSAGE);
+            if (denomination != -1) {
+
+                int quantity = promptPositiveint(
+                    "Enter quantity to add for PHP " + denomination + ":",
+                    "Replenish Change");
+
+                if (quantity != -1) {
+
+                    machine.replenishChangeReserves(denomination,quantity);
+
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "Added " + quantity
+                        + " unit(s) of PHP "
+                        + denomination
+                        + " to the change reserves.",
+                        "Replenish Change",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
     }
 
     /**
      * Collects cash from the vending machine's internal cash box and displays the collected amount.
      */
     private void collectCash() {
+
         RegularVendingMachine machine = getActiveMachine();
 
         if (machine == null) {
+
             showMissingMachineError();
-            return;
-        }
 
-        double collected = machine.getInternalCashBox().getMoneyAmount();
-        machine.collectMoney();
+        } else {
 
-        JOptionPane.showMessageDialog(this,
-                String.format("Collected PHP %.2f from the machine.", collected),
+            double collected = machine.getInternalCashBox().getMoneyAmount();
+
+            machine.collectMoney();
+
+            JOptionPane.showMessageDialog(
+                this,
+                String.format(
+                        "Collected PHP %.2f from the machine.",
+                        collected
+                ),
                 "Collect Cash",
                 JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**
@@ -502,25 +579,30 @@ public class MaintenanceGuiPanel extends JPanel {
      * Displays a dialog showing the current change inventory of the vending machine.
      */
     private void showChangeInventoryDialog() {
+
         RegularVendingMachine machine = getActiveMachine();
 
         if (machine == null) {
+
             showMissingMachineError();
-            return;
-        }
 
-        JTextArea output = new JTextArea(buildChangeInventoryReport(machine.getInternalCashBox()));
-        output.setEditable(false);
-        output.setFont(FontStyle.NORMAL);
-        output.setCaretPosition(0);
+        } else {
 
-        JScrollPane scrollPane = new JScrollPane(output);
-        scrollPane.setPreferredSize(new Dimension(420, 320));
+            JTextArea output = new JTextArea(buildChangeInventoryReport(machine.getInternalCashBox()));
 
-        JOptionPane.showMessageDialog(this,
+            output.setEditable(false);
+            output.setFont(FontStyle.NORMAL);
+            output.setCaretPosition(0);
+
+            JScrollPane scrollPane = new JScrollPane(output);
+            scrollPane.setPreferredSize(new Dimension(420, 320));
+
+            JOptionPane.showMessageDialog(
+                this,
                 scrollPane,
                 "Change Inventory",
                 JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     /**
@@ -530,24 +612,73 @@ public class MaintenanceGuiPanel extends JPanel {
      * @return A formatted string representing the change inventory.
      */
     private String buildChangeInventoryReport(CashBox cashBox) {
+
         StringBuilder report = new StringBuilder();
+
         int[] denominations = cashBox.getDenominations();
         int[] quantities = cashBox.getDenominationsAmount();
 
         report.append("CHANGE INVENTORY\n");
-        report.append("====================\n\n");
+        report.append("========================================\n\n");
 
         double totalCash = 0;
 
         for (int i = denominations.length - 1; i >= 0; i--) {
+
             int value = denominations[i];
             int quantity = quantities[i];
-            report.append(String.format("PHP %-4d : %d%n", value, quantity));
+
+            report.append(String.format("PHP %-4d : %-3d", value, quantity));
+
+            if (quantity == 0) {
+
+                report.append("   !! OUT OF CHANGE !!");
+
+            } else {
+
+                boolean lowChange = false;
+
+                switch (value) {
+
+                    case 1000:
+                    case 500:
+                        lowChange = quantity <= 1;
+                        break;
+
+                    case 200:
+                    case 100:
+                        lowChange = quantity <= 2;
+                        break;
+
+                    case 50:
+                    case 20:
+                        lowChange = quantity <= 3;
+                        break;
+
+                    case 10:
+                    case 5:
+                        lowChange = quantity <= 5;
+                        break;
+
+                    case 1:
+                        lowChange = quantity <= 10;
+                        break;
+                }
+
+                if (lowChange) {
+                    report.append("   !! LOW CHANGE !!");
+                }
+            }
+
+            report.append("\n");
+
             totalCash += (double) value * quantity;
         }
 
-        report.append("\nTotal Change Available: PHP ");
-        report.append(String.format("%.2f", totalCash));
+        report.append("\n");
+        report.append("========================================\n");
+
+        report.append(String.format("Total Change Available: PHP %.2f", totalCash));
 
         return report.toString();
     }
