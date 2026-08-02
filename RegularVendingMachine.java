@@ -367,10 +367,10 @@ public class RegularVendingMachine {
             SpecialVendingMachine specialMachine = (SpecialVendingMachine) this;
 
             System.out.println("---------------------------------------------");
-            System.out.println("CUSTOM MILK TEA SUMMARY");
+            System.out.println("SPECIAL MILK TEA SUMMARY");
             System.out.println("---------------------------------------------");
-            System.out.println("Custom Milk Teas Sold : " + specialMachine.getCustomMilkTeaSold());
-            System.out.printf("Custom Drink Revenue  : PHP %.2f\n", specialMachine.getCustomMilkTeaRevenue());
+            System.out.println("Special Milk Teas Sold : " + specialMachine.getCustomMilkTeaSold());
+            System.out.printf("Spcial Milk Tea Revenue  : PHP %.2f\n", specialMachine.getCustomMilkTeaRevenue());
             
             }
 
@@ -437,6 +437,9 @@ public class RegularVendingMachine {
             this.startingInventory[i] = this.slots[i].getCurrentInSlotItems();
             this.totalSold[i] = 0;
         }
+
+        totalRatingCount = 0;
+        totalRatingScore = 0;
 
         System.out.println("Machine cash box has been emptied. Please restock change reserves.");
     }
