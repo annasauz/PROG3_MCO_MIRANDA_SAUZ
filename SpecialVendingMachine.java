@@ -187,13 +187,20 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     }
 
     /**
-     * Creates and dispenses a custom milk tea based on the user's selected ingredients.
-     * 
-     * @param teaSlot    The slot index for the chosen tea base.
-     * @param milkSlot   The slot index for the chosen milk base.
-     * @param addonSlots A list of slot indices for any extra toppings or syrups.
-     * @return true if the transaction and preparation were successful, false otherwise.
-     */
+    * Creates and dispenses a special milk tea based on the selected
+    * ingredients, sugar level, ice level, and cup size.
+    *
+    * @param teaSlot the slot index of the selected tea base
+    * @param milkSlot the slot index of the selected milk base
+    * @param sweetenerSlot the slot index of the selected sweetener,
+    *                      or -1 when no sweetener is selected
+    * @param sugarLevel the selected sugar-level constant
+    * @param addonSlots a list containing the slot indices of selected add-ons
+    * @param iceLevel the selected ice-level constant
+    * @param size the selected cup-size constant
+    * @return true if the milk tea is purchased and prepared successfully;
+    *         false otherwise
+    */
     public boolean purchaseCustomMilkTea(int teaSlot, int milkSlot, int sweetenerSlot, int sugarLevel, ArrayList<Integer> addonSlots, int iceLevel, int size) {
 
         if (addonSlots == null) {
@@ -616,13 +623,32 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.flush();
     }
 
-
+    /**
+    * Checks whether an item slot contains an ingredient that cannot be
+    * purchased individually.
+    *
+    * @param slot the slot index to check
+    * @return true if the item is restricted to special milk tea recipes;
+    *         false otherwise
+    */
     public boolean isRestrictedItem(int slot) {
 
     return slot == BROWN_SUGAR_SYRUP || slot == CREAM_CHEESE || slot == TAPIOCA_PEARLS || slot == GLASS_JELLY;
         }
 
 
+    /**
+    * Prints the nutrition information for a completed special milk tea,
+    * including calories, caffeine, dairy content, allergens, sugar level,
+     * temperature, and dietary notes.
+     *
+     * @param teaSlot the slot index of the selected tea base
+    * @param milkSlot the slot index of the selected milk base
+    * @param sugarLevel the selected sugar-level constant
+    * @param iceServings the number of ice servings used
+    * @param addonSlots the slot indices of the selected add-ons
+    * @param totalCalories the total calculated calories of the drink
+     */
     private void printNutritionFacts(int teaSlot, int milkSlot, int sugarLevel, int iceServings, ArrayList<Integer> addonSlots, double totalCalories) {
 
         System.out.println("\n========== NUTRITION FACTS ==========");
@@ -755,6 +781,12 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.println("===================================="); 
     }
 
+    /**
+    * Checks whether the machine has recorded at least one item or
+    * ingredient sale in the current maintenance cycle.
+    *
+    * @return true if at least one sale has been recorded; false otherwise
+    */
     private boolean hasSales() {
 
         for (int sold : totalSold) {
@@ -767,6 +799,11 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         return false;
     }
 
+    /**
+    * Prints sales analytics for the Special Vending Machine, including
+    * best-selling ingredients, the overall best seller, and the item that
+    * generated the highest revenue.
+    */
     public void printMachineInsights() {
 
         System.out.println();
@@ -816,6 +853,14 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.println("==============================================================");
     }
 
+    /**
+    * Prints the best-selling item for a specified ingredient category.
+    * Displays that no sales are available when the supplied slot is -1.
+    *
+    * @param category the category label to display
+    * @param slot the slot index of the best-selling item, or -1 when
+    *             the category has no recorded sales
+    */
     private void printBestSellingCategory(String category, int slot) {
         if (slot == -1) {
             System.out.printf("%-24s: No sales%n", category);
@@ -827,6 +872,11 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         }
     }
 
+    /**
+    * Collects the machine's internal cash and resets the Special Vending
+    * Machine's sales and revenue statistics for a new maintenance cycle.
+    * Also invokes the parent implementation to reset inherited records.
+    */
     @Override
     public void collectMoney() {
 
@@ -838,6 +888,14 @@ public class SpecialVendingMachine extends RegularVendingMachine {
 
     // Getters
 
+    /**
+    * Finds the best-selling item within a specified inclusive range of slots.
+    *
+    * @param startSlot the first slot index in the category
+    * @param endSlot the last slot index in the category
+    * @return the slot index of the best-selling item, or -1 if no items
+    *         in the range have recorded sales
+    */
     private int getBestSellingItem(int startSlot, int endSlot) {
 
         int bestSlot = -1;
@@ -853,6 +911,11 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         return bestSlot;
     }
 
+    /**
+    * Finds the item or ingredient with the highest total number of units sold.
+     *
+     * @return the slot index of the overall best-selling item
+    */
     private int getOverallBestSeller() {
 
         int bestSlot = 0;
@@ -866,6 +929,12 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         return bestSlot;
     }
 
+    /**
+    * Finds the item or ingredient that generated the highest revenue
+    * during the current maintenance cycle.
+    *
+    * @return the slot index of the highest-revenue item
+    */
     private int getHighestRevenueItem() {
 
         int best = 0;
@@ -880,11 +949,22 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         return best;
     }
 
-
+    /**
+    * Returns the number of special milk teas sold during the current
+    * maintenance cycle.
+    *
+    * @return the number of special milk teas sold
+    */
     public int getCustomMilkTeaSold() {
         return customMilkTeaSold;
     }
 
+    /**
+    * Returns the revenue generated by special milk tea purchases during
+    * the current maintenance cycle.
+    *
+    * @return the total special milk tea revenue
+    */
     public double getCustomMilkTeaRevenue() {
         return customMilkTeaRevenue;
     }
