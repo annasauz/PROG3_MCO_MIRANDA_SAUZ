@@ -436,27 +436,57 @@ public class VendingMachineController {
      * @return checked double
      */
     private double getPositiveDouble() {
+
         boolean valid = false;
         double value = 0;
         String leftover;
 
         while (!valid) {
+
             if (scanner.hasNextDouble()) {
+
                 value = scanner.nextDouble();
                 leftover = scanner.nextLine().trim();
 
                 if (!leftover.isEmpty()) {
-                    System.out.println("Invalid input. Please enter only one number.");
-                } else if (value > 0) {
-                    valid = true;
+
+                    System.out.println(
+                        "Invalid input. Please enter only one numeric value."
+                    );
+
+                } else if (value <= 0) {
+
+                    System.out.println(
+                        "Price must be greater than zero."
+                    );
+
+                    System.out.print("Input new price: ");
+
+                } else if (value != Math.floor(value)) {
+
+                    System.out.println(
+                        "Invalid price. Please enter a whole-peso amount."
+                    );
+
+                    System.out.print("Input new price: ");
+
                 } else {
-                    System.out.println("Value must be greater than zero. Try again:");
+
+                    valid = true;
                 }
+
             } else {
-                System.out.println("Invalid input. Enter a valid number/decimal.");
-                scanner.nextLine(); // clear buffer
+
+                System.out.println(
+                    "Invalid input. Please enter a valid numeric price."
+                );
+
+                scanner.nextLine();
+
+                System.out.print("Input new price: ");
             }
         }
+
         return value;
     }
     /**
