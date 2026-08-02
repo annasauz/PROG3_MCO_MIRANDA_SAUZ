@@ -10,6 +10,14 @@ import javax.swing.JPanel;
 
 public class RegularVMMenuPanel extends JPanel {
 
+    /**
+    * Creates the Regular Vending Machine menu panel and initializes the
+    * navigation buttons for purchasing items, accessing maintenance,
+    * and returning to the main menu.
+    *
+    * @param gui the main vending machine GUI used for panel navigation
+    *            and machine selection
+    */
     public RegularVMMenuPanel(VendingMachineGUI gui) {
 
         setBackground(ColorPalette.BACKGROUND);
@@ -54,6 +62,12 @@ public class RegularVMMenuPanel extends JPanel {
         add(back);
     }
 
+    /**
+    * Creates and styles a button used in the Regular Vending Machine menu.
+    *
+    * @param text the text displayed on the button
+    * @return the configured JButton
+    */
     private JButton createButton(String text) {
 
         JButton button = new JButton(text);
