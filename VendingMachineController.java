@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Represents the controller for a vending machine, handling user
+ * interactions, menu navigation, and feature execution.
+ */
 public class VendingMachineController {
     private TextInterface textInterface;
     private RegularVendingMachine vendingMachine;

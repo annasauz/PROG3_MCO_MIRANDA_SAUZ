@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+/**
+ * Represents the software loop for the vending machine program.
+ * Provides a text-based interface for creating and testing vending machines.
+ */
 public class VendingMachineSoftwareLoop {
     private TextInterface textInterface;
     private RegularVendingMachine vendingMachine;

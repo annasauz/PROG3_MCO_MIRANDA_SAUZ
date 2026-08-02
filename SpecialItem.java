@@ -1,3 +1,7 @@
+/**
+ * SpecialItem class that extends Item class.
+ * Represents a special item with a restriction on whether it can be sold independently or not.
+ */
 public class SpecialItem extends Item {
     
     // Flag if can be standalone item or not 

@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
+/**
+ * Represents the text-based interface for the vending machine application.
+ * Provides methods to display menus, prompts, and information to the user.
+ */
 public class TextInterface {
     /**
      * Clears screen

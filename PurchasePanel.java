@@ -411,7 +411,7 @@ public class PurchasePanel extends JPanel {
 
             switch (rating) {
                 case 5:
-                    responseMessage = "Thank you! We're glad you enjoyed your drink!";
+                    responseMessage = "Thank you! We appreciate your feedback.Thank you! We appreciate your feedback.";
                     break;
 
                 case 4:
