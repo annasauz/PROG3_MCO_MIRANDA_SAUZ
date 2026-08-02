@@ -39,9 +39,10 @@ public class MilkTeaTypePanel extends JPanel {
 
         customButton.addActionListener(e -> gui.showPanel("Custom Milk Tea"));
 
-        signatureButton.addActionListener(e -> gui.showPanel("Signature Milk Tea"));
+        signatureButton.addActionListener(e -> showSignatureMilkTeaWarning());
 
-        randomButton.addActionListener(e -> purchaseRandomMilkTea());
+        randomButton.addActionListener(e -> showRandomMilkTeaWarning());
+
         backButton.addActionListener(e -> gui.showPanel("Purchase"));
         add(customButton);
         add(Box.createVerticalStrut(20));
@@ -194,4 +195,36 @@ public class MilkTeaTypePanel extends JPanel {
 
         return addon;
     }
+
+    private void showSignatureMilkTeaWarning() {
+        String message = "Signature milk teas have fixed recipes,\n"
+                + "cup sizes, and prices.\n\n"
+                + "Please review the drink information\n"
+                + "before completing your purchase.";
+
+        int choice = JOptionPane.showConfirmDialog(this,
+            message,
+            "Signature Milk Tea",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.INFORMATION_MESSAGE);
+
+        if (choice == JOptionPane.OK_OPTION) {
+            gui.showPanel("Signature Milk Tea");
+        }
+    }
+
+    private void showRandomMilkTeaWarning() {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "The recipe, cup size, and total price\n"
+            + "are randomly generated.\n\n"
+            + "If your inserted credit is insufficient,\n"
+            + "the purchase will not proceed.",
+            "Randomized Milk Tea",
+            JOptionPane.WARNING_MESSAGE);
+
+        purchaseRandomMilkTea();
+    }
+
 }
