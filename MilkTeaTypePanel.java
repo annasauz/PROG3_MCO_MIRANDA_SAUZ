@@ -9,6 +9,11 @@ import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Represents the interface for selecting a special milk tea type.
+ * Extends JPanel to provide custom, signature, and randomized
+ * milk tea options.
+ */
 public class MilkTeaTypePanel extends JPanel {
 
     private VendingMachineGUI gui;
