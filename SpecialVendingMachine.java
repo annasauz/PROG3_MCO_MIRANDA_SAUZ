@@ -785,10 +785,9 @@ public class SpecialVendingMachine extends RegularVendingMachine {
     public void printMachineInsights() {
 
         System.out.println();
-        System.out.println("=============================================");
-        System.out.println("             MACHINE INSIGHTS");
-        System.out.println("=============================================");
-
+        System.out.println("==============================================================");
+        System.out.println("                     MACHINE INSIGHTS");
+        System.out.println("==============================================================");
         if (!hasSales()) {
 
             System.out.println("No sales data available yet.");
@@ -815,22 +814,21 @@ public class SpecialVendingMachine extends RegularVendingMachine {
             printBestSellingCategory("Best Selling Flavor", bestFlavor);
             printBestSellingCategory("Best Selling Topping", bestTopping);
 
-            System.out.println("---------------------------------------------");
-
+            System.out.println("--------------------------------------------------------------");
             System.out.printf("Overall Best Seller     : %s (%d sold)%n", itemTemplates[overall].getName(), totalSold[overall]);
             
-            System.out.println("---------------------------------------------");
+            System.out.println("--------------------------------------------------------------");
 
             System.out.printf("Highest Revenue Item    : %s%n", itemTemplates[highestRevenue].getName());
 
             System.out.printf("Revenue Generated       : PHP %.2f%n", revenuePerItem[highestRevenue]);
 
-            System.out.println("---------------------------------------------");
-            System.out.println("Analytics are based on sales");
-            System.out.println("since the last restocking.");
+            System.out.println("--------------------------------------------------------------");
+            System.out.println("Analytics are based on");
+            System.out.println("current machine sales records.");
             }
 
-        System.out.println("=============================================");
+        System.out.println("==============================================================");
     }
 
     private void printBestSellingCategory(String category, int slot) {
