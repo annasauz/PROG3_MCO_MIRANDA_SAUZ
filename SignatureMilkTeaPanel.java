@@ -23,6 +23,13 @@ public class SignatureMilkTeaPanel extends JPanel {
     private static final int EARL_GREY = 2;
     private static final int TARO_COOKIE_CRUNCH = 3;
 
+    /**
+    * Creates the Signature Milk Tea panel and initializes the available
+    * signature drinks, drink descriptions, and purchase controls.
+    *
+    * @param gui the main vending machine GUI used for panel navigation
+    *            and purchase processing
+    */
     public SignatureMilkTeaPanel(VendingMachineGUI gui) {
 
         this.gui = gui;
@@ -101,6 +108,12 @@ public class SignatureMilkTeaPanel extends JPanel {
         taroButton.addActionListener(e -> selectTaroCookieCrunch());
     }
 
+    /**
+     * Creates and styles a button used within the signature milk tea menu.
+    *
+    * @param text the text displayed on the button
+    * @return the configured JButton
+    */
     private JButton createButton(String text) {
 
         JButton button = new JButton(text);
@@ -114,6 +127,10 @@ public class SignatureMilkTeaPanel extends JPanel {
         return button;
     }
 
+    /**
+    * Selects the Roasted Oolong Matcha Latte signature drink and
+    * displays its recipe, size, and price information.
+    */
     private void selectRoastedOolong() {
         selectedDrink = ROASTED_OOLONG;
         descriptionArea.setText(
@@ -129,6 +146,10 @@ public class SignatureMilkTeaPanel extends JPanel {
         );
     }
 
+    /**
+    * Selects the Classic Brown Sugar Earl Grey Cheese Foam signature
+    * drink and displays its recipe, size, and price information.
+    */
     private void selectEarlGrey() {
         selectedDrink = EARL_GREY;
         descriptionArea.setText(
@@ -144,6 +165,10 @@ public class SignatureMilkTeaPanel extends JPanel {
         );
     }
 
+    /**
+    * Selects the Taro Cookie Crunch Green Tea signature drink and
+    * displays its recipe, size, and price information.
+    */
     private void selectTaroCookieCrunch() {
         selectedDrink = TARO_COOKIE_CRUNCH;
         descriptionArea.setText(
@@ -159,6 +184,10 @@ public class SignatureMilkTeaPanel extends JPanel {
         );
     }
 
+    /**
+    * Processes the purchase of the currently selected signature milk tea.
+    * Prompts the user for confirmation before preparing the selected drink.
+    */
     private void purchaseSelectedDrink() {
 
     	if (selectedDrink == 0) {
@@ -193,6 +222,10 @@ public class SignatureMilkTeaPanel extends JPanel {
     	}
 	}
 
+    /**
+    * Creates the predefined recipe for the Roasted Oolong Matcha Latte
+    * and submits it for purchase.
+    */
 	private void processRoastedOolongPurchase() {
 
     	ArrayList<Integer> addons = new ArrayList<>();
@@ -211,6 +244,10 @@ public class SignatureMilkTeaPanel extends JPanel {
             SpecialVendingMachine.MEDIUM);
 	}
 
+    /**
+    * Creates the predefined recipe for the Classic Brown Sugar Earl Grey
+    * Cheese Foam and submits it for purchase.
+    */
     private void processEarlGreyPurchase() {
 
         ArrayList<Integer> addons = new ArrayList<>();
@@ -229,6 +266,10 @@ public class SignatureMilkTeaPanel extends JPanel {
             SpecialVendingMachine.LARGE);
         }
 
+    /**
+    * Creates the predefined recipe for the Taro Cookie Crunch Green Tea
+    * and submits it for purchase.
+    */
     private void processTaroPurchase() {
 
         ArrayList<Integer> addons = new ArrayList<>();
