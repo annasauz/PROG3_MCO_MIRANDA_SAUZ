@@ -12,6 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
 
+/**
+ * Represents the interface for selecting and purchasing predefined
+ * signature milk tea recipes.
+ * Extends JPanel to display drink descriptions and purchase controls.
+ */
 public class SignatureMilkTeaPanel extends JPanel {
 
     private VendingMachineGUI gui;
