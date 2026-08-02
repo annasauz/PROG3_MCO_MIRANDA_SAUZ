@@ -6,9 +6,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
+/**
+ * Represents the main menu for selecting a vending machine type.
+ * Extends JPanel to provide navigation controls for creating
+ * regular or special vending machines, or exiting the application.
+ */
 public class MainMenu extends JPanel{
 
+    /**
+     * Creates the main menu panel and initializes the buttons
+     */
     public MainMenu(VendingMachineGUI gui){
 
         setBackground(ColorPalette.BACKGROUND);
