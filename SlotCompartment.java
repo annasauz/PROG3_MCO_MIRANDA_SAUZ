@@ -7,10 +7,12 @@ public class SlotCompartment {
     private ArrayList<Item> items;
 
     // Constructor
-    /** Creates a slot for items
-     *
-     *  @param maxItems The maximum number of items the slot can hold (must be at least 10)
-    */
+    /** 
+    * Creates a slot compartment with the specified maximum capacity.
+    *
+     * @param maxItems the maximum number of items the slot can hold
+     *                 (minimum capacity is 10)
+     */
     public SlotCompartment(int maxItems) {
         this.MAXIMUM_IN_SLOT_ITEMS = Math.max(maxItems, MINIMUMIN_SLOT_ITEMS);
 
@@ -18,8 +20,11 @@ public class SlotCompartment {
     }
 
     // Methods
-    /** Validates if items arraylist is empty, if so returns nothing. Otherwise, dispenses one item
-     */
+    /**
+    * Dispenses the next available item from the slot.
+    *
+    * @return the dispensed item, or null if the slot is empty
+    */
     public Item dispense() {
     if (items.isEmpty()) {
         System.out.println("Out of product.");
@@ -95,19 +100,44 @@ public class SlotCompartment {
         System.out.println("All existing items in the slot updated to PHP " + newPrice);
     }
 
-    //Getters, setters
+    //Getters and setters
+
+    /**
+    * Returns the current number of items stored in the slot.
+    *
+    * @return the current stock quantity
+    */
+
     public int getCurrentInSlotItems() {
         return currentInSlotItems;
     }
 
+    /**
+    * Returns the maximum number of items that the slot can hold.
+    *
+    * @return the slot capacity
+    */
     public int getMaximumInSlotItems() {
         return MAXIMUM_IN_SLOT_ITEMS;
     }
 
+    /**
+    * Returns the minimum allowable slot capacity.
+    *
+    * @return the minimum slot capacity
+    */
     public int getMinimumInSlotItems() {
         return MINIMUMIN_SLOT_ITEMS;
     }
 
+    /**
+    * Adjusts the current stock count of the slot.
+    * A positive value increases the stock, while a negative
+    * value decreases it.
+    *
+    * @param addedAmount the amount by which the current stock
+    *                    should be adjusted
+    */
     public void adjustCurrentInSlotItems(int addedAmount) {
     this.currentInSlotItems += addedAmount;
     }
