@@ -25,6 +25,13 @@ public class PurchasePanel extends JPanel {
     private JLabel restrictedLabel;
     private JButton buildCustomMilkTea;
 
+    /**
+    * Creates the purchase panel and initializes the item table, credit
+    * display, purchase controls, and navigation buttons.
+    *
+    * @param gui the main vending machine GUI used to access the active
+    *            machine and navigate between panels
+    */
     public PurchasePanel(VendingMachineGUI gui){
         this.gui = gui;
         setLayout(new BorderLayout());
@@ -315,6 +322,13 @@ public class PurchasePanel extends JPanel {
         return purchaseSuccessful;
     }
      
+     /**
+    * Loads the active vending machine's items and inventory information
+    * into the purchase table. Restricted special ingredients are marked
+    * with an asterisk.
+    *
+    * @param machine the vending machine whose items will be displayed
+    */
     public void loadItems(RegularVendingMachine machine) {
 
         model.setRowCount(0);
@@ -357,6 +371,12 @@ public class PurchasePanel extends JPanel {
         }
     }
 
+    /**
+    * Updates the credit label to display the user's current inserted money.
+    *
+    * @param gui the main vending machine GUI containing the current
+    *            inserted-money value
+    */
     public void refreshCredit(VendingMachineGUI gui){
 
         creditLabel.setText(
@@ -365,6 +385,12 @@ public class PurchasePanel extends JPanel {
 
     }
 
+    /**
+    * Prompts the customer to rate the completed purchase and stores the
+    * selected rating in the active vending machine.
+    *
+    * @param machine the vending machine that records the customer rating
+    */
     private void showCustomerRatingDialog(RegularVendingMachine machine) {
 
         String[] ratingOptions = {"1 - Poor", "2 - Fair", "3 - Good", "4 - Very Good", "5 - Excellent"};
@@ -405,6 +431,13 @@ public class PurchasePanel extends JPanel {
         }
     }
 
+    /**
+    * Asks the customer whether a receipt should be displayed for the
+    * completed transaction.
+     *
+     * @param machine the vending machine containing the latest
+    *                transaction information
+    */
     private void showReceiptChoiceDialog(RegularVendingMachine machine) {
 
         int choice = JOptionPane.showConfirmDialog(this,
@@ -418,7 +451,13 @@ public class PurchasePanel extends JPanel {
         }
     }
 
-
+    /**
+    * Builds and displays a scrollable receipt for the most recently
+    * completed purchase.
+    *
+    * @param machine the vending machine containing the latest
+    *                transaction information
+    */
     private void showReceiptDialog(RegularVendingMachine machine) {
 
         String receipt = buildReceipt(machine);
@@ -439,6 +478,14 @@ public class PurchasePanel extends JPanel {
         JOptionPane.showMessageDialog(this, receiptScrollPane, "Purchase Receipt", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+    * Builds a formatted receipt containing the purchased items, total
+    * price, amount paid, change, and calories.
+    *
+    * @param machine the vending machine containing the latest
+    *                transaction information
+    * @return a formatted string representing the purchase receipt
+    */
     private String buildReceipt(RegularVendingMachine machine) {
 
         StringBuilder receipt = new StringBuilder();
@@ -494,6 +541,10 @@ public class PurchasePanel extends JPanel {
         return receipt.toString();
     }
 
+    /**
+    * Updates the visibility of the Special Milk Tea button based on
+    * whether the user is viewing the Special Vending Machine.
+    */
     public void refreshMachineButtons() {
 
         buildCustomMilkTea.setVisible(
@@ -501,6 +552,13 @@ public class PurchasePanel extends JPanel {
         );
     }
 
+    /**
+    * Completes the GUI purchase process by updating the displayed credit
+     * and inventory, showing the transaction result, requesting customer
+     * feedback, and offering a receipt.
+    *
+     * @param machine the vending machine that completed the purchase
+    */
     public void completePurchaseFlow(RegularVendingMachine machine) {
 
         gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
@@ -523,6 +581,14 @@ public class PurchasePanel extends JPanel {
         showCustomerRatingDialog(machine);
         showReceiptChoiceDialog(machine);
     }
+
+    /**
+    * Displays the customer-rating prompt and receipt choice after a
+    * successful purchase.
+    *
+    * @param machine the vending machine containing the completed
+    *                transaction information
+    */
     public void showFeedbackAndReceipt(RegularVendingMachine machine) {
         showCustomerRatingDialog(machine);
         showReceiptChoiceDialog(machine);
