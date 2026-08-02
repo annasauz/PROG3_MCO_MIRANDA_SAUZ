@@ -9,15 +9,23 @@ public class MaintenanceGuiPanel extends JPanel {
     private final VendingMachineGUI gui;
     private JLabel machineLabel;
 
+    /**
+    * Creates the maintenance panel and initializes its user interface.
+    *
+    * @param gui the main vending machine GUI used to access the active
+    *            vending machine and navigate between panels
+    */
     public MaintenanceGuiPanel(VendingMachineGUI gui) {
         this.gui = gui;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         loadMaintenanceOptions();
     }
 
-    /*
-     * Loads the maintenance options into the panel, including buttons for various maintenance actions.
-     */
+    /**
+    * Loads the maintenance options into the panel, including buttons for
+    * the available maintenance operations based on the active vending
+    * machine.
+    */
     public void loadMaintenanceOptions() {
         removeAll();
         setBackground(ColorPalette.BACKGROUND);
@@ -698,6 +706,14 @@ public class MaintenanceGuiPanel extends JPanel {
         }
     }
 
+    /**
+    * Displays a formatted report inside a scrollable dialog window.
+     *
+     * @param report the report text to display
+    * @param title the dialog window title
+    * @param width the preferred width of the dialog
+    * @param height the preferred height of the dialog
+    */
     private void showReportDialog(String report, String title, int width, int height) {
 
         JTextArea output = new JTextArea(report);
@@ -716,6 +732,13 @@ public class MaintenanceGuiPanel extends JPanel {
             JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+    * Captures all text printed to the console while the specified action
+    * is executed and returns it as a string.
+    *
+    * @param action the operation whose console output will be captured
+    * @return the captured console output as a string
+    */
     private String captureConsoleOutput(Runnable action) {
         PrintStream originalOutput = System.out;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
