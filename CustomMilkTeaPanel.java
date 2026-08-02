@@ -51,6 +51,14 @@ public class CustomMilkTeaPanel extends JPanel {
     private JLabel priceLabel;
     private JLabel caloriesLabel;
 
+    /**
+    * Creates the Custom Milk Tea panel and initializes all controls for
+    * selecting ingredients, customizing the drink, and purchasing a
+    * custom milk tea.
+    *
+    * @param gui the main vending machine GUI used for navigation and
+    *            access to the active Special Vending Machine
+     */
     public CustomMilkTeaPanel(VendingMachineGUI gui) {
 
         this.gui = gui;
@@ -102,6 +110,12 @@ public class CustomMilkTeaPanel extends JPanel {
         addBottomButtons();
     }
 
+    /**
+    * Creates and adds the combo box sections for selecting the tea base,
+    * milk base, and sweetener.
+    *
+    * @param formPanel the panel to which the combo box components are added
+    */
     private void addComboBoxSections(JPanel formPanel) {
 
         teaComboBox = new JComboBox<>(new String[] {
@@ -152,9 +166,14 @@ public class CustomMilkTeaPanel extends JPanel {
         formPanel.add(Box.createVerticalStrut(20));
     }
 
-    private JPanel createComboBoxPanel(
-            String labelText,
-            JComboBox<String> comboBox) {
+    /**
+    * Creates a labeled combo box panel used for selecting an ingredient.
+    *
+    * @param labelText the text displayed beside the combo box
+     * @param comboBox the combo box containing the available options
+    * @return the configured combo box panel
+    */
+    private JPanel createComboBoxPanel(String labelText, JComboBox<String> comboBox) {
 
         JPanel panel = new JPanel(
             new BorderLayout(15, 0)
@@ -180,6 +199,11 @@ public class CustomMilkTeaPanel extends JPanel {
         return panel;
     }
 
+    /**
+    * Creates and adds the sugar level selection controls to the form.
+    *
+    * @param formPanel the panel to which the sugar controls are added
+     */
     private void addSugarSection(JPanel formPanel) {
 
         JPanel sugarPanel = new JPanel(
@@ -221,6 +245,11 @@ public class CustomMilkTeaPanel extends JPanel {
         formPanel.add(Box.createVerticalStrut(20));
     }
 
+    /**
+    * Creates and adds the ice level selection controls to the form.
+    *
+    * @param formPanel the panel to which the ice controls are added
+    */
     private void addIceSection(JPanel formPanel) {
 
         JPanel icePanel = new JPanel(
@@ -268,6 +297,11 @@ public class CustomMilkTeaPanel extends JPanel {
         formPanel.add(Box.createVerticalStrut(20));
     }
 
+    /**
+    * Creates and adds the cup size selection controls to the form.
+    *
+    * @param formPanel the panel to which the size controls are added
+    */
     private void addSizeSection(JPanel formPanel) {
 
         JPanel sizePanel = new JPanel(
@@ -309,6 +343,12 @@ public class CustomMilkTeaPanel extends JPanel {
         formPanel.add(Box.createVerticalStrut(20));
     }
 
+    /**
+    * Creates and adds the available add-on ingredient check boxes to
+    * the customization form.
+    *
+    * @param formPanel the panel to which the add-on controls are added
+    */
     private void addAddonsSection(JPanel formPanel) {
 
         JPanel addonsPanel = new JPanel(
@@ -354,6 +394,10 @@ public class CustomMilkTeaPanel extends JPanel {
         formPanel.add(Box.createVerticalStrut(20));
     }
 
+    /**
+    * Creates and adds the purchase and navigation buttons for the
+    * custom milk tea panel.
+    */
     private void addBottomButtons() {
 
         JPanel bottomPanel = new JPanel();
@@ -386,6 +430,11 @@ public class CustomMilkTeaPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+    * Retrieves the list of selected add-on ingredients.
+    *
+    * @return an ArrayList containing the selected add-on slot constants
+    */
     public ArrayList<Integer> getSelectedAddons() {
 
         ArrayList<Integer> addons =
@@ -436,6 +485,11 @@ public class CustomMilkTeaPanel extends JPanel {
         return addons;
     }
 
+    /**
+    * Returns the selected tea base.
+    *
+    * @return the selected tea constant
+    */
     private int getSelectedTea() {
 
         int selectedIndex = teaComboBox.getSelectedIndex();
@@ -463,6 +517,12 @@ public class CustomMilkTeaPanel extends JPanel {
 
         return tea;
     }
+
+    /**
+    * Returns the selected milk base.
+     *
+    * @return the selected milk constant
+     */
     private int getSelectedMilk() {
 
         int selectedIndex = milkComboBox.getSelectedIndex();
@@ -491,6 +551,12 @@ public class CustomMilkTeaPanel extends JPanel {
         return milk;
     }
     
+    /**
+    * Returns the selected sweetener.
+    *
+    * @return the selected sweetener constant, or -1 if no sweetener
+    *         is selected
+    */
     private int getSelectedSweetener() {
 
         int selectedIndex = sweetenerComboBox.getSelectedIndex();
@@ -515,6 +581,11 @@ public class CustomMilkTeaPanel extends JPanel {
         return sweetener;
     }
 
+    /**
+    * Returns the selected sugar level.
+    *
+    * @return the selected sugar level constant
+    */
     private int getSelectedSugarLevel() {
 
         int sugarLevel = SpecialVendingMachine.FULL_SUGAR;
@@ -535,6 +606,11 @@ public class CustomMilkTeaPanel extends JPanel {
         return sugarLevel;
     }
 
+    /**
+    * Returns the selected ice level.
+    *  
+    * @return the selected ice level constant
+    */
     private int getSelectedIceLevel() {
 
         int iceLevel = SpecialVendingMachine.REGULAR_ICE;
@@ -559,6 +635,11 @@ public class CustomMilkTeaPanel extends JPanel {
         return iceLevel;
     }
 
+    /**
+    * Returns the selected cup size.
+    *
+    * @return the selected size constant
+    */
     private int getSelectedSize() {
 
         int size = SpecialVendingMachine.MEDIUM;
@@ -579,6 +660,12 @@ public class CustomMilkTeaPanel extends JPanel {
         return size;
     }
 
+    /**
+    * Builds a summary of the customer's selected custom milk tea
+    * configuration before purchase confirmation.
+    *
+     * @return a formatted order summary
+    */
     private String buildOrderSummary() {
 
         StringBuilder summary = new StringBuilder();
@@ -675,7 +762,13 @@ public class CustomMilkTeaPanel extends JPanel {
         return summary.toString();
     }
 
-
+    /**
+    * Processes the purchase of the currently configured custom milk tea,
+     * including confirmation, preparation, transaction processing,
+     * nutrition display, and receipt generation.
+     *
+     * @return true if the purchase is successful; false otherwise
+    */
     private boolean processCustomMilkTeaPurchase() {
 
         SpecialVendingMachine machine = gui.getSpecialMachine();
@@ -750,6 +843,20 @@ public class CustomMilkTeaPanel extends JPanel {
         return purchaseSuccessful;
     }
 
+    /**
+    * Builds the preparation steps displayed during the custom milk tea
+    * preparation animation.
+    *
+    * @param machine the active special vending machine
+    * @param tea the selected tea base
+    * @param milk the selected milk base
+    * @param sweetener the selected sweetener
+    * @param sugarLevel the selected sugar level
+    * @param addons the selected add-ons
+    * @param iceLevel the selected ice level
+    * @param size the selected cup size
+    * @return an ordered list of preparation steps
+    */
     private ArrayList<String> buildPreparationSteps(SpecialVendingMachine machine, int tea, int milk, int sweetener, int sugarLevel, ArrayList<Integer> addons, int iceLevel, int size) {
 
         ArrayList<String> steps = new ArrayList<>();
@@ -829,6 +936,12 @@ public class CustomMilkTeaPanel extends JPanel {
         return steps;
     }
     
+    /**
+    * Returns the ingredient multiplier based on the selected cup size.
+    *
+    * @param size the selected cup size
+    * @return the ingredient multiplier
+    */
     private int getSizeMultiplier(int size) {
 
         int multiplier = 1;
@@ -849,6 +962,15 @@ public class CustomMilkTeaPanel extends JPanel {
 
         return multiplier;
     }
+
+    /**
+    * Determines the number of sweetener servings required based on the
+    * selected sugar level and cup size.
+    *
+    * @param sugarLevel the selected sugar level
+    * @param multiplier the ingredient multiplier for the selected size
+    * @return the number of sweetener servings
+    */
     private int getSweetenerServings(int sugarLevel, int multiplier) {
 
         int servings = multiplier;
@@ -869,6 +991,14 @@ public class CustomMilkTeaPanel extends JPanel {
 
         return servings;
     }
+
+    /**
+    * Determines the number of ice servings required for the selected
+    * ice level.
+    *
+    * @param iceLevel the selected ice level
+     * @return the number of ice servings
+     */
     private int getIceServings(int iceLevel) {
 
         int servings = 3;
@@ -894,6 +1024,12 @@ public class CustomMilkTeaPanel extends JPanel {
         return servings;
         }
 
+    /**
+    * Returns the display text corresponding to the selected sugar level.
+    *
+    * @param sugarLevel the selected sugar level
+    * @return the sugar level as display text
+    */
         private String getSugarText(int sugarLevel) {
 
             String sugarText = "100%";
@@ -915,6 +1051,14 @@ public class CustomMilkTeaPanel extends JPanel {
         return sugarText;
     }
 
+    /**
+    * Displays an animated preparation sequence for the custom milk tea
+    * before completing the transaction.
+    *
+    * @param steps the ordered preparation steps to display
+    * @param afterAnimation the action to execute after the animation
+    *                       finishes
+    */
     private void showPreparationAnimation(ArrayList<String> steps, Runnable afterAnimation) {
 
         JDialog dialog = new JDialog();
@@ -964,6 +1108,14 @@ public class CustomMilkTeaPanel extends JPanel {
         dialog.setVisible(true);
     }
 
+    /**
+    * Displays the completed transaction details, including cup size,
+    * total price, calories, and change dispensed.
+    *
+    * @param machine the special vending machine containing the completed
+    *                transaction information
+    * @param size the purchased cup size
+    */
     private void showTransactionComplete(SpecialVendingMachine machine, int size) {
 
         String sizeText = getSizeText(size);
@@ -977,6 +1129,12 @@ public class CustomMilkTeaPanel extends JPanel {
         JOptionPane.showMessageDialog(this, message, "Transaction Complete", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+    * Returns the display text for the specified cup size.
+    *
+    * @param size the selected cup size
+    * @return the cup size as display text
+    */
     private String getSizeText(int size) {
 
         String sizeText = "Unknown";
@@ -998,6 +1156,17 @@ public class CustomMilkTeaPanel extends JPanel {
         return sizeText;
     }
 
+    /**
+    * Displays the nutrition information and allergen summary for the
+    * completed milk tea purchase.
+    *
+    * @param tea the selected tea base
+    * @param milk the selected milk base
+    * @param sugarLevel the selected sugar level
+    * @param iceLevel the selected ice level
+    * @param addons the selected add-ons
+    * @param totalCalories the total calories of the drink
+    */
     private void showNutritionFacts(int tea, int milk, int sugarLevel, int iceLevel, ArrayList<Integer> addons, double totalCalories) {
 
         StringBuilder facts = new StringBuilder();
@@ -1085,6 +1254,25 @@ public class CustomMilkTeaPanel extends JPanel {
         JOptionPane.showMessageDialog(this, new JScrollPane(factsArea), "Nutrition Facts", JOptionPane.PLAIN_MESSAGE);
     }
 
+     /**
+    * Processes the purchase of a preset milk tea recipe, such as a
+    * signature or randomized milk tea. It submits the fixed ingredients
+    * to the Special Vending Machine, displays the preparation animation,
+    * shows the transaction and nutrition details, and requests customer
+    * feedback and a receipt when successful.
+    *
+    * @param drinkName the name of the preset milk tea
+    * @param tea the slot index of the selected tea base
+    * @param milk the slot index of the selected milk base
+    * @param sweetener the slot index of the selected sweetener,
+    *                  or -1 if no sweetener is used
+    * @param sugarLevel the selected sugar-level constant
+     * @param addons the slot indices of the selected add-ons
+    * @param iceLevel the selected ice-level constant
+    * @param size the selected cup-size constant
+     * @return true if the preset milk tea purchase is completed successfully;
+     *         false otherwise
+    */
     public boolean purchasePresetMilkTea(String drinkName, int tea, int milk, int sweetener, int sugarLevel, ArrayList<Integer> addons, int iceLevel, int size) {
 
         SpecialVendingMachine machine = gui.getSpecialMachine();
@@ -1147,6 +1335,20 @@ public class CustomMilkTeaPanel extends JPanel {
     return purchaseSuccessful;
     }
 
+    /**
+    * Builds a formatted summary of a preset signature milk tea.
+    *
+    * @param drinkName the name of the preset drink
+    * @param machine the active special vending machine
+    * @param tea the selected tea base
+    * @param milk the selected milk base
+    * @param sweetener the selected sweetener
+    * @param sugarLevel the selected sugar level
+    * @param addons the selected add-ons
+    * @param iceLevel the selected ice level
+    * @param size the selected cup size
+    * @return a formatted preset drink summary
+    */
     private String buildPresetOrderSummary(String drinkName, SpecialVendingMachine machine, int tea, int milk, int sweetener, int sugarLevel, ArrayList<Integer> addons, int iceLevel, int size) {
 
         StringBuilder summary = new StringBuilder();
@@ -1177,6 +1379,12 @@ public class CustomMilkTeaPanel extends JPanel {
         return summary.toString();
     }
 
+    /**
+    * Returns the display text corresponding to the selected ice level.
+    *
+   * @param iceLevel the selected ice level
+    * @return the ice level as display text
+    */
     private String getIceText(int iceLevel) {
 
         String iceText = "Regular Ice";
@@ -1202,12 +1410,20 @@ public class CustomMilkTeaPanel extends JPanel {
         return iceText;
     }
 
+    /**
+    * Registers listeners that automatically update the available sugar
+    * level options whenever the selected cup size changes.
+    */
     private void addSugarSizeListeners() {
         smallButton.addActionListener(e -> sugarLevelHandler());
         mediumButton.addActionListener(e -> sugarLevelHandler());
         largeButton.addActionListener(e -> sugarLevelHandler());
     }
 
+    /**
+    * Updates the available sugar level options based on the selected
+    * sweetener and cup size.
+    */
     private void sugarLevelHandler() {
         String selectedSweetener = (String) sweetenerComboBox.getSelectedItem();
         int selectedSize = getSelectedSize();
@@ -1237,6 +1453,22 @@ public class CustomMilkTeaPanel extends JPanel {
         }
     }
 
+    /**
+    * Displays a specific error message explaining why a custom milk tea
+    * purchase failed, including insufficient ingredients, insufficient
+    * funds, or unavailable change.
+    *
+    * @param machine the active special vending machine
+    * @param tea the selected tea base
+    * @param milk the selected milk base
+    * @param sweetener the selected sweetener
+    * @param sugarLevel the selected sugar level
+    * @param addons the selected add-ons
+    * @param iceLevel the selected ice level
+    * @param size the selected cup size
+    * @param creditBeforePurchase the customer's available credit before
+    *                             attempting the purchase
+    */
     private void showMilkTeaPurchaseError(SpecialVendingMachine machine, int tea, int milk, int sweetener, int sugarLevel, ArrayList<Integer> addons, int iceLevel, int size,double creditBeforePurchase) {
 
         int multiplier = getSizeMultiplier(size);
