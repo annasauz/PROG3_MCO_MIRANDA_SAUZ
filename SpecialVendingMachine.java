@@ -616,21 +616,6 @@ public class SpecialVendingMachine extends RegularVendingMachine {
         System.out.flush();
     }
 
-    @Override
-    public void printTransactionSummary() {
-
-        // Print the normal vending machine summary first
-        super.printTransactionSummary();
-
-        // Then print custom milk tea statistics
-        System.out.println("\n========== CUSTOM MILK TEA SUMMARY ==========");
-
-        System.out.println("Custom Milk Teas Sold : " + customMilkTeaSold);
-
-        System.out.printf("Custom Milk Tea Revenue: PHP %.2f%n", customMilkTeaRevenue);
-
-        System.out.println("=============================================");
-    }
 
     public boolean isRestrictedItem(int slot) {
 
@@ -840,6 +825,15 @@ public class SpecialVendingMachine extends RegularVendingMachine {
                 itemTemplates[slot].getName(),
                 totalSold[slot]);
         }
+    }
+
+    @Override
+    public void collectMoney() {
+
+        super.collectMoney();
+
+        customMilkTeaSold = 0;
+        customMilkTeaRevenue = 0;
     }
 
     // Getters
