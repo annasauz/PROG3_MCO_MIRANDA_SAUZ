@@ -3,6 +3,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;   
 
+/**
+ * Represents the insert-money interface of the vending machine.
+ * Extends JPanel to display the current credit and accepted
+ * denomination controls.
+ */
 public class InsertMoneyPanel extends JPanel {
     
     private JLabel amountLabel;
