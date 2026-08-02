@@ -11,12 +11,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 
+/**
+ * Represents the purchase interface for the active vending machine.
+ * Extends JPanel to display the item inventory, current credit,
+ * purchase controls, and transaction feedback.
+ */
 public class PurchasePanel extends JPanel {
     private JTable table;
     private DefaultTableModel model;
