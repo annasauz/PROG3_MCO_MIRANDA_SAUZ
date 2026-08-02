@@ -446,36 +446,6 @@ public class RegularVendingMachine {
         System.out.println("Machine cash box has been emptied. Please restock change reserves.");
     }
 
-    /**
-     * Refills every initialized item slot to its maximum capacity.
-     * Precondition: Slots and templates must already exist.
-     * Postcondition: All stocked items are topped up to full capacity.
-     */
-    public void refillAllSlots() {
-        boolean refilledAnySlot = false;
-
-        for (int i = 0; i < this.slots.length; i++) {
-            Item item = this.itemTemplates[i];
-
-            if (item == null) {
-                continue;
-            }
-
-            int currentStock = this.slots[i].getCurrentInSlotItems();
-            int maximumStock = this.slots[i].getMaximumInSlotItems();
-            int amountToAdd = maximumStock - currentStock;
-
-            if (amountToAdd > 0) {
-                this.restockSlot(i, item, amountToAdd);
-                refilledAnySlot = true;
-            }
-        }
-
-        if (!refilledAnySlot) {
-            System.out.println("All initialized slots are already full.");
-        }
-    }
-
 
     // ==========================================
     //             INTERNAL CALCULATIONS
