@@ -8,6 +8,13 @@ public class InsertMoneyPanel extends JPanel {
     private JLabel amountLabel;
     private VendingMachineGUI gui;
 
+    /**
+    * Creates the insert-money panel and initializes the credit display,
+    * denomination buttons, quantity prompts, and navigation controls.
+    *
+    * @param gui the main vending machine GUI used to access the active
+    *            machine, update inserted credit, and navigate between panels
+    */
     public InsertMoneyPanel(VendingMachineGUI gui) {
         this.gui = gui;
         
@@ -108,11 +115,13 @@ public class InsertMoneyPanel extends JPanel {
     }
 
     /**
-     * Helper method to insert a specific bill/coin to the active machine.
-     * 
-     * @param amount denomination to insert
-     * @return true if successfully inserted, false false otherwise
-     */
+    * Inserts a specified quantity of a denomination into the active
+    * vending machine and updates the displayed credit.
+    *
+    * @param amount the denomination value to insert
+    * @param quantity the number of bills or coins to insert
+    * @return true if the money is inserted successfully; false otherwise
+    */
     private boolean insertDenomination(int amount, int quantity) {
         RegularVendingMachine machine;
         
@@ -143,8 +152,9 @@ public class InsertMoneyPanel extends JPanel {
     }
 
     /**
-     * Label is updated in order to match current balance
-     */
+    * Refreshes the credit label so that it matches the current inserted
+    * money stored in the main GUI.
+    */
     public void refreshDisplay() {
         amountLabel.setText("Credit: PHP " + String.format("%.2f", gui.getInsertedMoney()));
     }
