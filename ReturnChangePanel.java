@@ -7,6 +7,14 @@ public class ReturnChangePanel extends JPanel {
     private JLabel displayLabel;
     private VendingMachineGUI gui;
 
+    /**
+    * Creates the return-change panel and initializes the current credit
+    * display, change dispensing controls, and navigation buttons.
+    *
+    * @param gui the main vending machine GUI used to access the active
+    *            machine, update the displayed credit, and navigate
+    *            between panels
+    */
     public ReturnChangePanel(VendingMachineGUI gui) {
         this.gui = gui;
         
@@ -59,10 +67,12 @@ public class ReturnChangePanel extends JPanel {
     }
 
     /**
-     * Logic for returning change to the user.
-     * 
-     * @return true if change was successfully returned, false otherwise.
-     */
+    * Returns the customer's remaining credit by requesting the active
+    * vending machine to dispense the available change and updates the
+    * displayed balance.
+    *
+    * @return true if the change is successfully returned; false otherwise
+    */
     private boolean processReturnChange() {
         double currentCredit = gui.getInsertedMoney();
 
@@ -103,8 +113,9 @@ public class ReturnChangePanel extends JPanel {
     }
 
     /**
-     * Display update when the user navigates to this panel.
-     */
+    * Refreshes the displayed credit so it matches the current inserted
+    * money stored in the main GUI.
+    */
     public void refreshDisplay() {
         displayLabel.setText("Current Credit: PHP " + String.format("%.2f", gui.getInsertedMoney()));
     }
