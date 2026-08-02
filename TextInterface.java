@@ -60,6 +60,9 @@ public class TextInterface {
         System.out.println("2. Special Vending Machine");
     }
 
+    /**
+     * Displays the menu for selecting the type of vending machine to test.
+     */
     public void printTypeOfVendingMachineToTest() {
         clearScreen();
         System.out.println("Select Vending Machine Type to Test");
@@ -117,27 +120,31 @@ public class TextInterface {
         }
     }
 
+    /**
+     * Displays the available signature milk tea drinks together with
+    * their fixed cup sizes and prices.
+    */
     public void printSignatureDrinks() {
         clearScreen();
-    System.out.println("\nSignature Drinks");
-    System.out.println("==========================================");
-    System.out.println("Signature drinks have fixed recipes,");
-    System.out.println("sizes, and prices.");
-    System.out.println();
+        System.out.println("\nSignature Drinks");
+        System.out.println("==========================================");
+        System.out.println("Signature drinks have fixed recipes,");
+        System.out.println("sizes, and prices.");
+        System.out.println();
 
-    System.out.println("1. Roasted Oolong Matcha Latte");
-    System.out.println("   Medium: PHP 315.00");
-    System.out.println();
+        System.out.println("1. Roasted Oolong Matcha Latte");
+        System.out.println("   Medium: PHP 315.00");
+        System.out.println();
 
-    System.out.println("2. Classic Brown Sugar Earl Grey Cheese Foam");
-    System.out.println("   Large: PHP 490.00");
-    System.out.println();
+        System.out.println("2. Classic Brown Sugar Earl Grey Cheese Foam");
+        System.out.println("   Large: PHP 490.00");
+        System.out.println();
 
-    System.out.println("3. Taro Cookie Crunch Green Tea");
-    System.out.println("   Small: PHP 188.00");
-    System.out.println();
+        System.out.println("3. Taro Cookie Crunch Green Tea");
+        System.out.println("   Small: PHP 188.00");
+        System.out.println();
 
-    System.out.println("4. Cancel");
+        System.out.println("4. Cancel");
 
     }
 
@@ -171,8 +178,8 @@ public class TextInterface {
     }
 
     /**
-     * Displays the menu for selecting the sugar level of a milk tea.
-     */
+     * Displays the menu for selecting the ice level of a milk tea.
+    */
     public void iceLevel(){
         System.out.println("\n===== CHOOSE ICE LEVEL =====");
         System.out.println("1. No Ice");
@@ -182,8 +189,8 @@ public class TextInterface {
     }
 
     /**
-     * Displays the menu for selecting the sugar level of a milk tea.
-     */
+    * Displays the menu for selecting the milk base of a milk tea.
+    */
     public void chooseMilk() {
         System.out.println("\n===== CHOOSE MILK =====");
         System.out.println("1. Whole Milk");
@@ -204,7 +211,9 @@ public class TextInterface {
     }
 
     /**
-     * Displays the menu for selecting the sugar level of a milk tea.
+    * Displays an error message indicating that the selected ingredient
+    * cannot be purchased individually because it is restricted for use
+    * in custom milk tea recipes only.
      */
     public void purchaseNotAllowed() {
         System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
@@ -455,8 +464,10 @@ public class TextInterface {
     }
 
     /**
-     * Displays the menu for purchasing milk tea, allowing the user to choose between creating a custom milk tea, purchasing a signature milk tea, or getting a randomized milk tea.
-     */
+    * Displays the Special Milk Tea menu, allowing the user to create a
+    * custom milk tea, purchase a signature milk tea, choose a randomized
+    * milk tea, or cancel the operation.
+    */
     public void printMilkTeaToBuy() {
         System.out.println("\n--- Special Milk Tea ---");
         printShortDivider();
@@ -540,6 +551,13 @@ public class TextInterface {
             printDivider();
         }
 
+    /**
+    * Displays the machine's change inventory, including the quantity of
+    * each denomination, low-change warnings, and the total amount of
+    * change currently available.
+    *
+    * @param cashBox the cash box containing the machine's change inventory
+    */
     public void printChangeInventory(CashBox cashBox) {
 
         int[] denominations = cashBox.getDenominations();
