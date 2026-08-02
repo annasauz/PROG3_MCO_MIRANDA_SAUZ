@@ -81,10 +81,13 @@ public class ReturnChangePanel extends JPanel {
             machine = gui.getRegularMachine();
         }
 
-        if (machine != null) {
-            // Call the backend method to process the physical change
-            machine.produceChangeWithoutPurchase(); 
+        if (machine == null) {
+            JOptionPane.showMessageDialog(this, "No active machine found.", "Change Dispensed", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
+
+        // Call the backend method to process the physical change
+        machine.produceChangeWithoutPurchase();
 
         // success popup
         JOptionPane.showMessageDialog(this, 
