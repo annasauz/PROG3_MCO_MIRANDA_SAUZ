@@ -8,6 +8,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Represents the menu for accessing Regular Vending Machine features.
+ * Extends JPanel to provide purchase, maintenance, and navigation
+ * controls.
+ */
 public class RegularVMMenuPanel extends JPanel {
 
     /**
