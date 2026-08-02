@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 
 /**
- * Represents a Special Vending Machine capable of assembling customizable Milk Tea.
- * Inherited from RegularVendingMachine.
+ * Represents a Special Vending Machine capable of preparing assembled
+ * milk tea products.
+ * Extends RegularVendingMachine to inherit regular purchasing,
+ * inventory, payment, and maintenance behavior.
  */
 public class SpecialVendingMachine extends RegularVendingMachine {
 
