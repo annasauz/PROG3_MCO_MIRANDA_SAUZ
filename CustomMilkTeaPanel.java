@@ -716,6 +716,7 @@ public class CustomMilkTeaPanel extends JPanel {
 
                 int size = getSelectedSize();
 
+                double creditBeforePurchase = machine.transactionCashBox.getMoneyAmount();
                 purchaseSuccessful = machine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
 
                 if (purchaseSuccessful) {
@@ -742,12 +743,7 @@ public class CustomMilkTeaPanel extends JPanel {
 
                     gui.setInsertedMoney(machine.transactionCashBox.getMoneyAmount());
 
-                    JOptionPane.showMessageDialog(this,
-                    "Custom milk tea purchase failed.\n"
-                    + "Check your credit, ingredient stock, "
-                    + "and machine change availability.",
-                    "Transaction Failed",
-                    JOptionPane.ERROR_MESSAGE);
+                    showMilkTeaPurchaseError(machine, tea, milk, sweetener, sugarLevel, addons, iceLevel, size, creditBeforePurchase);
                 }
             }
         }
@@ -1100,6 +1096,7 @@ public class CustomMilkTeaPanel extends JPanel {
 
         } else {
 
+            double creditBeforePurchase = machine.transactionCashBox.getMoneyAmount();
             purchaseSuccessful = machine.purchaseCustomMilkTea(tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
 
             if (purchaseSuccessful) {
@@ -1143,14 +1140,7 @@ public class CustomMilkTeaPanel extends JPanel {
                     machine.transactionCashBox.getMoneyAmount()
             );
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    drinkName + " purchase failed.\n"
-                    + "Check your credit, ingredient stock, "
-                    + "and machine change availability.",
-                    "Transaction Failed",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            showMilkTeaPurchaseError(machine, tea, milk, sweetener, sugarLevel, addons, iceLevel, size, creditBeforePurchase);
         }
     }
 
@@ -1243,6 +1233,126 @@ public class CustomMilkTeaPanel extends JPanel {
 
             if (noSugarButton.isSelected()) {
                 halfSugarButton.setSelected(true);
+            }
+        }
+    }
+
+    private void showMilkTeaPurchaseError(SpecialVendingMachine machine, int tea, int milk, int sweetener, int sugarLevel, ArrayList<Integer> addons, int iceLevel, int size,double creditBeforePurchase) {
+
+        int multiplier = getSizeMultiplier(size);
+
+        int sweetenerServings = getSweetenerServings(sugarLevel, multiplier);
+
+        int iceServings = getIceServings(iceLevel);
+
+        int[] requiredStock = new int[machine.getSlots().length];
+
+        requiredStock[tea] += multiplier;
+        requiredStock[milk] += multiplier;
+        requiredStock[SpecialVendingMachine.ICE] += iceServings;
+
+        if (sweetener != -1) {
+            requiredStock[sweetener] += sweetenerServings;
+        }
+
+        for (int addon : addons) {
+            requiredStock[addon] += multiplier;
+        }
+
+        boolean insufficientStock = false;
+        String insufficientIngredient = "";
+        int neededStock = 0;
+        int availableStock = 0;
+
+        for (int i = 0; i < requiredStock.length && !insufficientStock; i++) {
+
+            int needed = requiredStock[i];
+
+            if (needed > 0) {
+
+                int available =machine.getSlots()[i].getCurrentInSlotItems();
+
+                if (available < needed) {
+
+                    insufficientStock = true;
+
+                    insufficientIngredient =machine.getItemTemplates()[i].getName();
+
+                    neededStock = needed;
+                    availableStock = available;
+                }
+            }
+        }
+
+        if (insufficientStock) {
+
+            JOptionPane.showMessageDialog(
+                this,
+                "The purchase could not be completed.\n\n"
+                + "Not enough stock for: "
+                + insufficientIngredient
+                + "\nNeeded: " + neededStock
+                + "\nAvailable: " + availableStock,
+                "Insufficient Ingredient Stock",
+                JOptionPane.ERROR_MESSAGE
+        );
+
+        } else {
+
+            double totalPrice = machine.getItemTemplates()[tea].getPrice()* multiplier;
+
+            totalPrice += machine.getItemTemplates()[milk].getPrice()* multiplier;
+
+            if (sweetener != -1) {
+
+                totalPrice +=machine.getItemTemplates()[sweetener].getPrice()* sweetenerServings;
+            }
+
+            for (int addon : addons) {
+
+                totalPrice += machine.getItemTemplates()[addon].getPrice()* multiplier;
+            }
+
+            totalPrice += machine.getItemTemplates()[SpecialVendingMachine.ICE].getPrice()* iceServings;
+
+            if (creditBeforePurchase < totalPrice) {
+
+            double missingAmount = totalPrice - creditBeforePurchase;
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Insufficient funds.\n\n"
+                    + "Special Milk Tea Price: PHP "
+                    + String.format("%.2f", totalPrice)
+                    + "\nAmount Inserted: PHP "
+                    + String.format(
+                            "%.2f",
+                            creditBeforePurchase
+                    )
+                    + "\nMissing Amount: PHP "
+                    + String.format(
+                            "%.2f",
+                            missingAmount
+                    )
+                    + "\n\nPlease insert more money "
+                    + "or cancel your transaction.",
+                    "Insufficient Funds",
+                    JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                double changeDue = creditBeforePurchase - totalPrice;
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "The machine cannot dispense "
+                    + "the required exact change.\n\n"
+                    + "Change Due: PHP "
+                    + String.format("%.2f", changeDue)
+                    + "\n\nYour inserted money "
+                    + "has been refunded.",
+                    "Exact Change Unavailable",
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
     }
