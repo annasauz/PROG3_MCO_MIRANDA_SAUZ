@@ -296,6 +296,7 @@ public class RegularVendingMachine {
 
                 this.startingInventory[slotIndex] = stockAfter;
                 this.totalSold[slotIndex] = 0;
+                this.revenuePerItem[slotIndex] = 0;
 
                 System.out.println("\n========== RESTOCK SUCCESS ==========");
 
@@ -436,6 +437,7 @@ public class RegularVendingMachine {
         for (int i = 0; i < this.slots.length; i++) {
             this.startingInventory[i] = this.slots[i].getCurrentInSlotItems();
             this.totalSold[i] = 0;
+            this.revenuePerItem[i] = 0;
         }
 
         totalRatingCount = 0;
