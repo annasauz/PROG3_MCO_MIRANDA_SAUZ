@@ -77,17 +77,17 @@ public class SignatureMilkTeaPanel extends JPanel {
         centerPanel.add(descriptionArea);
         centerPanel.add(Box.createVerticalStrut(15));
 
-        JButton purchaseButton = createButton("Purchase Selected Drink");
-        purchaseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        centerPanel.add(purchaseButton);
-
         add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
 
-        JButton backButton = createButton("4. Cancel");
+        JButton purchaseButton = createButton("Purchase Selected Drink");
+        purchaseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        bottomPanel.add(purchaseButton);
+
+        JButton backButton = createButton("Cancel");
 
         backButton.addActionListener(e -> gui.showPanel("Milk Tea Type"));
 
@@ -96,9 +96,9 @@ public class SignatureMilkTeaPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
         purchaseButton.addActionListener(e -> purchaseSelectedDrink());
-        oolongButton.addActionListener(e -> purchaseRoastedOolong());
-        earlGreyButton.addActionListener(e -> purchaseEarlGrey());
-        taroButton.addActionListener(e -> purchaseTaroCookieCrunch());
+        oolongButton.addActionListener(e -> selectRoastedOolong());
+        earlGreyButton.addActionListener(e -> selectEarlGrey());
+        taroButton.addActionListener(e -> selectTaroCookieCrunch());
     }
 
     private JButton createButton(String text) {
@@ -114,8 +114,8 @@ public class SignatureMilkTeaPanel extends JPanel {
         return button;
     }
 
-    private void purchaseRoastedOolong() {
-
+    private void selectRoastedOolong() {
+        selectedDrink = ROASTED_OOLONG;
         descriptionArea.setText(
                 "Roasted Oolong Matcha Latte\n\n"
                 + "Tea: Oolong Tea\n"
@@ -127,37 +127,10 @@ public class SignatureMilkTeaPanel extends JPanel {
                 + "Add-ons: Matcha Powder, Egg Pudding\n"
                 + "Fixed Price: PHP 315.00\n"
         );
+    }
 
-        ArrayList<Integer> addons = new ArrayList<>();
-
-        addons.add(SpecialVendingMachine.MATCHA_POWDER);
-        addons.add(SpecialVendingMachine.EGG_PUDDING);
-
-        int choice = JOptionPane.showConfirmDialog(
-                this,
-                "Roasted Oolong Matcha Latte\n\n"
-                + "Size: Medium\n"
-                + "Price: PHP 315.00\n\n"
-                + "Proceed with this purchase?",
-                "Confirm Signature Milk Tea",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-
-        if (choice == JOptionPane.OK_OPTION) {
-                gui.getCustomMilkTeaPanel().purchasePresetMilkTea(
-                "Roasted Oolong Matcha Latte",
-                SpecialVendingMachine.OOLONG_TEA,
-                SpecialVendingMachine.OAT_MILK,
-                SpecialVendingMachine.HONEY,
-                SpecialVendingMachine.HALF_SUGAR,
-                addons,
-                SpecialVendingMachine.LESS_ICE,
-                SpecialVendingMachine.MEDIUM);
-                }
-        }    
-
-    private void purchaseEarlGrey() {
-
+    private void selectEarlGrey() {
+        selectedDrink = EARL_GREY;
         descriptionArea.setText(
                 "Classic Brown Sugar Earl Grey Cheese Foam\n\n"
                 + "Tea: Earl Grey Tea\n"
@@ -169,36 +142,10 @@ public class SignatureMilkTeaPanel extends JPanel {
                 + "Add-ons: Tapioca Pearls, Cream Cheese\n"
                 + "Fixed Price: PHP 490.00\n"
         );
-
-        ArrayList<Integer> addons = new ArrayList<>();
-
-        addons.add(SpecialVendingMachine.TAPIOCA_PEARLS);
-        addons.add(SpecialVendingMachine.CREAM_CHEESE);
-        int choice = JOptionPane.showConfirmDialog(
-                this,
-                "Classic Brown Sugar Earl Grey Cheese Foam\n\n"
-                + "Size: Large\n"
-                + "Price: PHP 490.00\n\n"
-                + "Proceed with this purchase?",
-                "Confirm Signature Milk Tea",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-
-        if (choice == JOptionPane.OK_OPTION) {
-                gui.getCustomMilkTeaPanel().purchasePresetMilkTea(
-                "Classic Brown Sugar Earl Grey Cheese Foam",
-                SpecialVendingMachine.EARL_GREY_TEA,
-                SpecialVendingMachine.WHOLE_MILK,
-                SpecialVendingMachine.BROWN_SUGAR_SYRUP,
-                SpecialVendingMachine.HALF_SUGAR,
-                addons,
-                SpecialVendingMachine.REGULAR_ICE,
-                SpecialVendingMachine.LARGE);
-        }
     }
 
-    private void purchaseTaroCookieCrunch() {
-
+    private void selectTaroCookieCrunch() {
+        selectedDrink = TARO_COOKIE_CRUNCH;
         descriptionArea.setText(
                 "Taro Cookie Crunch Green Tea\n\n"
                 + "Tea: Green Tea\n"
@@ -210,34 +157,6 @@ public class SignatureMilkTeaPanel extends JPanel {
                 + "Add-ons: Taro Powder, Oreo, Glass Jelly\n"
                 + "Fixed Price: PHP 188.00\n"
         );
-
-        ArrayList<Integer> addons = new ArrayList<>();
-
-        addons.add(SpecialVendingMachine.TARO_POWDER);
-        addons.add(SpecialVendingMachine.OREO);
-        addons.add(SpecialVendingMachine.GLASS_JELLY);
-
-        int choice = JOptionPane.showConfirmDialog(
-                this,
-                "Taro Cookie Crunch Green Tea\n\n"
-                + "Size: Small\n"
-                + "Price: PHP 188.00\n\n"
-                + "Proceed with this purchase?",
-                "Confirm Signature Milk Tea",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-
-        if (choice == JOptionPane.OK_OPTION) {
-                gui.getCustomMilkTeaPanel().purchasePresetMilkTea(
-                "Taro Cookie Crunch Green Tea",
-                SpecialVendingMachine.GREEN_TEA,
-                SpecialVendingMachine.WHOLE_MILK,
-                SpecialVendingMachine.HONEY,
-                SpecialVendingMachine.NO_SUGAR,
-                addons,
-                SpecialVendingMachine.REGULAR_ICE,
-                SpecialVendingMachine.SMALL);
-        }
     }
 
     private void purchaseSelectedDrink() {
