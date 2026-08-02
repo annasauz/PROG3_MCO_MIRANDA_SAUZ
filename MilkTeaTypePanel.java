@@ -13,6 +13,13 @@ public class MilkTeaTypePanel extends JPanel {
 
     private VendingMachineGUI gui;
 
+    /**
+    * Creates the milk tea type selection panel and initializes the buttons
+    * for custom, signature, randomized, and cancelled milk tea purchases.
+    *
+    * @param gui the main vending machine GUI used for panel navigation
+    *            and access to the active vending machine panels
+    */
     public MilkTeaTypePanel(VendingMachineGUI gui) {
 
         this.gui = gui;
@@ -56,6 +63,12 @@ public class MilkTeaTypePanel extends JPanel {
         add(backButton);
     }
 
+    /**
+    * Creates and styles a button used in the milk tea type menu.
+    *
+    * @param text the label displayed on the button
+    * @return the configured JButton
+    */
     private JButton createButton(String text) {
 
         JButton button = new JButton(text);
@@ -82,6 +95,11 @@ public class MilkTeaTypePanel extends JPanel {
         return button;
     }
 
+    /**
+    * Generates a randomized milk tea recipe, including its tea base,
+    * milk base, sweetener, sugar level, ice level, cup size, and add-ons.
+    * The generated recipe is then submitted for purchase.
+    */
     private void purchaseRandomMilkTea() {
 
         Random random = new Random();
@@ -113,6 +131,12 @@ public class MilkTeaTypePanel extends JPanel {
         gui.getCustomMilkTeaPanel().purchasePresetMilkTea("Randomized Milk Tea", tea, milk, sweetener, sugarLevel, addons, iceLevel, size);
     }
 
+    /**
+    * Converts a randomly generated choice into a milk-base slot constant.
+    *
+    * @param choice the randomly generated milk choice from 0 to 3
+    * @return the slot constant of the corresponding milk base
+    */
     private int getRandomMilk(int choice) {
 
         int milk = SpecialVendingMachine.WHOLE_MILK;
@@ -138,7 +162,14 @@ public class MilkTeaTypePanel extends JPanel {
         return milk;
     }
 
-    private int getRandomSweetener(int choice) {
+    /**
+    * Converts a randomly generated choice into a sweetener slot constant.
+    *
+    * @param choice the randomly generated sweetener choice from 0 to 2
+    * @return the slot constant of the corresponding sweetener,
+    *         or -1 when no sweetener is selected
+    */
+   private int getRandomSweetener(int choice) {
 
         int sweetener = -1;
 
@@ -159,6 +190,13 @@ public class MilkTeaTypePanel extends JPanel {
         return sweetener;
     }
 
+    /**
+    * Converts a randomly generated choice into an add-on slot constant.
+     *
+    * @param choice the randomly generated add-on choice from 1 to 7
+    * @return the slot constant of the corresponding add-on,
+     *         or -1 when the choice is invalid
+     */
     private int getRandomAddon(int choice) {
 
         int addon = -1;
@@ -196,6 +234,10 @@ public class MilkTeaTypePanel extends JPanel {
         return addon;
     }
 
+    /**
+    * Displays information about signature milk teas and asks the user
+    * to confirm before navigating to the signature milk tea panel.
+    */
     private void showSignatureMilkTeaWarning() {
         String message = "Signature milk teas have fixed recipes,\n"
                 + "cup sizes, and prices.\n\n"
@@ -213,6 +255,10 @@ public class MilkTeaTypePanel extends JPanel {
         }
     }
 
+    /**
+    * Displays a warning that the milk tea recipe, size, and price will be
+    * randomly generated, then proceeds to generate and purchase the drink.
+    */
     private void showRandomMilkTeaWarning() {
 
         JOptionPane.showMessageDialog(
