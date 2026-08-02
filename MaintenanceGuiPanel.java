@@ -3,6 +3,11 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Represents the maintenance interface for the active vending machine.
+ * Extends JPanel to provide price updates, restocking, change
+ * replenishment, cash collection, and machine reports.
+ */
 public class MaintenanceGuiPanel extends JPanel {
     private static final int[] DENOMINATIONS = {1, 5, 10, 20, 50, 100, 200, 500, 1000};
 
