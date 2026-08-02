@@ -2,6 +2,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+/**
+ * Represents the return-change interface of the vending machine.
+ * Extends JPanel to display the current credit and allow the customer
+ * to cancel the transaction and retrieve inserted money.
+ */
 public class ReturnChangePanel extends JPanel {
 
     private JLabel displayLabel;
