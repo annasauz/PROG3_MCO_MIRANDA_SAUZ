@@ -225,14 +225,7 @@ public class VendingMachineController {
 
                             restricted = true;
 
-                            System.out.println("\n========== PURCHASE NOT ALLOWED ==========");
-                            System.out.println("The selected item is marked as (Restricted)");
-                            System.out.println("and cannot be purchased individually.");
-                            System.out.println("It is only available as an ingredient");
-                            System.out.println("for a custom milk tea.");
-                            System.out.println("==========================================");
-                            System.out.println();
-                            System.out.println("Please select another item.");
+                            textInterface.purchaseNotAllowed();
                         }
                     }
 
@@ -549,11 +542,7 @@ public class VendingMachineController {
 
 private int chooseTea() {
 
-        System.out.println("\n===== CHOOSE TEA BASE =====");
-        System.out.println("1. Black Tea");
-        System.out.println("2. Green Tea");
-        System.out.println("3. Earl Grey Tea");
-        System.out.println("4. Oolong Tea");
+
 
         int choice = getInput("Choice: ", 1, 4);
 
@@ -574,11 +563,7 @@ private int chooseTea() {
 
     private int chooseMilk() {
 
-        System.out.println("\n===== CHOOSE MILK =====");
-        System.out.println("1. Whole Milk");
-        System.out.println("2. Oat Milk");
-        System.out.println("3. Almond Milk");
-        System.out.println("4. Skim Milk");
+        textInterface.chooseMilk();
 
         int choice = getInput("Choice: ", 1, 4);
 
@@ -732,16 +717,7 @@ private ArrayList<Integer> chooseAddons() {
             case 1:
                 break;
             case 2:
-                System.out.println("==========================================");
-                System.out.println("         SIGNATURE DRINKS");
-                System.out.println("==========================================");
-                System.out.println("Each signature drink has a fixed");
-                System.out.println("recipe, size, and price.");
-                System.out.println();
-                System.out.println("Please ensure you have inserted");
-                System.out.println("enough money before purchasing.");
-                System.out.println("==========================================");
-
+                textInterface.signatureDrinks();
                 textInterface.pressEnterToContinue(scanner);
                 textInterface.printSignatureDrinks();
                 switch (getInput("Choice: ", 1, 4)) {
@@ -812,16 +788,7 @@ private ArrayList<Integer> chooseAddons() {
                 return false;
             case 3:
                 System.out.println();
-                System.out.println("==========================================");
-                System.out.println("           RANDOMIZED MILK TEA");
-                System.out.println("==========================================");
-                System.out.println("The recipe, cup size, and total");
-                System.out.println("price are randomly generated.");
-                System.out.println();
-                System.out.println("If your inserted credit is");
-                System.out.println("insufficient, the purchase");
-                System.out.println("will not proceed.");
-                System.out.println("==========================================");
+                textInterface.randomizedTeaMenu();
                 textInterface.pressEnterToContinue(scanner);
                 
                 Random random = new Random();
@@ -947,13 +914,7 @@ private ArrayList<Integer> chooseAddons() {
     }
 
     private int chooseIceLevel() {
-
-        System.out.println("\n===== CHOOSE ICE LEVEL =====");
-        System.out.println("1. No Ice");
-        System.out.println("2. Less Ice");
-        System.out.println("3. Regular Ice");
-        System.out.println("4. Extra Ice");
-
+        textInterface.iceLevel();
         int choice = getInput("Choice: ", 1, 4);
 
         switch (choice) {
@@ -974,17 +935,7 @@ private ArrayList<Integer> chooseAddons() {
 
     private void customerRatingHandler() {
 
-        System.out.println();
-
-        System.out.println("========== RATE YOUR EXPERIENCE ==========");
-
-        System.out.println("How would you rate your purchase?");
-
-        System.out.println("1 - Poor");
-        System.out.println("2 - Fair");
-        System.out.println("3 - Good");
-        System.out.println("4 - Very Good");
-        System.out.println("5 - Excellent");
+        textInterface.rateExperience();
 
         int rating = getInput("Rating (1-5): ", 1, 5);
 
