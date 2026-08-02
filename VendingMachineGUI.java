@@ -2,6 +2,10 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * Represents the main GUI for the vending machine application.
+ * Extends JFrame to provide a windowed interface for managing
+ */
 public class VendingMachineGUI extends JFrame {
 
     private boolean viewingSpecialMachine = false;
