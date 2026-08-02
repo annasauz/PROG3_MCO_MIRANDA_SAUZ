@@ -342,18 +342,19 @@ public class VendingMachineController {
         System.out.println("1, 5, 10, 20, 50, 100, 200, 500, 1000");
         System.out.print("Choice: ");
         int denomination = getMoneyDenomination();
-        System.out.print("Enter quantity: ");
         int quantity = getPositiveInteger("Enter quantity: ");
         vendingMachine.replenishChangeReserves(denomination, quantity);
     }
 
     /**
-     * Gets user input and validates it.
-     *
-     * @param min smallest user choice
-     * @param max largest user choice
-     * @return the user choice if within range, otherwise returns 0
-     */
+    * Prompts the user for a whole-number choice and repeatedly validates
+    * the input until it falls within the specified range.
+    *
+    * @param prompt the message displayed before requesting input
+    * @param min the smallest accepted value
+    * @param max the largest accepted value
+    * @return the validated user choice within the specified range
+    */
     private int getInput(String prompt, int min, int max) {
         boolean valid = false;
         int input = 0;
@@ -390,11 +391,12 @@ public class VendingMachineController {
     }
 
     /**
-     * Checks if valid positive integer.
-     *
-     * @return checked integer
-     */
-
+    * Prompts the user for a positive whole number and repeatedly validates
+    * the input until a valid value is entered.
+    *
+    * @param prompt the message displayed before requesting input
+    * @return the validated positive integer
+    */
     private int getPositiveInteger(String prompt) {
         boolean valid = false;
         int value = 0;
@@ -424,10 +426,11 @@ public class VendingMachineController {
     }
 
     /**
-     * Checks if valid positive double.
-     *
-     * @return checked double
-     */
+     * Prompts the user for a positive whole-peso price and repeatedly
+    * validates the input until a valid numeric value is entered.
+    *
+    * @return the validated positive whole-peso price
+    */
     private double getPositiveDouble() {
 
         boolean valid = false;
@@ -482,12 +485,13 @@ public class VendingMachineController {
 
         return value;
     }
-    /**
-     * Checks if valid denomination.
-     *
-     * @return checked denomination
-     */
 
+    /**
+    * Prompts the user for a valid denomination accepted by the vending
+    * machine and repeatedly validates the input.
+    *
+    * @return the validated denomination
+    */
     private int getMoneyDenomination() {
         boolean valid = false;
         int denomination = 0;
@@ -540,9 +544,14 @@ public class VendingMachineController {
             SPECIAL VENDING MACHINE METHODS
    =============================================== */
 
-private int chooseTea() {
+    /**
+    * Displays the available tea bases and returns the user's selection.
+    *
+    * @return the constant representing the selected tea base
+    */
+    private int chooseTea() {
 
-
+        textInterface.chooseTea();
 
         int choice = getInput("Choice: ", 1, 4);
 
@@ -561,6 +570,11 @@ private int chooseTea() {
         }
     }
 
+    /**
+    * Displays the available milk options and returns the user's selection.
+    *
+    * @return the constant representing the selected milk type
+    */
     private int chooseMilk() {
 
         textInterface.chooseMilk();
@@ -582,6 +596,12 @@ private int chooseTea() {
         }
     }
 
+    /**
+    * Converts a randomly generated value into its corresponding milk type.
+    *
+    * @param randomChoice randomly generated milk selection
+    * @return the corresponding milk constant
+    */
     private int chooseMilk(int randomChoice) {
         switch (randomChoice) {
             case 1:
@@ -599,66 +619,79 @@ private int chooseTea() {
 
     }
 
-private ArrayList<Integer> chooseAddons() {
+    /**
+    * Allows the user to select one or more add-ons for a custom milk tea.
+    * Duplicate selections are not permitted.
+    *
+    * @return an ArrayList containing the selected add-on constants
+    */
+    private ArrayList<Integer> chooseAddons() {
 
-    SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
+        SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
 
-    ArrayList<Integer> addons = new ArrayList<>();
+        ArrayList<Integer> addons = new ArrayList<>();
 
-    while (true) {
+        while (true) {
 
-        System.out.println("\n========== ADD-ONS ==========");
+            System.out.println("\n========== ADD-ONS ==========");
 
-        System.out.println("Current Selection:");
+            System.out.println("Current Selection:");
 
-        if (addons.isEmpty()) {
-            System.out.println("None");
-        } else {
+            if (addons.isEmpty()) {
+                System.out.println("None");
+            } else {
 
-            for (Integer slot : addons) {
-                System.out.println("- " +
+                for (Integer slot : addons) {
+                    System.out.println("- " +
                     specialMachine.getItemTemplates()[slot].getName());
+                }
             }
-        }
 
-        System.out.println();
+            System.out.println();
 
-        System.out.println("1. Matcha Powder");
-        System.out.println("2. Taro Powder");
-        System.out.println("3. Oreo");
-        System.out.println("4. Cream Cheese");
-        System.out.println("5. Tapioca Pearls");
-        System.out.println("6. Glass Jelly");
-        System.out.println("7. Egg Pudding");
-        System.out.println("0. Finish");
+            System.out.println("1. Matcha Powder");
+            System.out.println("2. Taro Powder");
+            System.out.println("3. Oreo");
+            System.out.println("4. Cream Cheese");
+            System.out.println("5. Tapioca Pearls");
+            System.out.println("6. Glass Jelly");
+            System.out.println("7. Egg Pudding");
+            System.out.println("0. Finish");
 
-        int choice = getInput("Choice: ", 0, 7);
+            int choice = getInput("Choice: ", 0, 7);
 
-        int slot = -1;
+            int slot = -1;
 
-        switch(choice){
+            switch(choice){
 
-            case 0: return addons;
-            case 1: slot = SpecialVendingMachine.MATCHA_POWDER; break;
-            case 2: slot = SpecialVendingMachine.TARO_POWDER; break;
-            case 3: slot = SpecialVendingMachine.OREO; break;
-            case 4: slot = SpecialVendingMachine.CREAM_CHEESE; break;
-            case 5: slot = SpecialVendingMachine.TAPIOCA_PEARLS; break;
-            case 6: slot = SpecialVendingMachine.GLASS_JELLY; break;
-            case 7: slot = SpecialVendingMachine.EGG_PUDDING; break;
-        }
+                case 0: return addons;
+                case 1: slot = SpecialVendingMachine.MATCHA_POWDER; break;
+                case 2: slot = SpecialVendingMachine.TARO_POWDER; break;
+                case 3: slot = SpecialVendingMachine.OREO; break;
+                case 4: slot = SpecialVendingMachine.CREAM_CHEESE; break;
+                case 5: slot = SpecialVendingMachine.TAPIOCA_PEARLS; break;
+                case 6: slot = SpecialVendingMachine.GLASS_JELLY; break;
+                case 7: slot = SpecialVendingMachine.EGG_PUDDING; break;
+            }
 
-        if(addons.contains(slot)){
-            System.out.println("That add-on has already been selected.");
-        }
-        else{
-            addons.add(slot);
-            System.out.println("Added " + specialMachine.getItemTemplates()[slot].getName());
+            if(addons.contains(slot)){
+                System.out.println("That add-on has already been selected.");
+            }
+            else{
+                addons.add(slot);
+                System.out.println("Added " + specialMachine.getItemTemplates()[slot].getName());
             }
         }   
         
     }
 
+    /**
+    * Adds a randomly selected add-on to the provided list if it has not
+    * already been selected.
+    *
+    * @param addon randomly generated add-on choice
+    * @param addons list of currently selected add-ons
+    */
     private void chooseAddons(int addon, ArrayList<Integer> addons) {
         SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
 
@@ -681,6 +714,11 @@ private ArrayList<Integer> chooseAddons() {
         }
     }
 
+    /**
+    * Displays the available cup sizes and returns the user's selection.
+    *
+    * @return the constant representing the selected cup size
+    */
     private int chooseSize() {
 
         System.out.println("\n===== CHOOSE SIZE =====");
@@ -701,7 +739,13 @@ private ArrayList<Integer> chooseAddons() {
                 return SpecialVendingMachine.LARGE;
         }
     }
-    
+
+    /**
+     * Handles the complete custom milk tea purchasing workflow, including
+    * custom drinks, signature drinks, and randomized milk tea.
+    *
+    * @return true if a purchase was successfully completed, false otherwise
+    */ 
     private boolean customMilkTeaHandler() {
         SpecialVendingMachine specialMachine = (SpecialVendingMachine) vendingMachine;
         int tea;
@@ -860,6 +904,11 @@ private ArrayList<Integer> chooseAddons() {
 
     }
 
+    /**
+     * Displays the available sugar levels and returns the user's selection.
+    *
+    * @return the constant representing the selected sugar level
+    */
     private int chooseSugarLevel() {
 
         System.out.println("\n===== CHOOSE SUGAR LEVEL =====");
@@ -878,6 +927,11 @@ private ArrayList<Integer> chooseAddons() {
         return sugarLevel;
     }
 
+    /**
+    * Displays the available sweetener options and returns the user's selection.
+    *
+    * @return the constant representing the selected sweetener, or -1 if none
+     */
     private int chooseSweetener() {
 
         System.out.println("\n===== CHOOSE SWEETENER =====");
@@ -899,6 +953,12 @@ private ArrayList<Integer> chooseAddons() {
         }
     }
 
+    /**
+    * Converts a randomly generated value into its corresponding sweetener.
+    *
+    * @param randomChoice randomly generated sweetener selection
+    * @return the corresponding sweetener constant, or -1 if none
+    */
     private int chooseSweetener(int randomChoice) {
 
         switch (randomChoice) {
@@ -913,6 +973,11 @@ private ArrayList<Integer> chooseAddons() {
 
     }
 
+    /**
+    * Displays the available ice levels and returns the user's selection.
+    *
+    * @return the constant representing the selected ice level
+    */
     private int chooseIceLevel() {
         textInterface.iceLevel();
         int choice = getInput("Choice: ", 1, 4);
@@ -933,6 +998,10 @@ private ArrayList<Integer> chooseAddons() {
         }
     }
 
+    /**
+    * Prompts the customer to rate their purchasing experience and records
+    * the submitted rating.
+    */
     private void customerRatingHandler() {
 
         textInterface.rateExperience();
@@ -965,6 +1034,10 @@ private ArrayList<Integer> chooseAddons() {
         System.out.println("==========================================");
     }
 
+    /**
+    * Prompts the user whether they would like to print a purchase receipt.
+    * Prints the receipt if requested.
+    */
     private void receiptHandler() {
 
         System.out.println();
@@ -979,6 +1052,10 @@ private ArrayList<Integer> chooseAddons() {
         }
     }
 
+    /**
+    * Prints a summary of the user's most recent purchase, including the
+    * purchased items, total price, payment, change, and calories.
+    */
     private void printReceipt() {
 
         System.out.println();
