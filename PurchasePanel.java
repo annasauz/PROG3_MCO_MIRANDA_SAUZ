@@ -272,13 +272,12 @@ public class PurchasePanel extends JPanel {
 
                     } else {
 
-                        double itemPrice =
-                            selectedItem.getPrice();
+                        double itemPrice = selectedItem.getPrice();
 
-                        if (currentCredit < itemPrice) {
+                        if (creditBeforePurchase < itemPrice) {
 
                             double missingAmount =
-                                itemPrice - currentCredit;
+                            itemPrice - creditBeforePurchase;
 
                             JOptionPane.showMessageDialog(
                                 this,
@@ -286,25 +285,25 @@ public class PurchasePanel extends JPanel {
                                 + "Item Price: PHP "
                                 + String.format("%.2f", itemPrice)
                                 + "\n"
-                                + "Current Credit: PHP "
-                                + String.format("%.2f", currentCredit)
+                                + "Inserted Credit: PHP "
+                                + String.format("%.2f", creditBeforePurchase)
                                 + "\n"
                                 + "Missing Amount: PHP "
                                 + String.format("%.2f", missingAmount)
                                 + "\n\n"
-                                + "Please insert more money or return your credit.",
+                                + "Please insert more money.",
                                 "Insufficient Funds",
                                 JOptionPane.ERROR_MESSAGE
-                        );
+                            );
 
                         } else {
 
                             JOptionPane.showMessageDialog(
                                 this,
-                                "The purchase could not be completed.\n\n"
-                                + "The item may be out of stock, or the machine "
-                                + "may be unable to dispense exact change.",
-                                "Transaction Failed",
+                                "The purchase could not be completed because\n"
+                                + "the machine cannot dispense the required exact change.\n\n"
+                                + "Your inserted money has been refunded.",
+                                "Exact Change Unavailable",
                                 JOptionPane.ERROR_MESSAGE
                             );
                         }
