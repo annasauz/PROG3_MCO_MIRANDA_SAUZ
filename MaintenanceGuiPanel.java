@@ -214,32 +214,61 @@ public class MaintenanceGuiPanel extends JPanel {
      * @return The positive double entered by the user, or null if invalid input or canceled.
      */
     private Double promptPositiveDouble(String message, String title) {
-        String input = JOptionPane.showInputDialog(this, message, title, JOptionPane.QUESTION_MESSAGE);
+
+        String input = JOptionPane.showInputDialog(
+            this,
+            message,
+            title,
+            JOptionPane.QUESTION_MESSAGE
+        );
 
         if (input == null) {
             return null;
         }
 
         try {
+
             double value = Double.parseDouble(input.trim());
-            if (value < 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Please enter a non-negative amount.",
-                        title,
-                        JOptionPane.ERROR_MESSAGE);
+
+            if (value <= 0) {
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter a price greater than zero.",
+                    title,
+                    JOptionPane.ERROR_MESSAGE
+                );
+
+                return null;
+
+            } else if (value != Math.floor(value)) {
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter a whole-peso price.\n"
+                    + "Decimal prices are not supported because\n"
+                    + "the machine dispenses whole-peso denominations only.",
+                    title,
+                    JOptionPane.ERROR_MESSAGE
+                );
+
                 return null;
             }
 
             return value;
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Please enter a valid number.",
-                    title,
-                    JOptionPane.ERROR_MESSAGE);
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Please enter a valid number.",
+                title,
+                JOptionPane.ERROR_MESSAGE
+            );
+
             return null;
         }
     }
-
     /**
      * Prompts the user to select a denomination from the supported denominations.
      *
