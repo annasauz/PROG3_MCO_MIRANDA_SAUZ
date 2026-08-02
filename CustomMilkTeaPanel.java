@@ -18,6 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
+/**
+ * Represents the custom milk tea configuration interface.
+ * Extends JPanel to allow customers to select ingredients, size,
+ * sugar level, ice level, and add-ons.
+ */
 public class CustomMilkTeaPanel extends JPanel {
 
     private VendingMachineGUI gui;
