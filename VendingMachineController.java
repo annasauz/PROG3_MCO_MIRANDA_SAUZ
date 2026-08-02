@@ -179,8 +179,7 @@ public class VendingMachineController {
         System.out.print("Choice: ");
         int denomination = getMoneyDenomination();
 
-        System.out.print("Enter quantity: ");
-        int quantity = getPositiveInteger();
+        int quantity = getPositiveInteger("Enter quantity: ");
 
         vendingMachine.receivePayment(denomination, quantity);
         System.out.println();
@@ -304,8 +303,7 @@ public class VendingMachineController {
 
                 System.out.println("\nCurrent item: " + existingItem.getName());
 
-                System.out.print("Enter quantity to add: ");
-                int quantity = getPositiveInteger();
+                int quantity = getPositiveInteger("Enter quantity to add: ");
 
                 vendingMachine.restockSlot(slotChoice, existingItem, quantity);
 
@@ -352,8 +350,7 @@ public class VendingMachineController {
         System.out.print("Choice: ");
         int denomination = getMoneyDenomination();
         System.out.print("Enter quantity: ");
-        int quantity = getPositiveInteger();
-        vendingMachine.replenishChangeReserves(denomination,quantity);
+        int quantity = getPositiveInteger("Enter quantity: ");
     }
 
     /**
@@ -404,30 +401,33 @@ public class VendingMachineController {
      * @return checked integer
      */
 
-    private int getPositiveInteger() {
-    boolean valid = false;
-    int value = 0;
-    String leftover;
+    private int getPositiveInteger(String prompt) {
+        boolean valid = false;
+        int value = 0;
+        String leftover;
 
-    while (!valid) {
-        if (scanner.hasNextInt()) {
-            value = scanner.nextInt();
-            leftover = scanner.nextLine().trim();
+        while (!valid) {
+            System.out.print(prompt);
 
-            if (!leftover.isEmpty()) {
-                System.out.println("Invalid input. Please enter only one whole number.");
-            } else if (value > 0) {
-                valid = true;
+            if (scanner.hasNextInt()) {
+                value = scanner.nextInt();
+                leftover = scanner.nextLine().trim();
+
+                if (!leftover.isEmpty()) {
+                    System.out.println("Invalid input. Please enter only one whole number.");
+                } else if (value > 0) {
+                    valid = true;
+                } else {
+                    System.out.println("Value must be greater than zero.");
+                }
             } else {
-                System.out.println("Value must be greater than zero. Try again:");
-            }
-        } else {
-            System.out.println("Invalid input. Enter a whole number.");
-            scanner.nextLine(); // clear buffer
+                System.out.println("Invalid input. Enter a whole number.");
+                scanner.nextLine();
+           }
         }
+
+        return value;
     }
-    return value;
-}
 
     /**
      * Checks if valid positive double.
@@ -701,6 +701,17 @@ private ArrayList<Integer> chooseAddons() {
             case 1:
                 break;
             case 2:
+                System.out.println("==========================================");
+                System.out.println("         SIGNATURE DRINKS");
+                System.out.println("==========================================");
+                System.out.println("Each signature drink has a fixed");
+                System.out.println("recipe, size, and price.");
+                System.out.println();
+                System.out.println("Please ensure you have inserted");
+                System.out.println("enough money before purchasing.");
+                System.out.println("==========================================");
+
+                textInterface.pressEnterToContinue(scanner);
                 textInterface.printSignatureDrinks();
                 switch (getInput("Choice: ", 1, 4)) {
                     case 1:
@@ -769,6 +780,19 @@ private ArrayList<Integer> chooseAddons() {
                 }
                 return false;
             case 3:
+                System.out.println();
+                System.out.println("==========================================");
+                System.out.println("           RANDOMIZED MILK TEA");
+                System.out.println("==========================================");
+                System.out.println("The recipe, cup size, and total");
+                System.out.println("price are randomly generated.");
+                System.out.println();
+                System.out.println("If your inserted credit is");
+                System.out.println("insufficient, the purchase");
+                System.out.println("will not proceed.");
+                System.out.println("==========================================");
+                textInterface.pressEnterToContinue(scanner);
+                
                 Random random = new Random();
 
                 tea = random.nextInt(4);
