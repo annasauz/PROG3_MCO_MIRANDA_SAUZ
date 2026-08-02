@@ -351,6 +351,7 @@ public class VendingMachineController {
         int denomination = getMoneyDenomination();
         System.out.print("Enter quantity: ");
         int quantity = getPositiveInteger("Enter quantity: ");
+        vendingMachine.replenishChangeReserves(denomination, quantity);
     }
 
     /**
