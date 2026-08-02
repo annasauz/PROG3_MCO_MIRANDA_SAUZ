@@ -239,11 +239,10 @@ public class PurchasePanel extends JPanel {
 
                 if (purchaseAllowed) {
 
-                    purchaseSuccessful =
-                        machine.purchaseItem(slotIndex);
+                    double creditBeforePurchase = machine.transactionCashBox.getMoneyAmount();
+                    purchaseSuccessful = machine.purchaseItem(slotIndex);
 
-                    double currentCredit =
-                        machine.transactionCashBox.getMoneyAmount();
+                    double currentCredit = machine.transactionCashBox.getMoneyAmount();
 
                     gui.setInsertedMoney(currentCredit);
                     refreshCredit(gui);
@@ -252,12 +251,24 @@ public class PurchasePanel extends JPanel {
 
                         loadItems(machine);
 
-                        JOptionPane.showMessageDialog(
-                            this,
-                            "Item purchased successfully.",
-                            "Purchase Complete",
-                            JOptionPane.INFORMATION_MESSAGE
-                        );
+                        double changeDispensed =
+                            creditBeforePurchase - selectedItem.getPrice();
+
+                                String purchaseDetails =
+                                    "========== VENDING SUCCESS ==========\n\n"
+                                    + "Dispensed: " + selectedItem.getName() + "\n"
+                                    + "Calories: " + selectedItem.getCalories() + " kcal\n"
+                                    + "Total Change Dispensed: PHP "
+                                    + String.format("%.2f", changeDispensed);
+
+                                    JOptionPane.showMessageDialog(
+                                        this,
+                                        purchaseDetails,
+                                        "Purchase Complete",
+                                        JOptionPane.INFORMATION_MESSAGE
+                                    );
+
+                                  showFeedbackAndReceipt(machine);
 
                     } else {
 
